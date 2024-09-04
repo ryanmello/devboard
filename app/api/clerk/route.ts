@@ -51,9 +51,9 @@ export async function POST(req: Request) {
   const eventType = evt.type;
 
   if (eventType == "user.created" || eventType == "user.updated") {
-    const { id, email_addresses, first_name, last_name } = evt.data;
+    const { id, email_addresses, first_name, last_name, username } = evt.data;
 
-    console.log(evt.data);
+    console.log(username);
 
     // check if user exists
     const existingUser = await db.user.findUnique({
@@ -68,6 +68,7 @@ export async function POST(req: Request) {
           firstName: first_name,
           lastName: last_name,
           email: email_addresses[0].email_address,
+          username: username,
           updatedAt: new Date(),
         },
       });
@@ -77,6 +78,7 @@ export async function POST(req: Request) {
         data: {
           clerkId: id as string,
           email: email_addresses[0].email_address,
+          username: username,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
