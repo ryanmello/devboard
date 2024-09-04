@@ -13,13 +13,16 @@ export default function Page() {
           },
         }}
       />
-      <div className="flex items-center mt-2">
-        <div className="cursor-default font-light">
+      <div className="w-[400px] bg-white h-12 flex justify-center items-center mt-4 rounded-md">
+        <div className="cursor-default text-black text-sm">
           <p>Don&apos;t have an account?</p>
         </div>
-        <Button variant="link" className="px-2">
+        <a
+          href={process.env.URL + "/sign-up"}
+          className="pl-2 text-black text-sm font-medium hover:underline underline-offset-4"
+        >
           Sign up
-        </Button>
+        </a>
       </div>
     </div>
   );
