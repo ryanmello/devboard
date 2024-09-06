@@ -8,7 +8,16 @@ export async function POST(req: Request) {
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
     const requestData = await req.json();
-    const { firstName, lastName, headline, image, resume } = requestData;
+    const {
+      firstName,
+      lastName,
+      headline,
+      image,
+      resume,
+      gitHubUsername,
+      leetCodeUsername,
+      linkedInUsername,
+    } = requestData;
 
     const user = await db.user.update({
       where: {
@@ -20,6 +29,9 @@ export async function POST(req: Request) {
         headline,
         image,
         resume,
+        gitHubUsername,
+        leetCodeUsername,
+        linkedInUsername,
       },
     });
 

@@ -16,7 +16,7 @@ export type FullUser = {
 
   gitHubUsername: string | null;
   leetCodeUsername: string | null;
-  linkedInProfile: string | null;
+  linkedInUsername: string | null;
 
   skills: string[];
 

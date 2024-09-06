@@ -5,7 +5,7 @@ import { CameraOff, Trash } from "lucide-react";
 import { FullUser } from "@/types";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,12 +20,14 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
 import { UploadButton, UploadDropzone } from "@/utils/uploadthing";
-import EditProfileForm from "./EditProfileForm";
 
 const formSchema = z.object({
   firstName: z.string().min(2).max(50),
   lastName: z.string().min(2).max(50),
   headline: z.string().min(2).max(50),
+  gitHubUsername: z.string().min(2).max(50),
+  leetCodeUsername: z.string().min(2).max(50),
+  linkedInUsername: z.string().min(2).max(50),
 });
 
 const Settings = ({ currentUser }: { currentUser: FullUser }) => {
@@ -38,18 +40,31 @@ const Settings = ({ currentUser }: { currentUser: FullUser }) => {
       firstName: currentUser.firstName || "",
       lastName: currentUser.lastName || "",
       headline: currentUser.headline || "",
+      gitHubUsername: currentUser.gitHubUsername || "",
+      leetCodeUsername: currentUser.leetCodeUsername || "",
+      linkedInUsername: currentUser.linkedInUsername || "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       toast.success("Profile updated!");
-      const { firstName, lastName, headline } = values;
+      const {
+        firstName,
+        lastName,
+        headline,
+        gitHubUsername,
+        leetCodeUsername,
+        linkedInUsername,
+      } = values;
       await axios.post("/api/user", {
         firstName,
         lastName,
         headline,
         resume,
+        gitHubUsername,
+        leetCodeUsername,
+        linkedInUsername,
       });
     } catch (error) {
       console.log(error);
@@ -154,7 +169,45 @@ const Settings = ({ currentUser }: { currentUser: FullUser }) => {
                   </div>
                 )}
               </div>
-
+              <FormField
+                control={form.control}
+                name="gitHubUsername"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>GitHub Username</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="leetCodeUsername"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>LeetCode Username</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="linkedInUsername"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>LinkedIn Username</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <Button className="w-full" variant="secondary" type="submit">
                 Save Changes
               </Button>

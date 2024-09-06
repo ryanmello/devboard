@@ -23,7 +23,7 @@ model User {
 
   gitHubUsername   String?
   leetCodeUsername String?
-  linkedInProfile  String?
+  linkedInUsername  String?
 
   skills     String[]
   projects   Project[]
