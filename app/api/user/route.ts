@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
     const requestData = await req.json();
-    const { firstName, lastName, headline, resume } = requestData;
+    const { firstName, lastName, headline, image, resume } = requestData;
 
     const user = await db.user.update({
       where: {
@@ -18,13 +18,14 @@ export async function POST(req: Request) {
         firstName,
         lastName,
         headline,
+        image,
         resume,
       },
     });
 
     return NextResponse.json(user);
   } catch (error) {
-    console.log("[USER]", error);
+    console.log("/api/user", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
