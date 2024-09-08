@@ -14,6 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import axios from "axios";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   firstName: z.string().min(2).max(50),
@@ -33,9 +35,14 @@ const EditProfileForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      await axios.post("/api/user", values);
+      toast.success("Profile updated!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Form {...form}>
