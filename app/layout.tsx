@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "sonner";
 import { ClerkProvider } from "@clerk/nextjs";
+import Sidebar from "@/components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,10 +27,13 @@ export default function RootLayout({
             forcedTheme="dark"
             storageKey="devboard-theme"
           >
-            <main>
-              {children}
-              <Toaster position="top-center" richColors />
+            <main className="flex items-start justify-between">
+              <Sidebar />
+              <div className="w-full h-full">
+                {children}
+              </div>
             </main>
+            <Toaster position="top-center" richColors />
           </ThemeProvider>
         </body>
       </html>

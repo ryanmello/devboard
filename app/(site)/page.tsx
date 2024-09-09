@@ -3,7 +3,7 @@ import { UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div>
       Hello World
       <Button>HI!</Button>
       <UserButton />
