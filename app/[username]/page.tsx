@@ -1,11 +1,21 @@
-import React from 'react'
+import getUserByUsername from "../actions/getUserByUsername";
 
-const Username = () => {
-  return (
-    <div>
-      Username
-    </div>
-  )
+interface IParams {
+  username: string;
 }
 
-export default Username
+const Username = async ({ params }: { params: IParams }) => {
+  const user = await getUserByUsername(params.username);
+
+//   if (!user?.username) {
+//     return <EmptyState currentUser={currentUser} />;
+//   }
+
+  return (
+    <div>
+      <p>{user?.username}</p>
+    </div>
+  );
+};
+
+export default Username;
