@@ -1,14 +1,17 @@
-import { Bell, CreditCard, Inbox, User } from "lucide-react";
+"use client";
+
+import { Settings, User, Users } from "lucide-react";
 import UserItem from "./UserItem";
 import {
   Command,
   CommandGroup,
   CommandItem,
   CommandList,
-  CommandSeparator,
 } from "@/components/ui/command";
+import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
+  const router = useRouter();
   const menuList = [
     {
       group: "General",
@@ -19,19 +22,14 @@ const Sidebar = () => {
           text: "Profile",
         },
         {
-          link: "/inbox",
-          icon: <Inbox />,
-          text: "Inbox",
+          link: "/community",
+          icon: <Users />,
+          text: "Community",
         },
         {
-          link: "/billing",
-          icon: <CreditCard />,
-          text: "Billing",
-        },
-        {
-          link: "/notifications",
-          icon: <Bell />,
-          text: "Notifications",
+          link: "/settings",
+          icon: <Settings />,
+          text: "Settings",
         },
       ],
     },
@@ -46,17 +44,19 @@ const Sidebar = () => {
             {menuList.map((menu: any, key: number) => (
               <CommandGroup key={key}>
                 {menu.items.map((option: any, optionKey: number) => (
-                  <CommandItem key={optionKey} className="flex gap-4 cursor-pointer">
-                    {option.icon}
-                    {option.text}
-                  </CommandItem>
+                  <div key={optionKey} onClick={() => router.push(option.link)}>
+                    <CommandItem className="flex gap-4 cursor-pointer">
+                      {option.icon}
+                      {option.text}
+                    </CommandItem>
+                  </div>
                 ))}
               </CommandGroup>
             ))}
           </CommandList>
         </Command>
       </div>
-      <div>Settings</div>
+      {/* <div>Settings</div> */}
     </div>
   );
 };
