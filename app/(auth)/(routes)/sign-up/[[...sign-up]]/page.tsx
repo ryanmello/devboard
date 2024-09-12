@@ -11,6 +11,7 @@ export default function Page() {
             },
           },
         }}
+        fallbackRedirectUrl="/settings"
       />
       <div className="w-[400px] bg-white h-12 flex justify-center items-center mt-4 rounded-md">
         <div className="cursor-default text-black text-sm">

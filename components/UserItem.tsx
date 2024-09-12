@@ -1,12 +1,11 @@
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { auth } from "@clerk/nextjs/server";
+import UserFooter from "./UserFooter";
 
 const UserItem = async () => {
   const { userId } = auth();
   const currentUser = await getCurrentUser({ clerkId: userId });
-
-  console.log(currentUser);
 
   if (currentUser) {
     return (
@@ -21,6 +20,8 @@ const UserItem = async () => {
         </div>
       </div>
     );
+  } else {
+    return <UserFooter />;
   }
 };
 
