@@ -19,7 +19,7 @@ const Sidebar = async () => {
       group: "General",
       items: [
         {
-          link: "/",
+          link: `/${currentUser?.username}`,
           icon: <User />,
           text: "Profile",
         },
