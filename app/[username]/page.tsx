@@ -1,4 +1,5 @@
 import getUserByUsername from "../actions/getUserByUsername";
+import Profile from "./components/Profile";
 
 interface IParams {
   username: string;
@@ -6,15 +7,9 @@ interface IParams {
 
 const Username = async ({ params }: { params: IParams }) => {
   const user = await getUserByUsername(params.username);
-
-//   if (!user?.username) {
-//     return <EmptyState currentUser={currentUser} />;
-//   }
-
+  
   return (
-    <div>
-      <p>{user?.username}</p>
-    </div>
+    <Profile user={user} />
   );
 };
 

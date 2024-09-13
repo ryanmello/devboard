@@ -1,4 +1,4 @@
-import { Settings, User, Users } from "lucide-react";
+import { ContactRound, Home, Settings, User, Users } from "lucide-react";
 import UserItem from "./UserItem";
 import { Command, CommandGroup, CommandList } from "@/components/ui/command";
 import { auth } from "@clerk/nextjs/server";
@@ -17,8 +17,13 @@ const Sidebar = async () => {
       group: "General",
       items: [
         {
+          link: "/",
+          icon: <Home />,
+          text: "Home",
+        },
+        {
           link: `/${currentUser?.username}`,
-          icon: <User />,
+          icon: <ContactRound />,
           text: "Profile",
         },
         {
