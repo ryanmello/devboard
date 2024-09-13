@@ -1,18 +1,16 @@
 import { Settings, User, Users } from "lucide-react";
 import UserItem from "./UserItem";
-import {
-  Command,
-  CommandGroup,
-  CommandList,
-} from "@/components/ui/command";
+import { Command, CommandGroup, CommandList } from "@/components/ui/command";
 import { auth } from "@clerk/nextjs/server";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import SidebarItem from "./SidebarItem";
+import Image from "next/image";
+import Logo from "@/public/white.png";
 
 const Sidebar = async () => {
   const { userId } = auth();
 
-  const currentUser = await getCurrentUser({clerkId: userId})
+  const currentUser = await getCurrentUser({ clerkId: userId });
 
   const menuList = [
     {
@@ -39,7 +37,10 @@ const Sidebar = async () => {
 
   return (
     <div className="flex flex-col gap-4 w-[300px] min-w-[300px] border-r min-h-screen p-4">
-      <UserItem />
+      <div className="flex items-center gap-2">
+        <Image src={Logo} alt="" width="20" height="20" />
+        <h1 className="font-bold text-lg">Devboard</h1>
+      </div>
       <div className="grow">
         <Command>
           <CommandList>
@@ -53,6 +54,7 @@ const Sidebar = async () => {
           </CommandList>
         </Command>
       </div>
+      <UserItem />
     </div>
   );
 };
