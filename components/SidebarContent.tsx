@@ -45,7 +45,7 @@ const SidebarContent = ({ currentUser }: { currentUser: FullUser | null }) => {
     <div
       className={cn(
         "flex flex-col gap-4 w-[260px] min-w-[260px] border-r min-h-screen p-4",
-        isCollapsed && "w-[74px] min-w-[74px]"
+        isCollapsed && "w-[73px] min-w-[73px]"
       )}
     >
       <div className="flex items-center justify-between">
