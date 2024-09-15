@@ -49,15 +49,11 @@ const SidebarContent = ({ currentUser }: { currentUser: FullUser | null }) => {
       )}
     >
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 px-2">
-          <Image
-            src={Logo}
-            alt=""
-            width="24"
-            height="24"
-            className="cursor-pointer"
-            onClick={() => setIsCollapsed(!isCollapsed)}
-          />
+        <div
+          className="flex items-center gap-2 px-2 cursor-pointer"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          <Image src={Logo} alt="DVB" width="24" height="24" />
           {!isCollapsed && <h1 className="font-bold">Devboard</h1>}
         </div>
       </div>
