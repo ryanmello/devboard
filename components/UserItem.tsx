@@ -1,8 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import UserFooter from "./UserFooter";
 import { FullUser } from "@/types";
-import Image from "next/image";
-import Background from "@/public/whitebg.jpg";
 import { cn } from "@/lib/utils";
 
 const UserItem = ({
@@ -20,11 +17,7 @@ const UserItem = ({
           !isCollapsed && "border"
         )}
       >
-        <Image
-          src={Background}
-          alt=""
-          className="h-6 w-6 rounded-full object-cover"
-        />
+        <div className="flex items-center justify-center w-6 h-6 bg-primary-foreground rounded-md border" />
         {!isCollapsed && (
           <div className="grow">
             <p className="font-bold">{currentUser.firstName}</p>
