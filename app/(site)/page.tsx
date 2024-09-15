@@ -1,7 +1,9 @@
-"use client"
+"use client";
 
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Logo from "@/public/white.png";
 
 export default function Home() {
   const router = useRouter();
@@ -12,10 +14,14 @@ export default function Home() {
         <div className="container mx-auto px-6 sm:px-10 xl:px-12 mt-10">
           <div className="flex flex-col lg:flex-row items-center">
             <div className="text-center lg:text-left w-full lg:w-1/2">
-              <h1 className="text-white text-5xl font-extrabold">
+              <div className="flex items-center gap-4 mb-4">
+                <Image src={Logo} alt="" height={70} width={70} />
+                <h1 className="text-7xl font-extrabold">Devboard</h1>
+              </div>
+              <h2 className="text-5xl font-extrabold">
                 The better <span className="text-indigo-500">portfolio</span>{" "}
                 for Software Engineers.
-              </h1>
+              </h2>
               <p className="mt-4 text-neutral-300">
                 Display your skills, experience, and activity in one
                 customizable profile. Share your profile with recruiters to get
@@ -23,7 +29,10 @@ export default function Home() {
                 activity.
               </p>
               <div className="w-full flex justify-center lg:justify-start">
-                <button onClick={() => router.push("/sign-up")} className="flex items-center text-white mt-6 px-6 py-3 rounded-2xl bg-indigo-500 hover:cursor-pointer hover:transition-all duration-300">
+                <button
+                  onClick={() => router.push("/sign-up")}
+                  className="flex items-center mt-6 px-6 py-3 rounded-2xl bg-indigo-500 hover:cursor-pointer hover:transition-all duration-300"
+                >
                   <p className="font-medium mr-2">Create Your Profile</p>
                   <ArrowRight size={26} />
                 </button>

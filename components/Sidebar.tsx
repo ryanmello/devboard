@@ -41,8 +41,8 @@ const Sidebar = async () => {
   ];
 
   return (
-    <div className="flex flex-col gap-4 w-[300px] min-w-[300px] border-r min-h-screen p-4">
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-4 w-[260px] min-w-[260px] border-r min-h-screen p-4">
+      <div className="flex items-center gap-2 px-2">
         <Image src={Logo} alt="" width="20" height="20" />
         <h1 className="font-bold text-lg">Devboard</h1>
       </div>
