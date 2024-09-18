@@ -75,24 +75,31 @@ const Settings = ({ currentUser }: { currentUser: FullUser }) => {
   return (
     <>
       <div className="flex justify-center px-8 gap-8 mt-4">
-        <div className="w-1/5">
+        <div className="w-[300px]">
           <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
           {currentUser.image ? (
-            <Image
-              src={currentUser.image}
-              alt="image"
-              width={100}
-              height={100}
-            />
+            <Image src={currentUser.image} alt="image" />
           ) : (
-            <div className="flex items-center justify-center w-[300px] h-[300px] bg-primary-foreground rounded-3xl border cursor-pointer">
-              <CameraOff size={40} />
-            </div>
+            <>
+              <div className="absolute flex items-center justify-center w-[300px] h-[300px] bg-primary-foreground rounded-3xl border cursor-pointer"></div>
+              <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  console.log("Files: ", res);
+                }}
+                onUploadError={(error: Error) => {
+                  alert(`ERROR! ${error.message}`);
+                }}
+                className="h-[300px] relative border rounded-3xl"
+              />
+            </>
           )}
-          <p className="text-3xl font-semibold mt-4">Ryan Mello</p>
-          <p className="text-lg font-semibold">@{currentUser.username}</p>
+          <p className="relative text-3xl font-semibold mt-4">Ryan Mello</p>
+          <p className="relative text-lg font-semibold">
+            @{currentUser.username}
+          </p>
         </div>
-        <div className="w-1/3 mt-10">
+        <div className="w-[500px] mt-10">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
               <div className="flex gap-2">
@@ -139,7 +146,7 @@ const Settings = ({ currentUser }: { currentUser: FullUser }) => {
               <div>
                 <FormLabel>Resume</FormLabel>
                 <UploadDropzone
-                  endpoint="imageUploader"
+                  endpoint="resume"
                   appearance={{
                     button: "text-sm",
                     container: "w-full flex-row rounded-md p-4",

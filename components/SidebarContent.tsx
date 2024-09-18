@@ -21,21 +21,25 @@ const SidebarContent = ({ currentUser }: { currentUser: FullUser | null }) => {
           link: "/",
           icon: <Home />,
           text: "Home",
-        },
-        {
-          link: `/${currentUser?.username}`,
-          icon: <ContactRound />,
-          text: "Profile",
+          hidden: false,
         },
         {
           link: "/community",
           icon: <Users />,
           text: "Community",
+          hidden: false,
+        },
+        {
+          link: `/${currentUser?.username}`,
+          icon: <ContactRound />,
+          text: "Profile",
+          hidden: currentUser == null,
         },
         {
           link: "/settings",
           icon: <Settings />,
           text: "Settings",
+          hidden: currentUser == null,
         },
       ],
     },
@@ -62,13 +66,15 @@ const SidebarContent = ({ currentUser }: { currentUser: FullUser | null }) => {
           <CommandList>
             {menuList.map((menu: any, key: number) => (
               <CommandGroup key={key}>
-                {menu.items.map((option: any, optionKey: number) => (
-                  <SidebarItem
-                    key={optionKey}
-                    option={option}
-                    isCollapsed={isCollapsed}
-                  />
-                ))}
+                {menu.items
+                  .filter((option: any) => !option.hidden)
+                  .map((option: any, optionKey: number) => (
+                    <SidebarItem
+                      key={optionKey}
+                      option={option}
+                      isCollapsed={isCollapsed}
+                    />
+                  ))}
               </CommandGroup>
             ))}
           </CommandList>
