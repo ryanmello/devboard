@@ -14,11 +14,11 @@ export default function Home() {
         <div className="container mx-auto px-6 sm:px-10 xl:px-12 mt-10">
           <div className="flex flex-col lg:flex-row items-center">
             <div className="text-center lg:text-left w-full lg:w-1/2">
-              <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center gap-4 mb-8">
                 <Image src={Logo} alt="" height={70} width={70} />
                 <h1 className="text-7xl font-extrabold">Devboard</h1>
               </div>
-              <h2 className="text-5xl font-extrabold">
+              <h2 className="text-3xl font-extrabold">
                 The better <span className="text-indigo-500">portfolio</span>{" "}
                 for Software Engineers.
               </h2>
