@@ -24,3 +24,10 @@ export type FullUser = {
   education: Education[];
   experience: Experience[];
 };
+
+export type SettingsVariant =
+  | "Profile"
+  | "Skills"
+  | "Education"
+  | "Experience"
+  | "Projects";
