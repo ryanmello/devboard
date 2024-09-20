@@ -34,7 +34,7 @@ const UserItem = ({
       </div>
     );
   } else {
-    return <UserFooter />;
+    return <UserFooter isCollapsed={isCollapsed} />;
   }
 };
 
