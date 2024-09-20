@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { CameraOff, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import { FullUser } from "@/types";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,6 +32,7 @@ const formSchema = z.object({
 
 const Settings = ({ currentUser }: { currentUser: FullUser }) => {
   const [image, setImage] = useState(currentUser.image);
+  const [displayImageUpload, setDisplayImageUpload] = useState(!currentUser.image);
   const [resume, setResume] = useState(currentUser.resume);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -57,10 +58,12 @@ const Settings = ({ currentUser }: { currentUser: FullUser }) => {
         leetCodeUsername,
         linkedInUsername,
       } = values;
+
       await axios.post("/api/user", {
         firstName,
         lastName,
         headline,
+        image,
         resume,
         gitHubUsername,
         leetCodeUsername,
@@ -77,18 +80,27 @@ const Settings = ({ currentUser }: { currentUser: FullUser }) => {
       <div className="flex justify-center px-8 gap-8 mt-4">
         <div className="w-[300px]">
           <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
-          {currentUser.image ? (
-            <Image src={currentUser.image} alt="image" />
+          {image && !displayImageUpload ? (
+            <Image
+              src={image}
+              alt="image"
+              width={300}
+              height={300}
+              className="rounded-3xl border w-[300px] h-[300px] object-cover cursor-pointer"
+              onClick={() => setDisplayImageUpload(true)}
+            />
           ) : (
             <>
               <div className="absolute flex items-center justify-center w-[300px] h-[300px] bg-primary-foreground rounded-3xl border cursor-pointer"></div>
               <UploadButton
                 endpoint="imageUploader"
                 onClientUploadComplete={(res) => {
-                  console.log("Files: ", res);
+                  setImage(res[0].url);
+                  setDisplayImageUpload(false);
+                  toast.success("Upload Completed");
                 }}
                 onUploadError={(error: Error) => {
-                  alert(`ERROR! ${error.message}`);
+                  toast.error(`ERROR! ${error.message}`);
                 }}
                 className="h-[300px] relative border rounded-3xl"
               />
@@ -215,7 +227,16 @@ const Settings = ({ currentUser }: { currentUser: FullUser }) => {
                   </FormItem>
                 )}
               />
-              <Button className="w-full" variant="secondary" type="submit">
+              <Button
+                disabled={
+                  !form.formState.isDirty &&
+                  image == currentUser.image &&
+                  resume == currentUser.resume
+                }
+                className="w-full"
+                variant="secondary"
+                type="submit"
+              >
                 Save Changes
               </Button>
             </form>
