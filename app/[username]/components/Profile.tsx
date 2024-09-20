@@ -4,13 +4,12 @@ import { FullUser } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Alt from "@/public/whitebg.jpg";
-import {
-  Code,
-  FileCode,
-  Github,
-  Linkedin,
-} from "lucide-react";
+import { Code, FileCode, Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BsLinkedin } from "react-icons/bs";
+import { SiLeetcode } from "react-icons/si";
+import { BsGithub } from "react-icons/bs";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 const Profile = ({ user }: { user: FullUser | null }) => {
   const router = useRouter();
@@ -34,37 +33,34 @@ const Profile = ({ user }: { user: FullUser | null }) => {
               />
             </div>
             <div>
-              <p className="text-3xl font-extrabold pt-4 text-white">
+              <p className="text-3xl font-semibold pt-4">
                 {user.firstName} {user.lastName}
               </p>
-              <p className="text-2xl text-white">@{user.username}</p>
-              <p className="mt-1 text-md text-neutral-300 leading-6">
-                {user.headline}
-              </p>
+              <p className="text-xl font-light">@{user.username}</p>
+              <p className="my-4 text-md leading-6">{user.headline}</p>
 
               {/* Edit Profile */}
-
               <div className="flex">
                 <Button
                   onClick={() => router.push("/settings")}
                   variant="secondary"
-                  className="w-full mt-2"
+                  className="w-full"
                 >
                   Edit Profile
                 </Button>
               </div>
 
               {/* Connected Accounts -- LinkedIn, GitHub, LeetCode */}
-              <div className="flex text-neutral-300 mt-3">
+              <div className="flex mt-4">
                 {user.linkedInUsername && (
                   <a
-                    href={user.linkedInUsername}
+                    href={`https://www.linkedin.com/in/${user.linkedInUsername}/`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Linkedin
+                    <BsLinkedin
                       size={30}
-                      className="cursor-pointer hover:text-white mr-[10px]"
+                      className="cursor-pointer mr-[10px]"
                     />
                   </a>
                 )}
@@ -74,10 +70,7 @@ const Profile = ({ user }: { user: FullUser | null }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Github
-                      size={30}
-                      className="cursor-pointer hover:text-white mr-2"
-                    />
+                    <BsGithub size={30} className="cursor-pointer mr-2" />
                   </a>
                 )}
                 {user.leetCodeUsername && (
@@ -86,10 +79,7 @@ const Profile = ({ user }: { user: FullUser | null }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Code
-                      size={30}
-                      className="cursor-pointer hover:text-white mr-1"
-                    />
+                    <SiLeetcode size={30} className="cursor-pointer mr-1" />
                   </a>
                 )}
                 {user.resume && (
@@ -98,9 +88,9 @@ const Profile = ({ user }: { user: FullUser | null }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <FileCode
+                    <IoDocumentTextOutline
                       size={30}
-                      className="cursor-pointer hover:text-white"
+                      className="cursor-pointer"
                     />
                   </a>
                 )}
