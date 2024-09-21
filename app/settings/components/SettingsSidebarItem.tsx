@@ -21,11 +21,11 @@ const SettingsSidebarItem: React.FC<SettingsTabProps> = ({
     <li onClick={() => setVariant(routeVariant)}>
       <div
         className={cn(
-          "flex items-center mb-1 p-2 rounded-lg hover:bg-neutral-800 text-neutral-300 hover:text-white cursor-pointer",
-          variant === routeVariant && "text-white bg-neutral-800"
+          "relative flex select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none cursor-pointer gap-4 hover:bg-primary-foreground",
+          variant === routeVariant && "bg-primary-foreground"
         )}
       >
-        <Icon className="h-6 w-6 mr-2" />
+        <Icon className="h-6 w-6" />
         <span>{label}</span>
       </div>
     </li>

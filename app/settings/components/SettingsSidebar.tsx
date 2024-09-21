@@ -1,5 +1,5 @@
 import { SettingsVariant } from "@/types";
-import { PersonStanding } from "lucide-react";
+import { BookText, BriefcaseBusiness, Code, ContactRound, FileCode2, FolderGit2, PersonStanding } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import SettingsSidebarItem from "./SettingsSidebarItem";
 
@@ -16,32 +16,33 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({
     {
       label: "Profile" as string,
       routeVariant: "Profile" as SetStateAction<SettingsVariant>,
-      icon: PersonStanding,
+      icon: ContactRound,
     },
     {
       label: "Skills" as string,
       routeVariant: "Skills" as SetStateAction<SettingsVariant>,
-      icon: PersonStanding,
+      icon: FileCode2,
     },
     {
       label: "Education" as string,
       routeVariant: "Education" as SetStateAction<SettingsVariant>,
-      icon: PersonStanding,
+      icon: BookText,
     },
     {
       label: "Experience" as string,
       routeVariant: "Experience" as SetStateAction<SettingsVariant>,
-      icon: PersonStanding,
+      icon: BriefcaseBusiness,
     },
     {
       label: "Projects" as string,
       routeVariant: "Projects" as SetStateAction<SettingsVariant>,
-      icon: PersonStanding,
+      icon: FolderGit2,
     },
   ];
 
   return (
     <div className="border-r p-4 fixed h-full w-64">
+        <p className="font-bold mb-4">Settings</p>
       <nav className="flex flex-col justify-between">
         <ul className="flex flex-col">
           {settingsRoutes.map((route, index) => (
