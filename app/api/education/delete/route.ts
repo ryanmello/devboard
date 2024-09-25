@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { projectId } = body;
+    const { educationId } = body;
 
     const { userId } = auth();
     const currentUser = (await getCurrentUser({ clerkId: userId })) as FullUser;
@@ -16,16 +16,16 @@ export async function POST(request: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const project = await db.project.delete({
+    const education = await db.education.delete({
       where: {
-        id: projectId,
+        id: educationId,
         userId: currentUser.id,
       },
     });
 
-    return NextResponse.json(project);
+    return NextResponse.json(education);
   } catch (error) {
-    console.log("/api/project/delete", error);
+    console.log("/api/education/delete", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

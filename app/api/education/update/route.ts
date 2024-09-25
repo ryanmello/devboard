@@ -4,11 +4,8 @@ import { FullUser } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const body = await request.json();
-    const { projectId } = body;
-
     const { userId } = auth();
     const currentUser = (await getCurrentUser({ clerkId: userId })) as FullUser;
 
@@ -16,16 +13,37 @@ export async function POST(request: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const project = await db.project.delete({
+    const body = await req.json();
+    const {
+      educationId,
+      universityName,
+      startYear,
+      graduationYear,
+      major,
+      minor,
+      gpa,
+      image,
+    } = body;
+
+    const education = await db.education.update({
       where: {
-        id: projectId,
+        id: educationId,
         userId: currentUser.id,
+      },
+      data: {
+        universityName,
+        startYear,
+        graduationYear,
+        major,
+        minor,
+        gpa,
+        image,
       },
     });
 
-    return NextResponse.json(project);
+    return NextResponse.json(education);
   } catch (error) {
-    console.log("/api/project/delete", error);
+    console.log("/api/education/update", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
