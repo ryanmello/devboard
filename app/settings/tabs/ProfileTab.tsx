@@ -79,7 +79,7 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
   return (
     <div className="flex justify-center px-8 gap-8">
       <div className="w-[300px]">
-        <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
+        <h2 className="text-xl font-bold my-4">Edit Profile</h2>
         {image && !displayImageUpload ? (
           <Image
             src={image}
@@ -106,7 +106,7 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
             />
           </>
         )}
-        <p className="relative text-3xl font-semibold mt-4">Ryan Mello</p>
+        <p className="relative text-2xl font-semibold mt-4">Ryan Mello</p>
         <p className="relative text-lg font-semibold">
           @{currentUser.username}
         </p>
