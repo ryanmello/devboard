@@ -1,5 +1,14 @@
 import { SettingsVariant } from "@/types";
-import { BookText, BriefcaseBusiness, Code, ContactRound, FileCode2, FolderGit2, PersonStanding } from "lucide-react";
+import {
+  BookText,
+  BriefcaseBusiness,
+  Code,
+  ContactRound,
+  FileCode2,
+  FolderGit2,
+  PersonStanding,
+  Settings,
+} from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import SettingsSidebarItem from "./SettingsSidebarItem";
 
@@ -42,7 +51,10 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({
 
   return (
     <div className="border-r p-4 fixed h-full w-64">
-        <p className="font-bold mb-4">Settings</p>
+      <div className="flex px-2 gap-2 mb-4">
+        {/* <Settings className="h-6 w-6"/> */}
+        <p className="font-bold">Settings</p>
+      </div>
       <nav className="flex flex-col justify-between">
         <ul className="flex flex-col">
           {settingsRoutes.map((route, index) => (
