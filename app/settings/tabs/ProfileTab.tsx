@@ -20,6 +20,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
 import { UploadButton, UploadDropzone } from "@/utils/uploadthing";
+
 const formSchema = z.object({
   firstName: z.string().min(2).max(50),
   lastName: z.string().min(2).max(50),
