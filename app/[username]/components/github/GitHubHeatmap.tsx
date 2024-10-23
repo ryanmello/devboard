@@ -55,7 +55,7 @@ const GitHubHeatmap = ({
   }
 
   return (
-    <div className="h-auto rounded-xl mb-4">
+    <div className="h-auto rounded-xl mb-4 bg-secondary/80 px-4 py-2">
       <div className="flex justify-between">
         <h2 className="font-bold pb-2">GitHub Heatmap</h2>
         <h2 className="font-medium pb-2 mr-1">
