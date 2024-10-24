@@ -9,6 +9,8 @@ import { BsLinkedin } from "react-icons/bs";
 import { SiLeetcode } from "react-icons/si";
 import { BsGithub } from "react-icons/bs";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import { FaXTwitter } from "react-icons/fa6";
+import { GrDocumentUser } from "react-icons/gr";
 
 const LeftProfile = ({ user }: { user: FullUser }) => {
   const router = useRouter();
@@ -79,11 +81,27 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
                   <p className="hover:underline">{user.linkedInUsername}</p>
                 </a>
               )}
-              {user.resume && (
-                <a href={user.resume} target="_blank" rel="noopener noreferrer">
-                  <IoDocumentTextOutline size={30} className="cursor-pointer" />
+              {/* {user.resume && (
+                <a
+                  href={user.resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 cursor-pointer mr-3"
+                >
+                  <GrDocumentUser size={14} />
+                  <p className="hover:underline">{user.linkedInUsername}</p>
                 </a>
-              )}
+              )} */}
+
+              {/* <a
+                href={user.username}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 cursor-pointer mr-3"
+              >
+                <FaXTwitter size={14} />
+                <p className="hover:underline">{user.linkedInUsername}</p>
+              </a> */}
             </div>
           </div>
         </div>
