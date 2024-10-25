@@ -6,10 +6,12 @@ interface WeekProps {
 
 const Week: React.FC<WeekProps> = ({ contributionDays }) => {
   return (
-    <Cell
-      contributionCount={contributionDays.contributionCount}
-      date={contributionDays.date}
-    />
+    <div className="flex flex-row gap-1">
+      <Cell
+        contributionCount={contributionDays.contributionCount}
+        date={contributionDays.date}
+      />
+    </div>
   );
 };
 

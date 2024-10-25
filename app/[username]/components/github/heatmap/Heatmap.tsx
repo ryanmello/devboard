@@ -10,7 +10,7 @@ const Heatmap: React.FC<HeatmapProps> = ({ weeks }) => {
   }, [] as Externals.Github.ContributionDay[]);
 
   return (
-    <div className="max-h-[140px] flex flex-col flex-wrap overflow-x-clip">
+    <div className="max-h-[160px] flex flex-col flex-wrap overflow-x-clip">
       {contributionDays.map((contributionDays, index) => (
         <Week key={index} contributionDays={contributionDays} />
       ))}

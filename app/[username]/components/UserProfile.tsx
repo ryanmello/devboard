@@ -41,7 +41,7 @@ const UserProfile = ({ username }: { username: string }) => {
   if (!user) return null;
 
   return (
-    <div className="flex pt-8 px-8">
+    <div className="flex pt-8 px-8 gap-8">
       <LeftProfile user={user} />
       <RightProfile user={user} />
     </div>
