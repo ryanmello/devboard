@@ -18,7 +18,7 @@ const Cell: React.FC<CellProps> = ({ contributionCount, date }) => {
         <TooltipTrigger>
           <div
             className={clsx(
-              "mb-[2px] w-[18px] h-[18px] 2xl:w-[20px] 2xl:h-[20px] rounded-sm flex items-center justify-center",
+              "mb-[2px] w-[14px] h-[14px] xl:w-[16px] xl:h-[16px] 2xl:w-[20px] 2xl:h-[20px] rounded-sm flex items-center justify-center",
               "transition-transform transform duration-200 ease-in-out hover:scale-110",
               contributionCount === 0 && "bg-neutral-700 hover:bg-neutral-600",
               contributionCount >= 1 &&
@@ -35,7 +35,7 @@ const Cell: React.FC<CellProps> = ({ contributionCount, date }) => {
           >
             <div
               className={clsx(
-                "w-[16px] h-[16px] 2xl:w-[18px] 2xl:h-[18px] rounded-sm",
+                "w-[12px] h-[12px] xl:w-[14px] xl:h-[14px] 2xl:w-[18px] 2xl:h-[18px] rounded-sm",
                 "transition-colors duration-200 ease-in-out",
                 contributionCount === 0 && "bg-neutral-600",
                 contributionCount >= 1 &&
