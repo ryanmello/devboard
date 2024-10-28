@@ -1,18 +1,18 @@
-import { getGitHubContributionData } from "@/app/actions/getGitHubContributionData";
+import { getLeetCodeStats } from "@/app/actions/getLeetCodeStats";
 import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
   try {
     const body = await req.json();
-    const { gitHubUsername } = body;
+    const { leetCodeUsername } = body;
 
-    if (!gitHubUsername) {
-      return new NextResponse("Missing gitHubUsername in request body", {
+    if (!leetCodeUsername) {
+      return new NextResponse("Missing leetCodeUsername in request body", {
         status: 400,
       });
     }
 
-    const data = await getGitHubContributionData(gitHubUsername);
+    const data = await getLeetCodeStats(leetCodeUsername);
 
     if (!data) {
       return new NextResponse("Data not found", { status: 404 });

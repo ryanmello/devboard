@@ -31,3 +31,21 @@ export type SettingsVariant =
   | "Education"
   | "Experience"
   | "Projects";
+
+export type LeetCodeStatsResponse = {
+  status: string;
+  message: string;
+  totalSolved?: number;
+  totalQuestions?: number;
+  easySolved?: number;
+  totalEasy?: number;
+  mediumSolved?: number;
+  totalMedium?: number;
+  hardSolved?: number;
+  totalHard?: number;
+  acceptanceRate?: number;
+  ranking?: number;
+  contributionPoints?: number;
+  reputation?: number;
+  submissionCalendar?: Record<string, number>;
+};
