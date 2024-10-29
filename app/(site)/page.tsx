@@ -23,7 +23,7 @@ export default function Home() {
                 The better <span className="text-indigo-500">portfolio</span>{" "}
                 for Software Engineers.
               </h2>
-              <p className="mt-4 text-neutral-300">
+              <p className="mt-4">
                 Display your skills, experience, and activity in one
                 customizable profile. Share your profile with recruiters to get
                 your dream job quicker and connect with friends to see their
