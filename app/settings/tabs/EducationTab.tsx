@@ -1,5 +1,4 @@
 import { FullUser } from '@/types'
-import React from 'react'
 
 const EducationTab = ({ currentUser }: { currentUser: FullUser }) => {
   return (
