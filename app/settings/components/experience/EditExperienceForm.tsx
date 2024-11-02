@@ -235,7 +235,7 @@ const EditExperienceForm = ({ experience, onSuccess }: EditExperienceFormProps) 
         />
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Saving..." : "Save Changes"}
+          {isLoading ? "Saving..." : "Save"}
         </Button>
       </form>
     </Form>

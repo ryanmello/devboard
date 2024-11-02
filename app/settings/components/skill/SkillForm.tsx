@@ -15,8 +15,9 @@ const SkillForm = ({ currentUser }: { currentUser: FullUser }) => {
 
   const handleClick = async () => {
     try {
-      const response = await axios.post("/api/skills", skills);
-      toast.success("Skills updated");
+      //   const response = await axios.post("/api/skills", skills);
+      //   toast.success("Skills updated");
+      console.log(skills);
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
@@ -24,13 +25,13 @@ const SkillForm = ({ currentUser }: { currentUser: FullUser }) => {
   };
 
   return (
-    <div className="flex flex-col items-center pt-4">
+    <div className="flex flex-col items-center justify-center pt-4 w-2/3 mx-auto">
       <Core skills={skills} setSkills={setSkills} />
       <Frontend skills={skills} setSkills={setSkills} />
       <Backend skills={skills} setSkills={setSkills} />
       <Other skills={skills} setSkills={setSkills} />
-      <div className="flex items-start w-1/3 mt-4">
-        <Button onClick={handleClick}>
+      <div className="flex items-start mt-8 w-full">
+        <Button onClick={handleClick} className="w-full" variant="secondary">
           Save
         </Button>
       </div>

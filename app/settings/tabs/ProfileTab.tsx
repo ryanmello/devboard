@@ -281,7 +281,7 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
               variant="secondary"
               type="submit"
             >
-              Save Changes
+              Save
             </Button>
           </form>
         </Form>

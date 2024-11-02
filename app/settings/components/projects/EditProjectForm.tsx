@@ -144,7 +144,7 @@ const EditProjectForm = ({ project, onSuccess }: EditProjectFormProps) => {
         />
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Saving..." : "Save Changes"}
+          {isLoading ? "Saving..." : "Save"}
         </Button>
       </form>
     </Form>
