@@ -7,7 +7,11 @@ interface IParams {
 const Username = async ({ params }: { params: IParams }) => {
   const username = params.username;
 
-  return <UserProfile username={username} />;
+  return (
+    <div className="flex justify-center">
+      <UserProfile username={username} />
+    </div>
+  );
 };
 
 export default Username;
