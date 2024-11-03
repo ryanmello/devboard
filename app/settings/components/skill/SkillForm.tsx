@@ -25,7 +25,7 @@ const SkillForm = ({ currentUser }: { currentUser: FullUser }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-2/3 mx-auto">
+    <div className="flex flex-col items-center justify-center w-2/3 mx-auto space-y-4">
       <Core skills={skills} setSkills={setSkills} />
       <Frontend skills={skills} setSkills={setSkills} />
       <Backend skills={skills} setSkills={setSkills} />

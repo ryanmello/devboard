@@ -11,7 +11,7 @@ const Core = ({ skills, setSkills }: CoreProps) => {
   const coreSkills = useCoreLanguages();
 
   return (
-    <div className="w-full mt-4">
+    <div className="w-full">
       <h2 className="font-semibold text-xl flex items-start mb-1">Core Languages</h2>
       <div className="flex flex-wrap border border-secondary/80 rounded-xl p-2">
         {coreSkills.map((skill) => (
