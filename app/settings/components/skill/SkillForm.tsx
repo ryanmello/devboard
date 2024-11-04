@@ -15,9 +15,8 @@ const SkillForm = ({ currentUser }: { currentUser: FullUser }) => {
 
   const handleClick = async () => {
     try {
-      //   const response = await axios.post("/api/skills", skills);
-      //   toast.success("Skills updated");
-      console.log(skills);
+      await axios.post("/api/user/skills", { skills });
+      toast.success("Skills updated successfully");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
