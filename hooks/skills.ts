@@ -1,3 +1,15 @@
+export const getSkillImage = (skillName: string) => {
+  const allSkills = [
+    ...useCoreLanguages(),
+    ...useFrontendSkills(),
+    ...useBackendSkills(),
+    ...useOtherSkills(),
+  ];
+
+  const skill = allSkills.find((s) => s.name === skillName);
+  return skill?.image || "";
+};
+
 export const useCoreLanguages = () => {
   const coreLanguages = [
     {

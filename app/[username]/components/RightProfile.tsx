@@ -15,10 +15,42 @@ import { Button } from "@/components/ui/button";
 import { BsBriefcase } from "react-icons/bs";
 import { PiGraduationCap } from "react-icons/pi";
 import { GoProject } from "react-icons/go";
+import SkillItem from "@/app/settings/components/skill/SkillItem";
+import Image from "next/image";
+import {
+  useCoreLanguages,
+  useFrontendSkills,
+  useBackendSkills,
+  useOtherSkills,
+  getSkillImage,
+} from "@/hooks/skills";
 
 const RightProfile = ({ user }: { user: FullUser }) => {
   return (
     <div className="w-3/4 2xl:w-4/5">
+      {/* SKILLS */}
+      {user.skills.length > 0 && (
+        <div className="bg-secondary/80 rounded-xl p-4 mb-4">
+          <div className="flex flex-wrap gap-2">
+            {user.skills.map((skill) => {
+              const image = getSkillImage(skill);
+
+              return (
+                <div key={skill}>
+                  <Image
+                    src={image}
+                    alt={skill}
+                    height={44}
+                    width={44}
+                    className="rounded-md"
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* LEETCODE STATS */}
       {user.leetCodeUsername && (
         <LeetCode leetCodeUsername={user.leetCodeUsername} />
@@ -118,9 +150,9 @@ const RightProfile = ({ user }: { user: FullUser }) => {
                       {project.name}
                     </h3>
                     <div className="flex gap-2">
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
+                      <Button
+                        variant="ghost"
+                        size="icon"
                         className="h-8 w-8 bg-transparent hover:bg-primary/10"
                         asChild
                       >
@@ -133,8 +165,8 @@ const RightProfile = ({ user }: { user: FullUser }) => {
                         </a>
                       </Button>
                       {project.url && (
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           size="icon"
                           className="h-8 w-8 bg-transparent hover:bg-primary/10"
                           asChild
