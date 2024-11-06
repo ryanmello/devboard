@@ -49,11 +49,10 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({
   return (
     <div className="border-r p-4 fixed h-full w-64">
       <div className="flex px-2 gap-2 mb-4">
-        {/* <Settings className="h-6 w-6"/> */}
         <p className="font-bold">Settings</p>
       </div>
       <nav className="flex flex-col justify-between">
-        <ul className="flex flex-col">
+        <ul className="flex flex-col space-y-1">
           {settingsRoutes.map((route, index) => (
             <SettingsSidebarItem
               key={index}
