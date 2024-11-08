@@ -24,6 +24,12 @@ import {
   useOtherSkills,
   getSkillImage,
 } from "@/hooks/skills";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const RightProfile = ({ user }: { user: FullUser }) => {
   return (
@@ -31,22 +37,31 @@ const RightProfile = ({ user }: { user: FullUser }) => {
       {/* SKILLS */}
       {user.skills.length > 0 && (
         <div className="bg-secondary/80 rounded-xl p-4 mb-4">
-          <div className="flex flex-wrap gap-2">
-            {user.skills.map((skill) => {
-              const image = getSkillImage(skill);
+          <div className="flex flex-wrap">
+            <TooltipProvider>
+              {user.skills.map((skill) => {
+                const image = getSkillImage(skill);
 
-              return (
-                <div key={skill}>
-                  <Image
-                    src={image}
-                    alt={skill}
-                    height={44}
-                    width={44}
-                    className="rounded-md"
-                  />
-                </div>
-              );
-            })}
+                return (
+                  <Tooltip key={skill}>
+                    <TooltipTrigger>
+                      <div>
+                        <Image
+                          src={image}
+                          alt={skill}
+                          height={50}
+                          width={50}
+                          className="rounded-md p-1"
+                        />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{skill}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
+            </TooltipProvider>
           </div>
         </div>
       )}
