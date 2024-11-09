@@ -12,8 +12,8 @@ const Backend = ({ skills, setSkills }: BackendProps) => {
 
   return (
     <div className="w-full mt-4">
-      <h2 className="font-bold text-xl flex items-start">Backend</h2>
-      <div className="flex flex-wrap bg-secondary/80 rounded-xl p-2">
+      <h2 className="font-semibold text-xl flex items-start mb-1">Backend</h2>
+      <div className="flex flex-wrap border border-secondary/80 rounded-xl p-2">
         {backendSkills.map((skill) => (
           <div key={skill.name} className="flex items-center">
             <SkillItem

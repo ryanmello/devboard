@@ -12,8 +12,8 @@ const Core = ({ skills, setSkills }: CoreProps) => {
 
   return (
     <div className="w-full mt-4">
-      <h2 className="font-bold text-xl flex items-start">Core Languages</h2>
-      <div className="flex flex-wrap bg-secondary/80 rounded-xl p-2">
+      <h2 className="font-semibold text-xl flex items-start mb-1">Core Languages</h2>
+      <div className="flex flex-wrap border border-secondary/80 rounded-xl p-2">
         {coreSkills.map((skill) => (
           <div key={skill.name} className="flex items-center">
             <SkillItem
