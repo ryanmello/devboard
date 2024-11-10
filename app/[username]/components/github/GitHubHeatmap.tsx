@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Heatmap from "./heatmap/Heatmap";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const GitHubHeatmap = ({
   gitHubUsername,
@@ -37,7 +38,9 @@ const GitHubHeatmap = ({
   }, [gitHubUsername]);
 
   if (loading) {
-    return null;
+    return (
+      <Skeleton className="h-[200px] w-full rounded-xl mb-4" />
+    );
   }
 
   const {

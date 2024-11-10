@@ -7,6 +7,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2"; // might be throwing vulnerability
 import LeetCodeProgressBars from "./LeetCodeProgressBars";
 import LeetCodeActivity from "./LeetCodeActivity";
+import { Skeleton } from "@/components/ui/skeleton";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -43,7 +44,12 @@ const LeetCode = ({
   }, [leetCodeUsername]);
 
   if (loading) {
-    return null;
+    return (
+      <div className="flex flex-col md:flex-row mb-4 gap-4">
+        <Skeleton className="h-[260px] 2xl:h-[300px] w-full md:w-1/2" />
+        <Skeleton className="h-[260px] 2xl:h-[300px] w-full md:w-1/2" />
+      </div>
+    );
   }
 
   if (!leetCodeData) return null;
