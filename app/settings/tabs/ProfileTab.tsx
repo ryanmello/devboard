@@ -30,7 +30,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { UserButton } from "@clerk/nextjs";
 
 const formSchema = z.object({
   firstName: z.string().min(2).max(50).optional(),
@@ -111,7 +110,7 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
                 height={300}
                 className="rounded-3xl border w-[300px] h-[300px] object-cover"
               />
-              <div 
+              <div
                 onClick={() => setDisplayImageUpload(true)}
                 className="absolute bottom-3 right-3 p-2 rounded-full bg-background/80 cursor-pointer hover:bg-background transition"
               >
@@ -280,16 +279,7 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
                 </FormItem>
               )}
             />
-            <Button
-              disabled={
-                !form.formState.isDirty &&
-                image == currentUser.image &&
-                resume == currentUser.resume
-              }
-              className="w-full"
-              variant="secondary"
-              type="submit"
-            >
+            <Button className="w-full" variant="secondary" type="submit">
               Save
             </Button>
           </form>
