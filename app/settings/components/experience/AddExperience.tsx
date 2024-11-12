@@ -17,6 +17,25 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useEffect } from "react";
+
+const experienceTypes = [
+  "Full-Time",
+  "Part-Time",
+  "Self-Employed",
+  "Freelance",
+  "Contract",
+  "Internship",
+  "Apprenticeship",
+  "Seasonal"
+] as const;
 
 const formSchema = z.object({
   company: z.string().min(1).max(50),
@@ -27,7 +46,9 @@ const formSchema = z.object({
   endYear: z.string().optional(),
   isCurrent: z.boolean().default(false),
   location: z.string().min(1).max(50),
-  type: z.string().min(1).max(50),
+  type: z.enum(experienceTypes, {
+    required_error: "Please select an employment type",
+  }),
   description: z.string().max(500).optional(),
 });
 
@@ -45,10 +66,18 @@ const AddExperience = () => {
       endYear: "",
       isCurrent: false,
       location: "",
-      type: "",
       description: "",
     },
   });
+
+  const isCurrent = form.watch("isCurrent");
+
+  useEffect(() => {
+    if (isCurrent) {
+      form.setValue("endMonth", "");
+      form.setValue("endYear", "");
+    }
+  }, [isCurrent, form]);
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     axios
@@ -199,9 +228,20 @@ const AddExperience = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Type</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
+                <Select onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {experienceTypes.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
