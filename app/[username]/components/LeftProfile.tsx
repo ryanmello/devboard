@@ -86,7 +86,7 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
             </div>
           </div>
 
-          <h2 className="mt-4 mb-1 text-sm font-medium text-zinc-300">Interests</h2>
+          {/* <h2 className="mt-4 mb-1 text-sm font-medium text-zinc-300">Interests</h2>
           <div className="flex flex-wrap gap-1.5">
             <Badge variant="secondary">Machine Learning</Badge>
             <Badge variant="secondary">Artificial Intelligence</Badge>
@@ -95,7 +95,7 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
             <Badge variant="secondary">Cloud Engineering</Badge>
             <Badge variant="secondary">Robotics</Badge>
             <Badge variant="secondary">Math</Badge>
-          </div>
+          </div> */}
         </div>
       )}
     </div>
