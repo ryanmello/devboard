@@ -3,27 +3,13 @@
 import { FullUser } from "@/types";
 import GitHubHeatmap from "./github/GitHubHeatmap";
 import LeetCode from "./leetcode/LeetCode";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { BriefcaseBusiness, Github, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BsBriefcase } from "react-icons/bs";
 import { PiGraduationCap } from "react-icons/pi";
 import { GoProject } from "react-icons/go";
-import SkillItem from "@/app/settings/components/skill/SkillItem";
 import Image from "next/image";
-import {
-  useCoreLanguages,
-  useFrontendSkills,
-  useBackendSkills,
-  useOtherSkills,
-  getSkillImage,
-} from "@/hooks/skills";
+import { getSkillImage } from "@/hooks/skills";
 import {
   Tooltip,
   TooltipContent,
