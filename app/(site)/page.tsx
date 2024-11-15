@@ -23,18 +23,19 @@ export default function Home() {
                 The better <span className="text-indigo-500">portfolio</span>{" "}
                 for Software Engineers.
               </h2>
-              <p className="mt-4">
-                Display your skills, experience, and activity in one
+              <p className="mt-4 text-sm">
+                Display your projects, experience, and activity in one
                 customizable profile. Share your profile with recruiters to get
                 your dream job quicker and connect with friends to see their
                 activity.
               </p>
               <div className="w-full flex justify-center lg:justify-start">
-                <Button onClick={() => router.push("/sign-up")} className="mt-6 flex items-center gap-4 bg-indigo-500 hover:bg-indigo-600 text-white" size="lg">
+                <Button onClick={() => router.push("/sign-up")} className="mt-6 flex items-center gap-4 bg-indigo-600 hover:bg-indigo-700 text-white" size="lg">
                   <p className="font-medium">Create Your Profile</p>
-                  <ArrowRight size={26} />
+                  <ArrowRight size={20} />
                 </Button>
               </div>
+
             </div>
             <div className="transition-all bg-indigo-500 hidden lg:block h-[350px] w-1/2 rounded-xl p-8 skew-y-6 hover:skew-y-0 ml-16">
               <div className="flex justify-center">
