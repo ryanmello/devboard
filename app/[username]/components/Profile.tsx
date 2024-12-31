@@ -4,7 +4,6 @@ import { FullUser } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Alt from "@/public/whitebg.jpg";
-import { Code, FileCode, Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BsLinkedin } from "react-icons/bs";
 import { SiLeetcode } from "react-icons/si";

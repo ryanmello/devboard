@@ -20,32 +20,34 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
 import { UploadButton, UploadDropzone } from "@/utils/uploadthing";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
-  firstName: z.string().min(2).max(50),
-  lastName: z.string().min(2).max(50),
-  headline: z.string().min(2).max(50),
-  gitHubUsername: z.string().min(2).max(50),
-  leetCodeUsername: z.string().min(2).max(50),
-  linkedInUsername: z.string().min(2).max(50),
+  firstName: z.string().min(2).max(50).optional(),
+  lastName: z.string().min(2).max(50).optional(),
+  headline: z.string().min(2).max(50).optional(),
+  gitHubUsername: z.string().min(2).max(50).optional(),
+  leetCodeUsername: z.string().min(2).max(50).optional(),
+  linkedInUsername: z.string().min(2).max(50).optional(),
 });
 
 const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
-  const [image, setImage] = useState(currentUser.image);
+  const [image, setImage] = useState(currentUser.image || undefined);
   const [displayImageUpload, setDisplayImageUpload] = useState(
     !currentUser.image
   );
-  const [resume, setResume] = useState(currentUser.resume);
+  const [resume, setResume] = useState(currentUser.resume || undefined);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: currentUser.firstName || "",
-      lastName: currentUser.lastName || "",
-      headline: currentUser.headline || "",
-      gitHubUsername: currentUser.gitHubUsername || "",
-      leetCodeUsername: currentUser.leetCodeUsername || "",
-      linkedInUsername: currentUser.linkedInUsername || "",
+      firstName: currentUser.firstName || undefined,
+      lastName: currentUser.lastName || undefined,
+      headline: currentUser.headline || undefined,
+      gitHubUsername: currentUser.gitHubUsername || undefined,
+      leetCodeUsername: currentUser.leetCodeUsername || undefined,
+      linkedInUsername: currentUser.linkedInUsername || undefined,
     },
   });
 
@@ -71,6 +73,7 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
         leetCodeUsername,
         linkedInUsername,
       });
+      router.refresh();
     } catch (error) {
       console.log(error);
       toast.success("Something went wrong.");
