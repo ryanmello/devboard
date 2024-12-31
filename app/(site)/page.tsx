@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Logo from "@/public/white.png";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const router = useRouter();
@@ -29,13 +30,10 @@ export default function Home() {
                 activity.
               </p>
               <div className="w-full flex justify-center lg:justify-start">
-                <button
-                  onClick={() => router.push("/sign-up")}
-                  className="flex items-center mt-6 px-6 py-3 rounded-2xl bg-indigo-500 hover:cursor-pointer hover:transition-all duration-300"
-                >
-                  <p className="font-medium mr-2">Create Your Profile</p>
+                <Button onClick={() => router.push("/sign-up")} className="mt-6 flex items-center gap-4 bg-indigo-500 hover:bg-indigo-600 text-white" size="lg">
+                  <p className="font-medium">Create Your Profile</p>
                   <ArrowRight size={26} />
-                </button>
+                </Button>
               </div>
             </div>
             <div className="transition-all bg-indigo-500 hidden lg:block h-[350px] w-1/2 rounded-xl p-8 skew-y-6 hover:skew-y-0 ml-16">
