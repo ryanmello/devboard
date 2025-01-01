@@ -53,6 +53,12 @@ export async function POST(req: Request) {
   if (eventType == "user.created" || eventType == "user.updated") {
     const { id, email_addresses, first_name, last_name, username } = evt.data;
 
+    if (!username) {
+      return new Response("Username is required", {
+        status: 400,
+      });
+    }
+
     // check if user exists
     const existingUser = await db.user.findUnique({
       where: { clerkId: id as string },
