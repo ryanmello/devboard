@@ -3,7 +3,7 @@
 import { FullUser } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Alt from "@/public/whitebg.jpg";
+import alt from "@/public/alt.jpg";
 import { Button } from "@/components/ui/button";
 import { BsLinkedin } from "react-icons/bs";
 import { SiLeetcode } from "react-icons/si";
@@ -20,7 +20,7 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
           <div className="w-full aspect-square relative">
             <Image
               alt="Profile Image"
-              src={user?.image || Alt}
+              src={user.image || alt}
               width={400}
               height={400}
               className="rounded-3xl overflow-hidden h-full object-cover"
