@@ -8,8 +8,6 @@ import { Button } from "@/components/ui/button";
 import { BsLinkedin } from "react-icons/bs";
 import { SiLeetcode } from "react-icons/si";
 import { BsGithub } from "react-icons/bs";
-import { GrDocumentUser } from "react-icons/gr";
-import { FaXTwitter } from "react-icons/fa6";
 
 const LeftProfile = ({ user }: { user: FullUser }) => {
   const router = useRouter();
