@@ -13,7 +13,7 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
   const router = useRouter();
 
   return (
-    <div className="w-1/5">
+    <div className="">
       {user && (
         <div className="flex flex-col">
           <div className="w-full aspect-square relative">
