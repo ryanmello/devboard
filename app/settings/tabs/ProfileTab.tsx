@@ -21,6 +21,15 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { UploadButton, UploadDropzone } from "@/utils/uploadthing";
 import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const formSchema = z.object({
   firstName: z.string().min(2).max(50).optional(),
@@ -80,6 +89,13 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
     }
   };
 
+  const handleResumeDelete = async (url: string) => {
+    await axios.post("/api/user/resume");
+    await axios.delete("/api/uploadthing", {
+      data: { url },
+    });
+  };
+
   return (
     <div className="flex justify-center px-8 gap-8">
       <div className="w-[300px]">
@@ -110,10 +126,8 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
             />
           </>
         )}
-        <p className="relative text-2xl font-semibold mt-4">Ryan Mello</p>
-        <p className="relative text-lg font-semibold">
-          @{currentUser.username}
-        </p>
+        <p className="relative text-2xl font-semibold pt-4">Ryan Mello</p>
+        <p className="relative text-xl font-light">{currentUser.username}</p>
       </div>
       <div className="w-[500px] mt-10">
         <Form {...form}>
@@ -178,7 +192,7 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
                 className="cursor-pointer mt-0"
               />
               {resume && (
-                <div className="flex justify-between items-center border w-full p-4 rounded-xl mt-2">
+                <div className="flex justify-between items-center border w-full px-3 py-2 rounded-md mt-2">
                   <a
                     className="text-sm hover:underline truncate mr-8"
                     href={resume}
@@ -186,9 +200,33 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
                   >
                     {resume}
                   </a>
-                  <div className="flex items-center space-x-2">
-                    <Trash size={18} className="cursor-pointer" />
-                  </div>
+                  <Dialog>
+                    <DialogTrigger>
+                      <div className="flex items-center space-x-2">
+                        <Trash size={18} className="cursor-pointer" />
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Are you sure?</DialogTitle>
+                        <DialogDescription>
+                          Are you sure you want to remove your resume from your
+                          profile?
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DialogFooter>
+                        <DialogTrigger asChild>
+                          <Button variant="link">Cancel</Button>
+                        </DialogTrigger>
+                        <Button
+                          onClick={() => handleResumeDelete(resume)}
+                          variant="destructive"
+                        >
+                          Delete
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               )}
             </div>
