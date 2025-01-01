@@ -11,6 +11,8 @@ import { BsGithub } from "react-icons/bs";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { FaXTwitter } from "react-icons/fa6";
 import { GrDocumentUser } from "react-icons/gr";
+import { GrDocumentUser } from "react-icons/gr";
+import { FaXTwitter } from "react-icons/fa6";
 
 const LeftProfile = ({ user }: { user: FullUser }) => {
   const router = useRouter();
@@ -89,7 +91,7 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
                   className="flex items-center gap-1.5 cursor-pointer mr-3"
                 >
                   <GrDocumentUser size={14} />
-                  <p className="hover:underline">{user.linkedInUsername}</p>
+                  <p className="hover:underline">{user.username}</p>
                 </a>
               )} */}
 
@@ -100,7 +102,7 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
                 className="flex items-center gap-1.5 cursor-pointer mr-3"
               >
                 <FaXTwitter size={14} />
-                <p className="hover:underline">{user.linkedInUsername}</p>
+                <p className="hover:underline">{user.username}</p>
               </a> */}
             </div>
           </div>
