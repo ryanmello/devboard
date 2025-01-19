@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import getCurrentUser from "../actions/getCurrentUser";
 import Settings from "./components/Settings";
 
-const Index = async () => {
+const Page = async () => {
   const { userId } = auth();
   const currentUser = await getCurrentUser({ clerkId: userId });
 
@@ -11,4 +11,4 @@ const Index = async () => {
   return <Settings currentUser={currentUser} />;
 };
 
-export default Index;
+export default Page;
