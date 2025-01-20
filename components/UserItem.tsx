@@ -14,8 +14,8 @@ const UserItem = ({
     return (
       <div
         className={cn(
-          "flex gap-2 rounded-md px-2 py-1.5",
-          !isCollapsed && "border"
+          "flex justify-center gap-2 rounded-md",
+          !isCollapsed && "border px-2 py-1.5"
         )}
       >
         {currentUser.image ? (
@@ -24,7 +24,7 @@ const UserItem = ({
             alt="image"
             width={100}
             height={100}
-            className={cn("h-8 w-8 object-cover rounded-md border mt-1", isCollapsed && "w-6 h-6")}
+            className={cn("h-8 w-8 object-cover rounded-md border mt-1")}
           />
         ) : (
           <div
@@ -36,10 +36,10 @@ const UserItem = ({
         )}
         {!isCollapsed && (
           <div className="grow">
-            <p className="font-bold">
+            <p className="font-bold truncate">
               {currentUser.firstName} {currentUser.lastName}
             </p>
-            <p className="text-sm">@{currentUser.username}</p>
+            <p className="text-sm truncate">@{currentUser.username}</p>
           </div>
         )}
       </div>

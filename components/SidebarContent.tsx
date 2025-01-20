@@ -1,6 +1,13 @@
 "use client";
 
-import { ContactRound, Home, Settings, Users } from "lucide-react";
+import {
+  ContactRound,
+  Home,
+  PanelLeftClose,
+  Settings,
+  UnfoldHorizontal,
+  Users,
+} from "lucide-react";
 import Image from "next/image";
 import { Command, CommandGroup, CommandList } from "./ui/command";
 import SidebarItem from "./SidebarItem";
@@ -9,6 +16,7 @@ import Logo from "@/public/white.png";
 import { FullUser } from "@/types";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
 
 const SidebarContent = ({ currentUser }: { currentUser: FullUser | null }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -48,8 +56,8 @@ const SidebarContent = ({ currentUser }: { currentUser: FullUser | null }) => {
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 w-[260px] min-w-[260px] border-r min-h-screen p-4",
-        isCollapsed && "w-[73px] min-w-[73px]"
+        "flex flex-col gap-4 border-r min-h-screen p-4 transition-width duration-300 ease-in-out",
+        isCollapsed ? "w-[73px] min-w-[73px]" : "w-[260px] min-w-[260px]"
       )}
     >
       <div className="flex items-center justify-between">
@@ -73,6 +81,7 @@ const SidebarContent = ({ currentUser }: { currentUser: FullUser | null }) => {
                       key={optionKey}
                       option={option}
                       isCollapsed={isCollapsed}
+                      className="mb-0.5 last:mb-0"
                     />
                   ))}
               </CommandGroup>

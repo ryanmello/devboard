@@ -78,27 +78,10 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
                   <p className="hover:underline">{user.linkedInUsername}</p>
                 </a>
               )}
-              {/* {user.resume && (
-                <a
-                  href={user.resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 cursor-pointer mr-3"
-                >
-                  <GrDocumentUser size={14} />
-                  <p className="hover:underline">{user.username}</p>
-                </a>
-              )} */}
 
-              {/* <a
-                href={user.username}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 cursor-pointer mr-3"
-              >
-                <FaXTwitter size={14} />
-                <p className="hover:underline">{user.username}</p>
-              </a> */}
+              {/* TODO:
+              Add resume
+              Add intrests */}
             </div>
           </div>
         </div>
