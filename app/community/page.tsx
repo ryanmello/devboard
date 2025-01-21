@@ -1,10 +1,7 @@
-import { UserButton } from "@clerk/nextjs";
-
 const Community = () => {
   return (
     <div>
-      Community
-      <UserButton />
+      <p>Community</p>
     </div>
   );
 };

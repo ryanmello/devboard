@@ -30,6 +30,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { UserButton } from "@clerk/nextjs";
 
 const formSchema = z.object({
   firstName: z.string().min(2).max(50).optional(),
@@ -128,6 +129,7 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
         )}
         <p className="relative text-2xl font-semibold pt-4">Ryan Mello</p>
         <p className="relative text-xl font-light">{currentUser.username}</p>
+        <UserButton />
       </div>
       <div className="w-[500px] mt-10">
         <Form {...form}>
