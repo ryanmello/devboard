@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import LeftProfile from "./LeftProfile";
 import RightProfile from "./RightProfile";
 import { FullUser } from "@/types";
-import getUserByUsername from "@/app/actions/getUserByUsername";
 import axios from "axios";
 
 const UserProfile = ({ username }: { username: string }) => {

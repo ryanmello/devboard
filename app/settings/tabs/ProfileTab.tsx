@@ -127,9 +127,9 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
             />
           </>
         )}
+
         <p className="relative text-2xl font-semibold pt-4">Ryan Mello</p>
         <p className="relative text-xl font-light">{currentUser.username}</p>
-        <UserButton />
       </div>
       <div className="w-[500px] mt-10">
         <Form {...form}>
