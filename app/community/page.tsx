@@ -1,9 +1,14 @@
-const Community = () => {
+import { auth } from "@clerk/nextjs/server";
+import Community from "./components/Community";
+
+const Page = () => {
+  const { userId } = auth();
+
   return (
     <div>
-      <p>Community</p>
+      <Community clerkId={userId} />
     </div>
   );
 };
 
-export default Community;
+export default Page;
