@@ -1,4 +1,3 @@
-import getCurrentUser from "@/app/actions/getCurrentUser";
 import getUserByUsername from "@/app/actions/getUserByUsername";
 import { NextResponse } from "next/server";
 
