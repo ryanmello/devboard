@@ -8,43 +8,58 @@ const GitHubHeatmap = ({
 }: {
   gitHubUsername: string | null;
 }) => {
-  const [gitHubData, setGitHubData] =
-    useState<Externals.Github.ApiResponse | null>(null);
-  const [loading, setLoading] = useState(true);
+  try {
+    const [gitHubData, setGitHubData] =
+      useState<Externals.Github.ApiResponse | null>(null);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        if (!gitHubUsername) {
+    useEffect(() => {
+      const fetchUser = async () => {
+        try {
+          if (!gitHubUsername) {
+            setLoading(false);
+            return;
+          }
+
+          const response = await axios.post("/api/user/fetch/github", {
+            gitHubUsername,
+          });
+
+          setGitHubData(response.data);
+        } catch (error) {
+          console.error("Failed to fetch user", error);
+        } finally {
           setLoading(false);
-          return;
         }
+      };
 
-        const response = await axios.post("/api/user/fetch/github", {
-          gitHubUsername,
-        });
-        
-        setGitHubData(response.data);
-      } catch (error) {
-        console.error("Failed to fetch user", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      fetchUser();
+    }, [gitHubUsername]);
 
-    fetchUser();
-  }, [gitHubUsername]);
+    if (loading) {
+      return <div>Loading...</div>;
+    }
 
-  if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <p>GITHUB</p>
+        <p>
+          {
+            gitHubData?.data.user.contributionsCollection.contributionCalendar
+              .totalContributions
+          }
+        </p>
+      </div>
+    );
+  } catch (error) {
+    console.error("Failed to fetch GitHub contributions data:", error);
+    return (
+      <div className="bg-neutral-700 h-auto rounded-xl mb-4 p-4">
+        <h2 className="font-bold pb-2 text-neutral-300">GitHub Heatmap</h2>
+        <p className="text-neutral-300">Unable to load contribution data.</p>
+      </div>
+    );
   }
-
-  return (
-    <div>
-      <p>GITHUB</p>
-      <p>{gitHubData?.data.user.contributionsCollection.contributionCalendar.totalContributions}</p>
-    </div>
-  );
 };
 
 export default GitHubHeatmap;
