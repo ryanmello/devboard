@@ -4,11 +4,7 @@ import Settings from "./components/Settings";
 const SettingsPage = () => {
   const { userId } = auth();
 
-  return (
-    <div>
-      <Settings clerkId={userId} />
-    </div>
-  );
+  return <Settings clerkId={userId} />;
 };
 
 export default SettingsPage;

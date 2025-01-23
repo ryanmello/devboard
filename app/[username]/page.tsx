@@ -1,24 +1,13 @@
-import getUserByUsername from "../actions/getUserByUsername";
-import LeftProfile from "./components/LeftProfile";
-import RightProfile from "./components/RightProfile";
+import Profile from "./components/UserProfile";
 
 interface IParams {
   username: string;
 }
 
 const Username = async ({ params }: { params: IParams }) => {
-  const user = await getUserByUsername(params.username);
+  const username = params.username;
 
-  if (!user) {
-    return null;
-  }
-
-  return (
-    <div className="flex pt-8 px-8">
-      <LeftProfile user={user} />
-      <RightProfile user={user} />
-    </div>
-  );
+  return <Profile username={username} />;
 };
 
 export default Username;
