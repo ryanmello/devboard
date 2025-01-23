@@ -1,14 +1,10 @@
 import { auth } from "@clerk/nextjs/server";
 import Community from "./components/Community";
 
-const Page = () => {
+const CommunityPage = () => {
   const { userId } = auth();
 
-  return (
-    <div>
-      <Community clerkId={userId} />
-    </div>
-  );
+  return <Community clerkId={userId} />;
 };
 
-export default Page;
+export default CommunityPage;

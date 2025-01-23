@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FullUser } from "@/types";
+import axios from "axios";
 
 const Community = ({ clerkId }: { clerkId: string | null }) => {
   const [currentUser, setCurrentUser] = useState<FullUser | null>(null);
@@ -15,19 +16,9 @@ const Community = ({ clerkId }: { clerkId: string | null }) => {
           return;
         }
 
-        const response = await fetch(`/api/user/fetch`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ clerkId }),
-        });
+        const response = await axios.post("/api/user/fetch", { clerkId });
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const user = await response.json();
+        const user = response.data;
         setCurrentUser(user);
       } catch (error) {
         console.error("Failed to fetch user", error);
