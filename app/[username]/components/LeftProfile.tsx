@@ -47,7 +47,7 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
             <div className="flex flex-wrap mt-4 text-zinc-400">
               {user.linkedInUsername && (
                 <a
-                  href={`https://github.com/${user.linkedInUsername}`}
+                  href={`https://www.linkedin.com/in/${user.linkedInUsername}/`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 cursor-pointer mr-3"
@@ -69,7 +69,7 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
               )}
               {user.leetCodeUsername && (
                 <a
-                  href={`https://github.com/${user.leetCodeUsername}`}
+                  href={`https://leetcode.com/u/${user.leetCodeUsername}/`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 cursor-pointer mr-3"
