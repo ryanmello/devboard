@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { BsLinkedin } from "react-icons/bs";
 import { SiLeetcode } from "react-icons/si";
 import { BsGithub } from "react-icons/bs";
+import { Badge } from "@/components/ui/badge";
 
 const LeftProfile = ({ user }: { user: FullUser }) => {
   const router = useRouter();
@@ -29,8 +30,8 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
             <p className="text-2xl font-semibold pt-4">
               {user.firstName} {user.lastName}
             </p>
-            <p className="text-xl font-light text-zinc-400">{user.username}</p>
-            <p className="my-4 leading-6">{user.headline}</p>
+            <p className="text-xl font-light text-zinc-300">{user.username}</p>
+            <p className="my-4 leading-6 text-zinc-300">{user.headline}</p>
 
             {/* Edit Profile */}
             <div className="flex">
@@ -44,7 +45,7 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
             </div>
 
             {/* Connected Accounts -- LinkedIn, GitHub, LeetCode */}
-            <div className="flex flex-wrap mt-4 text-zinc-400">
+            <div className="flex flex-wrap mt-4 text-zinc-300">
               {user.linkedInUsername && (
                 <a
                   href={`https://www.linkedin.com/in/${user.linkedInUsername}/`}
@@ -83,6 +84,17 @@ const LeftProfile = ({ user }: { user: FullUser }) => {
               Add resume
               Add intrests */}
             </div>
+          </div>
+
+          <h2 className="mt-4 mb-1 text-sm font-medium text-zinc-300">Interests</h2>
+          <div className="flex flex-wrap gap-1.5">
+            <Badge variant="secondary">Machine Learning</Badge>
+            <Badge variant="secondary">Artificial Intelligence</Badge>
+            <Badge variant="secondary">Web Development</Badge>
+            <Badge variant="secondary">System Design</Badge>
+            <Badge variant="secondary">Cloud Engineering</Badge>
+            <Badge variant="secondary">Robotics</Badge>
+            <Badge variant="secondary">Math</Badge>
           </div>
         </div>
       )}
