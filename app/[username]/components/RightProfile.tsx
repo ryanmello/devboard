@@ -10,41 +10,160 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { BriefcaseBusiness, Github, Globe } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BsBriefcase } from "react-icons/bs";
+import { PiGraduationCap } from "react-icons/pi";
+import { GoProject } from "react-icons/go";
 
 const RightProfile = ({ user }: { user: FullUser }) => {
-  console.log(user);
   return (
     <div className="w-3/4 2xl:w-4/5">
       {/* LEETCODE STATS */}
-      <LeetCode leetCodeUsername={user.leetCodeUsername} />
+      {user.leetCodeUsername && (
+        <LeetCode leetCodeUsername={user.leetCodeUsername} />
+      )}
+
       {/* GITHUB STATS */}
-      <GitHubHeatmap gitHubUsername={user.gitHubUsername} />
+      {user.gitHubUsername && (
+        <GitHubHeatmap gitHubUsername={user.gitHubUsername} />
+      )}
+
+      {/* EXPERIENCE */}
+      {user.experience && user.experience.length > 0 && (
+        <div className="space-y-6 mb-4 bg-secondary/80 rounded-xl p-4">
+          <h2 className="text-xl font-bold">Experience</h2>
+          {user.experience.map((exp) => (
+            <div key={exp.id} className="flex gap-4">
+              <div className="w-12 h-12 flex bg-primary/10 rounded-lg justify-center items-center shrink-0">
+                <BsBriefcase className="w-6 h-6 text-primary" />
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-col">
+                  <h3 className="text-base font-semibold text-foreground">
+                    {exp.title}
+                  </h3>
+                  <div className="text-sm font-medium text-foreground/80">
+                    {exp.company}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-0.5">
+                    {exp.startMonth} {exp.startYear} -
+                    {exp.isCurrent ? (
+                      " Present"
+                    ) : (
+                      <span>
+                        {" "}
+                        {exp.endMonth} {exp.endYear}
+                      </span>
+                    )}
+                    {" • "}
+                    {exp.location}
+                  </div>
+                  <div className="mt-2 text-sm text-muted-foreground whitespace-pre-line">
+                    {exp.description}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* EDUCATION */}
-      <div className="space-y-4 mb-8">
-        {user.education.map((edu, index) => (
-          <Card key={index}>
-            <CardHeader>
-              <CardTitle>{edu.universityName}</CardTitle>
-              <CardDescription>
-                {edu.major} {edu.minor && `• Minor in ${edu.minor}`}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-2">
-                <div className="text-sm text-muted-foreground">
-                  {edu.startYear} - {edu.graduationYear}
-                </div>
-                {edu.gpa && (
-                  <div className="text-sm text-muted-foreground">
-                    GPA: {edu.gpa}
-                  </div>
-                )}
+      {user.education && user.education.length > 0 && (
+        <div className="space-y-6 mb-4 bg-secondary/80 rounded-xl p-4">
+          <h2 className="text-xl font-bold">Education</h2>
+          {user.education.map((edu) => (
+            <div key={edu.id} className="flex gap-4">
+              <div className="w-12 h-12 flex bg-primary/10 rounded-lg justify-center items-center shrink-0">
+                <PiGraduationCap className="w-6 h-6 text-primary" />
               </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              <div className="flex-1">
+                <div className="flex flex-col">
+                  <h3 className="text-base font-semibold text-foreground">
+                    {edu.universityName}
+                  </h3>
+                  <div className="text-sm font-medium text-foreground/80">
+                    {edu.major} {edu.minor && `• Minor in ${edu.minor}`}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-0.5">
+                    {edu.startYear} - {edu.graduationYear}
+                    {edu.gpa && (
+                      <>
+                        {" • "}
+                        GPA: {edu.gpa}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* PROJECTS */}
+      {user.projects && user.projects.length > 0 && (
+        <div className="space-y-6 mb-8 bg-secondary/80 rounded-xl p-4">
+          <h2 className="text-xl font-bold">Projects</h2>
+          {user.projects.map((project) => (
+            <div key={project.id} className="flex gap-4">
+              <div className="w-12 h-12 flex bg-primary/10 rounded-lg justify-center items-center shrink-0">
+                <GoProject className="w-6 h-6 text-primary" />
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-col">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-base font-semibold text-foreground">
+                      {project.name}
+                    </h3>
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="h-8 w-8 bg-transparent hover:bg-primary/10"
+                        asChild
+                      >
+                        <a
+                          href={project.gitHubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Github className="h-4 w-4 text-primary" />
+                        </a>
+                      </Button>
+                      {project.url && (
+                        <Button 
+                          variant="ghost" 
+                          size="icon"
+                          className="h-8 w-8 bg-transparent hover:bg-primary/10"
+                          asChild
+                        >
+                          <a
+                            href={project.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Globe className="h-4 w-4 text-primary" />
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-sm font-medium text-foreground/80">
+                    {project.primaryLanguage}
+                  </div>
+                  {project.description && (
+                    <div className="mt-2 text-sm text-muted-foreground whitespace-pre-line">
+                      {project.description}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
