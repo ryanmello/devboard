@@ -6,7 +6,7 @@ const EducationTab = ({ currentUser }: { currentUser: FullUser }) => {
   return (
     <div className='flex flex-col items-center pt-8'>
       <AddEducation />
-      {/* <YourEducation /> */}
+      <YourEducation currentUser={currentUser} />
     </div>
   )
 }

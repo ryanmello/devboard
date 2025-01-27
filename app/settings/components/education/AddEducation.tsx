@@ -31,6 +31,8 @@ const formSchema = z.object({
 });
 
 const AddEducation = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,17 +48,14 @@ const AddEducation = () => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-
-    // axios
-    //   .post("/api/education/post", values)
-    //   .then(() => {
-    //     toast.success("Success");
-    //     router.refresh();
-    //     form.reset();
-    //   })
-    //   .catch(() => toast.error("Something went wrong"))
-    //   .finally(() => setIsLoading(false));
+    axios
+      .post("/api/education/create", values)
+      .then(() => {
+        toast.success("Success");
+        router.refresh();
+        form.reset();
+      })
+      .catch(() => toast.error("Something went wrong"))
   };
 
   return (
