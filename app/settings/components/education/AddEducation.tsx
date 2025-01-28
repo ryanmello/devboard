@@ -132,7 +132,7 @@ const AddEducation = () => {
               )}
             />
           </div>
-          <div className="flex gap-4">
+          {/* <div className="flex gap-4">
             <FormField
               control={form.control}
               name="clubName"
@@ -172,7 +172,7 @@ const AddEducation = () => {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <Button type="submit" className="w-full" variant="secondary">Submit</Button>
         </form>
       </Form>
