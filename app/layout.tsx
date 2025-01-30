@@ -4,10 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "sonner";
 import { ClerkProvider } from "@clerk/nextjs";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 import Sidebar from "@/components/Sidebar";
-import SidebarCN from "@/components/SidebarCN";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,14 +29,10 @@ export default function RootLayout({
           >
             <main className="flex items-start justify-between">
               <Sidebar />
-              <div className="w-full h-full">
+              <div className="w-full h-full ml-[260px]">
                 {children}
               </div>
             </main>
-            {/* <SidebarProvider>
-              <SidebarCN />
-              <SidebarInset>{children}</SidebarInset>
-            </SidebarProvider> */}
             <Toaster position="top-center" richColors />
           </ThemeProvider>
         </body>

@@ -2,12 +2,9 @@ import { SettingsVariant } from "@/types";
 import {
   BookText,
   BriefcaseBusiness,
-  Code,
   ContactRound,
   FileCode2,
   FolderGit2,
-  PersonStanding,
-  Settings,
 } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import SettingsSidebarItem from "./SettingsSidebarItem";

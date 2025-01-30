@@ -56,7 +56,7 @@ const SidebarContent = ({ currentUser }: { currentUser: FullUser | null }) => {
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 border-r min-h-screen p-4 transition-width duration-300 ease-in-out",
+        "flex flex-col gap-4 border-r min-h-screen p-4 transition-width duration-300 ease-in-out fixed",
         isCollapsed ? "w-[73px] min-w-[73px]" : "w-[260px] min-w-[260px]"
       )}
     >

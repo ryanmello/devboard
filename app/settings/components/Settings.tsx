@@ -23,7 +23,9 @@ const Settings = ({ clerkId }: { clerkId: string | null }) => {
           return;
         }
 
-        const response = await axios.post("/api/user/fetch/clerkId", { clerkId });
+        const response = await axios.post("/api/user/fetch/clerkId", {
+          clerkId,
+        });
 
         const user = response.data;
         setCurrentUser(user);
