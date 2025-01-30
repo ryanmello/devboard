@@ -37,7 +37,7 @@ const GitHubHeatmap = ({
   }, [gitHubUsername]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   const {

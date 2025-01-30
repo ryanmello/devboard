@@ -35,7 +35,7 @@ const UserProfile = ({ username }: { username: string }) => {
   }, [username]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   if (!user) return null;

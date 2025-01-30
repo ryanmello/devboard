@@ -43,7 +43,7 @@ const LeetCode = ({
   }, [leetCodeUsername]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   if (!leetCodeData) return null;
