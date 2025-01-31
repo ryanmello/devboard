@@ -86,7 +86,7 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
       router.refresh();
     } catch (error) {
       console.log(error);
-      toast.success("Something went wrong.");
+      toast.error("Something went wrong.");
     }
   };
 
