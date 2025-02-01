@@ -1,23 +1,91 @@
-import { FullUser } from "@/types";
+"use client";
+
+import { Education } from "@prisma/client";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Pencil, Trash } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { useState } from "react";
+import { toast } from "sonner";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import EditEducationForm from "./EditEducationForm";
 
-const YourEducation = ({ currentUser }: { currentUser: FullUser }) => {
+const YourEducation = ({
+  currentUser,
+}: {
+  currentUser: { education: Education[] };
+}) => {
+  const router = useRouter();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedEducation, setSelectedEducation] = useState<Education | null>(
+    null
+  );
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleDelete = async (educationId: string) => {
+    try {
+      setIsLoading(true);
+      await axios.post(`/api/education/delete`, {
+        educationId: educationId,
+      });
+      toast.success("Education deleted successfully");
+      router.refresh();
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+      setIsDeleteDialogOpen(false);
+    }
+  };
+
   return (
     <div className="pt-8 w-1/2">
-      <h2 className="text-xl font-bold pb-2">
-        Your Education
-      </h2>
+      <h2 className="text-xl font-bold pb-2">Your Education</h2>
       <div className="space-y-4">
-        {currentUser.education?.map((edu, index) => (
-          <Card key={index}>
+        {currentUser.education?.map((edu) => (
+          <Card key={edu.id}>
             <CardHeader>
-              <CardTitle>{edu.universityName}</CardTitle>
+              <CardTitle className="flex items-center justify-between">
+                <span>{edu.universityName}</span>
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setSelectedEducation(edu);
+                      setIsEditDialogOpen(true);
+                    }}
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setSelectedEducation(edu);
+                      setIsDeleteDialogOpen(true);
+                    }}
+                  >
+                    <Trash className="h-4 w-4 text-destructive" />
+                  </Button>
+                </div>
+              </CardTitle>
               <CardDescription>
                 {edu.major} {edu.minor && `• Minor in ${edu.minor}`}
               </CardDescription>
@@ -37,6 +105,55 @@ const YourEducation = ({ currentUser }: { currentUser: FullUser }) => {
           </Card>
         ))}
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your
+              education record.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              onClick={() => setIsDeleteDialogOpen(false)}
+              disabled={isLoading}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() =>
+                selectedEducation && handleDelete(selectedEducation.id)
+              }
+              disabled={isLoading}
+            >
+              {isLoading ? "Deleting..." : "Delete"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Education Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Education</DialogTitle>
+          </DialogHeader>
+          {selectedEducation && (
+            <EditEducationForm
+              education={selectedEducation}
+              onSuccess={() => {
+                setIsEditDialogOpen(false);
+                router.refresh();
+              }}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
