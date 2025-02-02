@@ -19,7 +19,6 @@ export type FullUser = {
   linkedInUsername: string | null;
 
   skills: string[];
-
   projects: Project[];
   education: Education[];
   experience: Experience[];
