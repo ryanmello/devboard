@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Trash } from "lucide-react";
+import { Trash, Pencil } from "lucide-react";
 import { FullUser } from "@/types";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -101,32 +101,41 @@ const ProfileTab = ({ currentUser }: { currentUser: FullUser }) => {
     <div className="flex justify-center px-8 gap-8 pt-8">
       <div className="w-[300px]">
         <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
-        {image && !displayImageUpload ? (
-          <Image
-            src={image}
-            alt="image"
-            width={300}
-            height={300}
-            className="rounded-3xl border w-[300px] h-[300px] object-cover cursor-pointer"
-            onClick={() => setDisplayImageUpload(true)}
-          />
-        ) : (
-          <>
-            <div className="absolute flex items-center justify-center w-[300px] h-[300px] bg-primary-foreground rounded-3xl border cursor-pointer"></div>
-            <UploadButton
-              endpoint="imageUploader"
-              onClientUploadComplete={(res) => {
-                setImage(res[0].url);
-                setDisplayImageUpload(false);
-                toast.success("Upload Completed");
-              }}
-              onUploadError={(error: Error) => {
-                toast.error(`ERROR! ${error.message}`);
-              }}
-              className="h-[300px] relative border rounded-3xl"
-            />
-          </>
-        )}
+        <div className="relative">
+          {image && !displayImageUpload ? (
+            <>
+              <Image
+                src={image}
+                alt="image"
+                width={300}
+                height={300}
+                className="rounded-3xl border w-[300px] h-[300px] object-cover"
+              />
+              <div 
+                onClick={() => setDisplayImageUpload(true)}
+                className="absolute bottom-3 right-3 p-2 rounded-full bg-background/80 cursor-pointer hover:bg-background transition"
+              >
+                <Pencil className="h-4 w-4" />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="absolute flex items-center justify-center w-[300px] h-[300px] bg-primary-foreground rounded-3xl border cursor-pointer"></div>
+              <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  setImage(res[0].url);
+                  setDisplayImageUpload(false);
+                  toast.success("Upload Completed");
+                }}
+                onUploadError={(error: Error) => {
+                  toast.error(`ERROR! ${error.message}`);
+                }}
+                className="h-[300px] relative border rounded-3xl"
+              />
+            </>
+          )}
+        </div>
 
         <p className="relative text-2xl font-semibold pt-4">Ryan Mello</p>
         <p className="relative text-xl font-light">{currentUser.username}</p>
