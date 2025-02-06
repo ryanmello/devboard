@@ -64,6 +64,34 @@ const YourProjects = ({
                   <Button
                     variant="ghost"
                     size="icon"
+                    asChild
+                  >
+                    <a
+                      href={project.gitHubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Github className="h-4 w-4" />
+                    </a>
+                  </Button>
+                  {project.url && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      asChild
+                    >
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Globe className="h-4 w-4" />
+                      </a>
+                    </Button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => {
                       setSelectedProject(project);
                       setIsEditDialogOpen(true);
@@ -91,30 +119,6 @@ const YourProjects = ({
                   {project.description}
                 </p>
               )}
-              <div className="flex gap-2 mt-4">
-                <Button variant="outline" size="sm" asChild>
-                  <a
-                    href={project.gitHubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Github className="h-4 w-4 mr-2" />
-                    GitHub
-                  </a>
-                </Button>
-                {project.url && (
-                  <Button variant="outline" size="sm" asChild>
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Globe className="h-4 w-4 mr-2" />
-                      Live Demo
-                    </a>
-                  </Button>
-                )}
-              </div>
             </CardContent>
           </Card>
         ))}
