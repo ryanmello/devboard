@@ -59,6 +59,13 @@ export async function POST(req: Request) {
       });
     }
 
+    // check if username is a reserved route
+    if (BANNED_USERNAMES.includes(username.toLowerCase())) {
+      return new Response("Username is not allowed", {
+        status: 400,
+      });
+    }
+
     // check if user exists
     const existingUser = await db.user.findUnique({
       where: { clerkId: id as string },
@@ -101,3 +108,27 @@ export async function POST(req: Request) {
 
   return new Response("", { status: 200 });
 }
+
+const BANNED_USERNAMES = [
+  "settings",
+  "api",
+  "auth",
+  "sign-up",
+  "sign-in",
+  "dashboard",
+  "profile",
+  "admin",
+  "projects",
+  "experience",
+  "education",
+  "skills",
+  "about",
+  "contact",
+  "community",
+  "terms",
+  "privacy",
+  "help",
+  "support",
+  "blog",
+  "docs",
+];
