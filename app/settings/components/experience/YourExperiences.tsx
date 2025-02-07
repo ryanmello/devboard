@@ -53,52 +53,60 @@ const YourExperiences = ({ currentUser }: { currentUser: FullUser }) => {
     <div className="pt-8 w-1/2 mb-12">
       <h2 className="text-xl font-bold pb-2">Your Experience</h2>
       <div className="space-y-4">
-        {currentUser.experience?.map((experience) => (
-          <Card key={experience.id}>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>{experience.title}</span>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      setSelectedExperience(experience);
-                      setIsEditDialogOpen(true);
-                    }}
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      setSelectedExperience(experience);
-                      setIsDeleteDialogOpen(true);
-                    }}
-                  >
-                    <Trash className="h-4 w-4 text-destructive" />
-                  </Button>
-                </div>
-              </CardTitle>
-              <CardDescription>
-                {experience.company} • {experience.location}
-              </CardDescription>
-              <CardDescription>
-                {experience.startMonth} {experience.startYear} -{" "}
-                {experience.isCurrent
-                  ? "Present"
-                  : `${experience.endMonth} ${experience.endYear}`}
-              </CardDescription>
-              <CardDescription>{experience.type}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground whitespace-pre-line">
-                {experience.description}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
+        {currentUser.experience?.length === 0 ? (
+          <div className="border-2 border-dashed rounded-xl p-6">
+            <p className="text-center text-muted-foreground text-sm">
+              Add your professional experience to showcase your career journey.
+            </p>
+          </div>
+        ) : (
+          currentUser.experience?.map((experience) => (
+            <Card key={experience.id}>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span>{experience.title}</span>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setSelectedExperience(experience);
+                        setIsEditDialogOpen(true);
+                      }}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setSelectedExperience(experience);
+                        setIsDeleteDialogOpen(true);
+                      }}
+                    >
+                      <Trash className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </div>
+                </CardTitle>
+                <CardDescription>
+                  {experience.company} • {experience.location}
+                </CardDescription>
+                <CardDescription>
+                  {experience.startMonth} {experience.startYear} -{" "}
+                  {experience.isCurrent
+                    ? "Present"
+                    : `${experience.endMonth} ${experience.endYear}`}
+                </CardDescription>
+                <CardDescription>{experience.type}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground whitespace-pre-line">
+                  {experience.description}
+                </p>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
 
       {/* Delete Confirmation Dialog */}

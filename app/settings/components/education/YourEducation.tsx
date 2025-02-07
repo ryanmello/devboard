@@ -58,52 +58,60 @@ const YourEducation = ({
     <div className="pt-8 w-1/2">
       <h2 className="text-xl font-bold pb-2">Your Education</h2>
       <div className="space-y-4">
-        {currentUser.education?.map((edu) => (
-          <Card key={edu.id}>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>{edu.universityName}</span>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      setSelectedEducation(edu);
-                      setIsEditDialogOpen(true);
-                    }}
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      setSelectedEducation(edu);
-                      setIsDeleteDialogOpen(true);
-                    }}
-                  >
-                    <Trash className="h-4 w-4 text-destructive" />
-                  </Button>
-                </div>
-              </CardTitle>
-              <CardDescription>
-                {edu.major} {edu.minor && `• Minor in ${edu.minor}`}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-2">
-                <div className="text-sm text-muted-foreground">
-                  {edu.startYear} - {edu.graduationYear}
-                </div>
-                {edu.gpa && (
-                  <div className="text-sm text-muted-foreground">
-                    GPA: {edu.gpa}
+        {currentUser.education?.length === 0 ? (
+          <div className="border-2 border-dashed rounded-xl p-6">
+            <p className="text-center text-muted-foreground text-sm">
+              Add your educational background to highlight your academic achievements.
+            </p>
+          </div>
+        ) : (
+          currentUser.education?.map((edu) => (
+            <Card key={edu.id}>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span>{edu.universityName}</span>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setSelectedEducation(edu);
+                        setIsEditDialogOpen(true);
+                      }}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setSelectedEducation(edu);
+                        setIsDeleteDialogOpen(true);
+                      }}
+                    >
+                      <Trash className="h-4 w-4 text-destructive" />
+                    </Button>
                   </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                </CardTitle>
+                <CardDescription>
+                  {edu.major} {edu.minor && `• Minor in ${edu.minor}`}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-2">
+                  <div className="text-sm text-muted-foreground">
+                    {edu.startYear} - {edu.graduationYear}
+                  </div>
+                  {edu.gpa && (
+                    <div className="text-sm text-muted-foreground">
+                      GPA: {edu.gpa}
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
 
       {/* Delete Confirmation Dialog */}

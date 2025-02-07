@@ -55,73 +55,81 @@ const YourProjects = ({
     <div className="pt-8 w-1/2">
       <h2 className="text-xl font-bold pb-2">Your Projects</h2>
       <div className="space-y-4">
-        {currentUser.projects?.map((project) => (
-          <Card key={project.id}>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>{project.name}</span>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    asChild
-                  >
-                    <a
-                      href={project.gitHubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="h-4 w-4" />
-                    </a>
-                  </Button>
-                  {project.url && (
+        {currentUser.projects?.length === 0 ? (
+          <div className="border-2 border-dashed rounded-xl p-6">
+            <p className="text-center text-muted-foreground text-sm">
+              Add your projects to showcase your technical skills and achievements.
+            </p>
+          </div>
+        ) : (
+          currentUser.projects?.map((project) => (
+            <Card key={project.id}>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span>{project.name}</span>
+                  <div className="flex gap-2">
                     <Button
                       variant="ghost"
                       size="icon"
                       asChild
                     >
                       <a
-                        href={project.url}
+                        href={project.gitHubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <Globe className="h-4 w-4" />
+                        <Github className="h-4 w-4" />
                       </a>
                     </Button>
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      setSelectedProject(project);
-                      setIsEditDialogOpen(true);
-                    }}
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      setSelectedProject(project);
-                      setIsDeleteDialogOpen(true);
-                    }}
-                  >
-                    <Trash className="h-4 w-4 text-destructive" />
-                  </Button>
-                </div>
-              </CardTitle>
-              <CardDescription>{project.primaryLanguage}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {project.description && (
-                <p className="text-sm text-muted-foreground">
-                  {project.description}
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+                    {project.url && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        asChild
+                      >
+                        <a
+                          href={project.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Globe className="h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setSelectedProject(project);
+                        setIsEditDialogOpen(true);
+                      }}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setSelectedProject(project);
+                        setIsDeleteDialogOpen(true);
+                      }}
+                    >
+                      <Trash className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </div>
+                </CardTitle>
+                <CardDescription>{project.primaryLanguage}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {project.description && (
+                  <p className="text-sm text-muted-foreground">
+                    {project.description}
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
 
       {/* Delete Confirmation Dialog */}

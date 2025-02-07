@@ -14,9 +14,9 @@ interface SkillPreviewProps {
 const SkillPreview = ({ skills }: SkillPreviewProps) => {
   if (skills.length === 0) {
     return (
-      <div className="w-full border border-secondary/80 rounded-xl p-4 mb-4">
-        <p className="text-sm text-muted-foreground text-center">
-          Select skills to see how they will appear on your profile
+      <div className="w-full border-2 border-dashed rounded-xl p-6">
+        <p className="text-center text-muted-foreground text-sm">
+          Select skills to see how they will appear on your profile.
         </p>
       </div>
     );
