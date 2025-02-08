@@ -18,11 +18,41 @@ import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const programmingLanguages = [
+  "JavaScript",
+  "Python",
+  "Java",
+  "TypeScript",
+  "C++",
+  "C#",
+  "PHP",
+  "Ruby",
+  "Swift",
+  "Go",
+  "Rust",
+  "Kotlin",
+  "R",
+  "Dart",
+  "Scala",
+  "Perl",
+  "Haskell",
+  "Lua",
+  "MATLAB",
+  "Shell"
+] as const;
 
 const formSchema = z.object({
   name: z.string().min(1).max(50),
-  gitHubUrl: z.string().url(),
-  primaryLanguage: z.string().min(1),
+  gitHubUrl: z.string().url().nullable(),
+  primaryLanguage: z.enum(programmingLanguages).optional(),
   description: z.string().min(1).max(500).nullable(),
   url: z.string().url().nullable(),
 });
@@ -40,7 +70,7 @@ const EditProjectForm = ({ project, onSuccess }: EditProjectFormProps) => {
     defaultValues: {
       name: project.name,
       gitHubUrl: project.gitHubUrl,
-      primaryLanguage: project.primaryLanguage,
+      primaryLanguage: project.primaryLanguage as (typeof programmingLanguages)[number],
       description: project.description,
       url: project.url,
     },
@@ -85,9 +115,20 @@ const EditProjectForm = ({ project, onSuccess }: EditProjectFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Primary Language</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
+              <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {programmingLanguages.map((language) => (
+                    <SelectItem key={language} value={language} className="hover:cursor-pointer">
+                      {language}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
@@ -118,7 +159,7 @@ const EditProjectForm = ({ project, onSuccess }: EditProjectFormProps) => {
             <FormItem>
               <FormLabel>GitHub URL</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value || ''} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -35,8 +35,8 @@ model Project {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   userId          String   @db.ObjectId
   name            String
-  gitHubUrl       String
-  primaryLanguage String
+  gitHubUrl       String?
+  primaryLanguage String?
   description     String?
   image           String?
   url             String?

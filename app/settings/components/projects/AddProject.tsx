@@ -18,12 +18,42 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 // import { UploadButton } from "@/utils/uploadthing";
+
+const programmingLanguages = [
+  "JavaScript",
+  "Python",
+  "Java",
+  "TypeScript",
+  "C++",
+  "C#",
+  "PHP",
+  "Ruby",
+  "Swift",
+  "Go",
+  "Rust",
+  "Kotlin",
+  "R",
+  "Dart",
+  "Scala",
+  "Perl",
+  "Haskell",
+  "Lua",
+  "MATLAB",
+  "Shell",
+] as const;
 
 const formSchema = z.object({
   name: z.string().min(1).max(50),
-  gitHubUrl: z.string().url(),
-  primaryLanguage: z.string().min(1),
+  gitHubUrl: z.string().url().nullable(),
+  primaryLanguage: z.enum(programmingLanguages).optional(),
   description: z.string().min(1).max(500).nullable(),
   url: z.string().url().nullable(),
 });
@@ -31,31 +61,31 @@ const formSchema = z.object({
 const AddProject = () => {
   const router = useRouter();
   // const [image, setImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      gitHubUrl: "",
-      primaryLanguage: "",
+      gitHubUrl: null,
       description: null,
       url: null,
     },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+
     axios
-      .post("/api/project/create", {
-        ...values,
-        // image,
-      })
+      .post("/api/project/create", values)
       .then(() => {
         toast.success("Success");
         router.refresh();
         form.reset();
         // setImage(null);
       })
-      .catch(() => toast.error("Something went wrong"));
+      .catch(() => toast.error("Something went wrong"))
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -83,9 +113,20 @@ const AddProject = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Primary Language</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
+                <Select onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {programmingLanguages.map((language) => (
+                      <SelectItem key={language} value={language}>
+                        {language}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -116,7 +157,7 @@ const AddProject = () => {
               <FormItem>
                 <FormLabel>GitHub URL</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} value={field.value || ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -174,7 +215,12 @@ const AddProject = () => {
             )}
           </div> */}
 
-          <Button type="submit" className="w-full" variant="secondary">
+          <Button
+            type="submit"
+            className="w-full"
+            variant="secondary"
+            disabled={isLoading}
+          >
             Submit
           </Button>
         </form>

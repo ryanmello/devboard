@@ -68,19 +68,21 @@ const YourProjects = ({
                 <CardTitle className="flex items-center justify-between">
                   <span>{project.name}</span>
                   <div className="flex gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      asChild
-                    >
-                      <a
-                        href={project.gitHubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    {project.gitHubUrl && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        asChild
                       >
-                        <Github className="h-4 w-4" />
-                      </a>
-                    </Button>
+                        <a
+                          href={project.gitHubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Github className="h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
                     {project.url && (
                       <Button
                         variant="ghost"
