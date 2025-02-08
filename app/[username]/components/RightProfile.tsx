@@ -64,7 +64,7 @@ const RightProfile = ({ user }: { user: FullUser }) => {
 
       {/* PROJECTS */}
       {user.projects && user.projects.length > 0 && (
-        <div className="space-y-6 mb-8 bg-secondary/80 rounded-xl p-4">
+        <div className="space-y-6 mb-4 bg-secondary/80 rounded-xl p-4">
           <h2 className="text-xl font-bold">Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {user.projects.map((project) => (
