@@ -151,20 +151,22 @@ const RightProfile = ({ user }: { user: FullUser }) => {
                       {project.name}
                     </h3>
                     <div className="flex gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 bg-transparent hover:bg-primary/10"
-                        asChild
-                      >
-                        <a
-                          href={project.gitHubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                      {project.gitHubUrl && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 bg-transparent hover:bg-primary/10"
+                          asChild
                         >
-                          <Github className="h-4 w-4 text-primary" />
-                        </a>
-                      </Button>
+                          <a
+                            href={project.gitHubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Github className="h-4 w-4 text-primary" />
+                          </a>
+                        </Button>
+                      )}
                       {project.url && (
                         <Button
                           variant="ghost"
