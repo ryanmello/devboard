@@ -52,7 +52,7 @@ const programmingLanguages = [
 const formSchema = z.object({
   name: z.string().min(1).max(50),
   gitHubUrl: z.string().url().nullable(),
-  primaryLanguage: z.enum(programmingLanguages).optional(),
+  primaryLanguage: z.enum(programmingLanguages).optional().nullable(),
   description: z.string().min(1).max(500).nullable(),
   url: z.string().url().nullable(),
 });
