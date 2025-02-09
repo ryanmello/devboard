@@ -66,7 +66,7 @@ const RightProfile = ({ user }: { user: FullUser }) => {
       {user.projects && user.projects.length > 0 && (
         <div className="space-y-6 mb-4 bg-secondary/80 rounded-xl p-4">
           <h2 className="text-xl font-bold">Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {user.projects.map((project) => (
               <div key={project.id} className="flex flex-col border rounded-lg p-4">
                 <div className="flex gap-4 h-full">
@@ -136,7 +136,7 @@ const RightProfile = ({ user }: { user: FullUser }) => {
         <div className="space-y-6 mb-4 bg-secondary/80 rounded-xl p-4">
           <h2 className="text-xl font-bold">Experience</h2>
           {user.experience.map((exp) => (
-            <div key={exp.id} className="flex gap-4">
+            <div key={exp.id} className="flex gap-2">
               <div className="w-12 h-12 flex bg-primary/10 rounded-lg justify-center items-center shrink-0">
                 <BsBriefcase className="w-6 h-6 text-primary" />
               </div>
@@ -176,7 +176,7 @@ const RightProfile = ({ user }: { user: FullUser }) => {
         <div className="space-y-6 mb-4 bg-secondary/80 rounded-xl p-4">
           <h2 className="text-xl font-bold">Education</h2>
           {user.education.map((edu) => (
-            <div key={edu.id} className="flex gap-4">
+            <div key={edu.id} className="flex gap-2">
               <div className="w-12 h-12 flex bg-primary/10 rounded-lg justify-center items-center shrink-0">
                 <PiGraduationCap className="w-6 h-6 text-primary" />
               </div>
