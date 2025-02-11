@@ -67,8 +67,10 @@ const RightProfile = ({ user }: { user: FullUser }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
           {user.projects.map((project) => (
             <div key={project.id} className="flex flex-col border rounded-lg p-4 bg-secondary/80">
-              <div className="flex gap-4">
-                <GoProject className="w-6 h-6 text-primary mt-1" />
+              <div className="flex gap-4 h-full">
+                <div className="w-12 h-12 flex bg-primary/10 rounded-lg justify-center items-center shrink-0">
+                  <GoProject className="w-6 h-6 text-primary" />
+                </div>
                 <div className="flex-1">
                   <div className="flex flex-col">
                     <div className="flex justify-between items-center">
