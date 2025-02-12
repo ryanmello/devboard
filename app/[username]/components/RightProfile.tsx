@@ -147,7 +147,7 @@ const RightProfile = ({ user }: { user: FullUser }) => {
                   <div className="text-sm font-medium text-foreground/80">
                     {exp.company}
                   </div>
-                  <div className="text-xs text-muted-foreground mt-0.5">
+                  <div className="text-sm text-muted-foreground mt-0.5">
                     {exp.startMonth} {exp.startYear} -
                     {exp.isCurrent ? (
                       " Present"
