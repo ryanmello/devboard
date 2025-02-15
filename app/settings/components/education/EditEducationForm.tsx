@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Image from "next/image";
 
 const formSchema = z.object({
   universityId: z.string(),
@@ -40,7 +41,10 @@ interface EditEducationFormProps {
   onSuccess: () => void;
 }
 
-const EditEducationForm = ({ education, onSuccess }: EditEducationFormProps) => {
+const EditEducationForm = ({
+  education,
+  onSuccess,
+}: EditEducationFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const colleges = useSacramentoColleges();
 
@@ -84,16 +88,23 @@ const EditEducationForm = ({ education, onSuccess }: EditEducationFormProps) => 
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a university" />
+                    <SelectValue />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   {colleges.map((college) => (
-                    <SelectItem 
-                      key={college.id} 
-                      value={college.id.toString()}
-                    >
-                      {college.name}
+                    <SelectItem key={college.id} value={college.id.toString()}>
+                      <div className="flex items-center gap-2 cursor-pointer">
+                        <div className="relative w-5 h-5">
+                          <Image
+                            src={college.image}
+                            alt={college.name}
+                            fill
+                            className="object-contain rounded-sm"
+                          />
+                        </div>
+                        {college.name}
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -153,7 +164,7 @@ const EditEducationForm = ({ education, onSuccess }: EditEducationFormProps) => 
             <FormItem>
               <FormLabel>Minor</FormLabel>
               <FormControl>
-                <Input {...field} value={field.value || ''} />
+                <Input {...field} value={field.value || ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -167,7 +178,7 @@ const EditEducationForm = ({ education, onSuccess }: EditEducationFormProps) => 
             <FormItem>
               <FormLabel>GPA</FormLabel>
               <FormControl>
-                <Input {...field} value={field.value || ''} />
+                <Input {...field} value={field.value || ""} />
               </FormControl>
               <FormMessage />
             </FormItem>

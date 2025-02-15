@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Image from "next/image";
 
 const formSchema = z.object({
   universityId: z.string(),
@@ -54,7 +55,7 @@ const AddEducation = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    
+
     axios
       .post("/api/education/create", values)
       .then(() => {
@@ -80,16 +81,26 @@ const AddEducation = () => {
                 <Select onValueChange={field.onChange}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a university" />
+                      <SelectValue />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     {colleges.map((college) => (
-                      <SelectItem 
-                        key={college.id} 
+                      <SelectItem
+                        key={college.id}
                         value={college.id.toString()}
                       >
-                        {college.name}
+                        <div className="flex items-center gap-2 cursor-pointer">
+                          <div className="relative w-5 h-5">
+                            <Image
+                              src={college.image}
+                              alt={college.name}
+                              fill
+                              className="object-contain rounded-sm"
+                            />
+                          </div>
+                          {college.name}
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -170,9 +181,9 @@ const AddEducation = () => {
             )}
           />
 
-          <Button 
-            type="submit" 
-            className="w-full" 
+          <Button
+            type="submit"
+            className="w-full"
             variant="secondary"
             disabled={isLoading}
           >

@@ -67,7 +67,8 @@ const YourEducation = ({
         {currentUser.education?.length === 0 ? (
           <div className="border-2 border-dashed rounded-xl p-6">
             <p className="text-center text-muted-foreground text-sm">
-              Add your educational background to highlight your academic achievements.
+              Add your educational background to highlight your academic
+              achievements.
             </p>
           </div>
         ) : (
@@ -84,7 +85,7 @@ const YourEducation = ({
                             src={university.image}
                             alt={university.name}
                             fill
-                            className="object-contain"
+                            className="object-contain rounded-sm"
                           />
                         </div>
                       )}
