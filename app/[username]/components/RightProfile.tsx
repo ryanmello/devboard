@@ -1,6 +1,7 @@
 "use client";
 
 import { FullUser } from "@/types";
+import { Project } from "@prisma/client";
 import GitHubHeatmap from "./github/GitHubHeatmap";
 import LeetCode from "./leetcode/LeetCode";
 import { BriefcaseBusiness, Github, Globe } from "lucide-react";
@@ -17,7 +18,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import sacStateLogo from "@/public/sacstate_logo.jpg";
 
 const RightProfile = ({ user }: { user: FullUser }) => {
   const colleges = useSacramentoColleges();
@@ -69,7 +69,7 @@ const RightProfile = ({ user }: { user: FullUser }) => {
       {/* PROJECTS */}
       {user.projects && user.projects.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          {user.projects.map((project) => (
+          {user.projects.map((project: Project) => (  
             <div key={project.id} className="flex flex-col border rounded-lg p-4 bg-secondary/80">
               <div className="flex gap-4 h-full">
                 <div className="w-12 h-12 flex bg-primary/10 rounded-lg justify-center items-center shrink-0">
@@ -117,7 +117,7 @@ const RightProfile = ({ user }: { user: FullUser }) => {
                       </div>
                     </div>
                     {project.primaryLanguage && (
-                      <div className="text-sm font-medium text-foreground/80">
+                      <div className="text-sm text-foreground/80">
                         {project.primaryLanguage}
                       </div>
                     )}
