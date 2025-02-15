@@ -16,6 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import sacStateLogo from "@/public/sacstate_logo.jpg";
 
 const RightProfile = ({ user }: { user: FullUser }) => {
   return (
@@ -176,8 +177,14 @@ const RightProfile = ({ user }: { user: FullUser }) => {
           <h2 className="text-xl font-bold">Education</h2>
           {user.education.map((edu) => (
             <div key={edu.id} className="flex gap-2">
-              <div className="w-12 h-12 flex bg-primary/10 rounded-lg justify-center items-center shrink-0">
-                <PiGraduationCap className="w-6 h-6 text-primary" />
+              <div className="w-12 h-12 flex bg-primary/10 rounded-lg justify-center items-center shrink-0 overflow-hidden">
+                <Image 
+                  src={sacStateLogo} 
+                  alt="Sacramento State"
+                  width={48}
+                  height={48}
+                  className="object-cover"
+                />
               </div>
               <div className="flex-1">
                 <div className="flex flex-col">
