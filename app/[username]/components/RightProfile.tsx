@@ -10,6 +10,7 @@ import { PiGraduationCap } from "react-icons/pi";
 import { GoProject } from "react-icons/go";
 import Image from "next/image";
 import { getSkillImage } from "@/hooks/skills";
+import { useSacramentoColleges } from "@/hooks/education";
 import {
   Tooltip,
   TooltipContent,
@@ -19,6 +20,8 @@ import {
 import sacStateLogo from "@/public/sacstate_logo.jpg";
 
 const RightProfile = ({ user }: { user: FullUser }) => {
+  const colleges = useSacramentoColleges();
+
   return (
     <div className="w-3/4 2xl:w-4/5">
       {/* SKILLS */}
@@ -175,38 +178,43 @@ const RightProfile = ({ user }: { user: FullUser }) => {
       {user.education && user.education.length > 0 && (
         <div className="space-y-6 mb-4 bg-secondary/80 rounded-xl p-4">
           <h2 className="text-xl font-bold">Education</h2>
-          {user.education.map((edu) => (
-            <div key={edu.id} className="flex gap-2">
-              <div className="w-12 h-12 flex bg-primary/10 rounded-lg justify-center items-center shrink-0 overflow-hidden">
-                <Image 
-                  src={sacStateLogo} 
-                  alt="Sacramento State"
-                  width={48}
-                  height={48}
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <div className="flex flex-col">
-                  <h3 className="text-base font-semibold text-foreground">
-                    {edu.universityName}
-                  </h3>
-                  <div className="text-sm font-medium text-foreground/80">
-                    {edu.major} {edu.minor && `• Minor in ${edu.minor}`}
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-0.5">
-                    {edu.startYear} - {edu.graduationYear}
-                    {edu.gpa && (
-                      <>
-                        {" • "}
-                        GPA: {edu.gpa}
-                      </>
-                    )}
+          {user.education.map((edu) => {
+            const university = colleges.find(college => college.id === edu.universityId);
+            return (
+              <div key={edu.id} className="flex gap-2">
+                <div className="w-12 h-12 flex bg-primary/10 rounded-lg justify-center items-center shrink-0 overflow-hidden">
+                  {university?.image && (
+                    <Image 
+                      src={university.image}
+                      alt={university.name}
+                      width={48}
+                      height={48}
+                      className="object-cover"
+                    />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <div className="flex flex-col">
+                    <h3 className="text-base font-semibold text-foreground">
+                      {university?.name}
+                    </h3>
+                    <div className="text-sm font-medium text-foreground/80">
+                      {edu.major} {edu.minor && `• Minor in ${edu.minor}`}
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                      {edu.startYear} - {edu.graduationYear}
+                      {edu.gpa && (
+                        <>
+                          {" • "}
+                          GPA: {edu.gpa}
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

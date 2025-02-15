@@ -16,7 +16,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
 import { useState } from "react";
@@ -24,6 +23,8 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import EditEducationForm from "./EditEducationForm";
+import { useSacramentoColleges } from "@/hooks/education";
+import Image from "next/image";
 
 const YourEducation = ({
   currentUser,
@@ -37,6 +38,11 @@ const YourEducation = ({
     null
   );
   const [isLoading, setIsLoading] = useState(false);
+  const colleges = useSacramentoColleges();
+
+  const getUniversityInfo = (universityId: number) => {
+    return colleges.find((college) => college.id === universityId);
+  };
 
   const handleDelete = async (educationId: string) => {
     try {
@@ -65,52 +71,67 @@ const YourEducation = ({
             </p>
           </div>
         ) : (
-          currentUser.education?.map((edu) => (
-            <Card key={edu.id}>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>{edu.universityName}</span>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
-                        setSelectedEducation(edu);
-                        setIsEditDialogOpen(true);
-                      }}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
-                        setSelectedEducation(edu);
-                        setIsDeleteDialogOpen(true);
-                      }}
-                    >
-                      <Trash className="h-4 w-4 text-destructive" />
-                    </Button>
-                  </div>
-                </CardTitle>
-                <CardDescription>
-                  {edu.major} {edu.minor && `• Minor in ${edu.minor}`}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col gap-2">
-                  <div className="text-sm text-muted-foreground">
-                    {edu.startYear} - {edu.graduationYear}
-                  </div>
-                  {edu.gpa && (
-                    <div className="text-sm text-muted-foreground">
-                      GPA: {edu.gpa}
+          currentUser.education?.map((edu) => {
+            const university = getUniversityInfo(edu.universityId);
+            return (
+              <Card key={edu.id}>
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      {university?.image && (
+                        <div className="w-8 h-8 relative">
+                          <Image
+                            src={university.image}
+                            alt={university.name}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                      )}
+                      <span>{university?.name}</span>
                     </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => {
+                          setSelectedEducation(edu);
+                          setIsEditDialogOpen(true);
+                        }}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => {
+                          setSelectedEducation(edu);
+                          setIsDeleteDialogOpen(true);
+                        }}
+                      >
+                        <Trash className="h-4 w-4 text-destructive" />
+                      </Button>
+                    </div>
+                  </CardTitle>
+                  <CardDescription>
+                    {edu.major} {edu.minor && `• Minor in ${edu.minor}`}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col gap-2">
+                    <div className="text-sm text-muted-foreground">
+                      {edu.startYear} - {edu.graduationYear}
+                    </div>
+                    {edu.gpa && (
+                      <div className="text-sm text-muted-foreground">
+                        GPA: {edu.gpa}
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })
         )}
       </div>
 

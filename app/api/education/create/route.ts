@@ -8,13 +8,12 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const {
-      universityName,
+      universityId,
       startYear,
       graduationYear,
       major,
       minor,
       gpa,
-      image,
     } = body;
 
     const { userId } = auth();
@@ -27,13 +26,12 @@ export async function POST(request: Request) {
     const education = await db.education.create({
       data: {
         userId: currentUser.id,
-        universityName,
+        universityId: parseInt(universityId),
         startYear,
         graduationYear,
         major,
         minor,
         gpa,
-        image,
       },
     });
 

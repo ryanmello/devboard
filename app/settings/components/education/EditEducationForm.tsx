@@ -17,14 +17,22 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useSacramentoColleges } from "@/hooks/education";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
-  universityName: z.string().min(2).max(50),
+  universityId: z.string(),
   startYear: z.string().min(2).max(4),
   graduationYear: z.string().min(2).max(4),
   major: z.string().min(2).max(50),
-  gpa: z.string().max(4).optional(),
   minor: z.string().max(50).optional(),
+  gpa: z.string().max(4).optional(),
 });
 
 interface EditEducationFormProps {
@@ -34,11 +42,12 @@ interface EditEducationFormProps {
 
 const EditEducationForm = ({ education, onSuccess }: EditEducationFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const colleges = useSacramentoColleges();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      universityName: education.universityName,
+      universityId: education.universityId.toString(),
       startYear: education.startYear,
       graduationYear: education.graduationYear,
       major: education.major,
@@ -68,13 +77,27 @@ const EditEducationForm = ({ education, onSuccess }: EditEducationFormProps) => 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         <FormField
           control={form.control}
-          name="universityName"
+          name="universityId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>University Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
+              <FormLabel>University</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a university" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {colleges.map((college) => (
+                    <SelectItem 
+                      key={college.id} 
+                      value={college.id.toString()}
+                    >
+                      {college.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
@@ -109,43 +132,42 @@ const EditEducationForm = ({ education, onSuccess }: EditEducationFormProps) => 
           />
         </div>
 
-        <div className="flex gap-4">
-          <FormField
-            control={form.control}
-            name="major"
-            render={({ field }) => (
-              <FormItem className="w-3/4">
-                <FormLabel>Major</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="gpa"
-            render={({ field }) => (
-              <FormItem className="w-1/4">
-                <FormLabel>GPA</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="major"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Major</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
           name="minor"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Minor (Optional)</FormLabel>
+              <FormLabel>Minor</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value || ''} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="gpa"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>GPA</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value || ''} />
               </FormControl>
               <FormMessage />
             </FormItem>

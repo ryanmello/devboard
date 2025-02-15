@@ -49,7 +49,7 @@ model Project {
 model Education {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   userId         String   @db.ObjectId
-  universityName String
+  universityId   Int
   startYear      String
   graduationYear String
   major          String

@@ -16,13 +16,12 @@ export async function POST(req: Request) {
     const body = await req.json();
     const {
       educationId,
-      universityName,
+      universityId,
       startYear,
       graduationYear,
       major,
       minor,
       gpa,
-      image,
     } = body;
 
     const education = await db.education.update({
@@ -31,13 +30,12 @@ export async function POST(req: Request) {
         userId: currentUser.id,
       },
       data: {
-        universityName,
+        universityId: parseInt(universityId),
         startYear,
         graduationYear,
         major,
         minor,
         gpa,
-        image,
       },
     });
 
