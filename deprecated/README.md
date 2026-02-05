@@ -1,6 +1,6 @@
 # 🚀 Devboard - Developer Portfolio Platform
 
-Devboard is a modern, full-stack web application that empowers developers to create comprehensive professional portfolios, showcase their coding achievements, and connect with other developers in the community. Built with cutting-edge technologies, DevBoard seamlessly integrates with popular developer platforms like GitHub and LeetCode to automatically display your coding activity and accomplishments.
+Devboard is a modern, full-stack web application that empowers developers to create comprehensive professional portfolios, showcase their coding achievements, and connect with other developers in the community. Built with cutting-edge technologies, Devboard seamlessly integrates with popular developer platforms like GitHub and LeetCode to automatically display your coding activity and accomplishments.
 
 ## 📋 Table of Contents
 
