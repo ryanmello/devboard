@@ -1,14 +1,65 @@
 "use client"
 
 import type { GitHubContributionData } from "@/types"
+import { cn } from "@/lib/utils"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 
-function getIntensity(count: number) {
-  if (count >= 10) return "bg-primary/80"
-  if (count >= 5) return "bg-primary/60"
-  if (count >= 2) return "bg-primary/40"
-  if (count > 0) return "bg-primary/20"
-  return "bg-muted"
+function getOuterColor(count: number) {
+  if (count >= 7) return "bg-green-300 hover:bg-green-200"
+  if (count >= 5) return "bg-green-400 hover:bg-green-300"
+  if (count >= 3) return "bg-green-500 hover:bg-green-400"
+  if (count >= 1) return "bg-green-600 hover:bg-green-500"
+  return "bg-neutral-700 hover:bg-neutral-600"
+}
+
+function getInnerColor(count: number) {
+  if (count >= 7) return "bg-green-400"
+  if (count >= 5) return "bg-green-500"
+  if (count >= 3) return "bg-green-600"
+  if (count >= 1) return "bg-green-700"
+  return "bg-neutral-600"
+}
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  })
+}
+
+function Cell({ count, date }: { count: number; date: string }) {
+  return (
+    <TooltipProvider delayDuration={100}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div
+            className={cn(
+              "size-[13px] xl:size-[15px] rounded-sm flex items-center justify-center",
+              "transition-transform duration-200 ease-in-out hover:scale-110",
+              getOuterColor(count)
+            )}
+          >
+            <div
+              className={cn(
+                "size-[11px] xl:size-[13px] rounded-sm",
+                "transition-colors duration-200 ease-in-out",
+                getInnerColor(count)
+              )}
+            />
+          </div>
+        </TooltipTrigger>
+        <TooltipContent side="top">
+          <p className="text-xs">
+            <span className="font-semibold">{count}</span>{" "}
+            {count === 1 ? "contribution" : "contributions"} on{" "}
+            {formatDate(date)}
+          </p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
 }
 
 export function GitHubHeatmap({ data }: { data: GitHubContributionData | null }) {
@@ -18,21 +69,32 @@ export function GitHubHeatmap({ data }: { data: GitHubContributionData | null })
 
   return (
     <Card className="shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-lg">GitHub Activity</CardTitle>
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg">GitHub Activity</CardTitle>
+          <span className="text-sm font-medium text-muted-foreground">
+            {data.totalContributions.toLocaleString()} contributions
+          </span>
+        </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <p className="text-sm text-muted-foreground">
-          {data.totalContributions} contributions in the last year
-        </p>
-        <div className="grid grid-cols-14 gap-1 sm:grid-cols-20">
-          {days.slice(-280).map((day) => (
-            <div
+      <CardContent>
+        <div className="max-h-[110px] xl:max-h-[125px] flex flex-col flex-wrap gap-[2px] overflow-x-clip">
+          {days.map((day) => (
+            <Cell
               key={day.date}
-              className={`h-3 w-3 rounded-sm ${getIntensity(day.contributionCount)}`}
-              title={`${day.date}: ${day.contributionCount} contributions`}
+              count={day.contributionCount}
+              date={day.date}
             />
           ))}
+        </div>
+        <div className="flex items-center justify-end gap-1.5 mt-3 text-xs text-muted-foreground">
+          <span>Less</span>
+          <div className="size-[11px] rounded-sm bg-neutral-600" />
+          <div className="size-[11px] rounded-sm bg-green-700" />
+          <div className="size-[11px] rounded-sm bg-green-600" />
+          <div className="size-[11px] rounded-sm bg-green-500" />
+          <div className="size-[11px] rounded-sm bg-green-400" />
+          <span>More</span>
         </div>
       </CardContent>
     </Card>

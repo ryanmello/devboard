@@ -34,7 +34,7 @@ export function EducationForm({
   user: FullUser
   onUpdated: (user: FullUser) => void
 }) {
-  const [items, setItems] = useState<Education[]>(user.education)
+  const [items, setItems] = useState<Education[]>(user.education ?? [])
   const [editingId, setEditingId] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
 
@@ -52,7 +52,7 @@ export function EducationForm({
   })
 
   useEffect(() => {
-    setItems(user.education)
+    setItems(user.education ?? [])
   }, [user.education])
 
   const startEdit = (education: Education) => {

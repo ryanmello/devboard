@@ -4,7 +4,7 @@ import type { Education } from "@/types"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function EducationList({ education }: { education: Education[] }) {
-  if (education.length === 0) return null
+  if (!education?.length) return null
 
   return (
     <Card className="shadow-sm">

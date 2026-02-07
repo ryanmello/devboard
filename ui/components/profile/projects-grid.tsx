@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function ProjectsGrid({ projects }: { projects: Project[] }) {
-  if (projects.length === 0) return null
+  if (!projects?.length) return null
 
   return (
     <Card className="shadow-sm">

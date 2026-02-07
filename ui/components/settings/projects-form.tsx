@@ -34,7 +34,7 @@ export function ProjectsForm({
   user: FullUser
   onUpdated: (user: FullUser) => void
 }) {
-  const [items, setItems] = useState<Project[]>(user.projects)
+  const [items, setItems] = useState<Project[]>(user.projects ?? [])
   const [editingId, setEditingId] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
 
@@ -51,7 +51,7 @@ export function ProjectsForm({
   })
 
   useEffect(() => {
-    setItems(user.projects)
+    setItems(user.projects ?? [])
   }, [user.projects])
 
   const startEdit = (project: Project) => {

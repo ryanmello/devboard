@@ -4,6 +4,7 @@ import Link from "next/link"
 import { LogOut, Settings, User } from "lucide-react"
 
 import { useAuth } from "@/hooks/use-auth"
+import { useCurrentUser } from "@/hooks/use-profile"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,6 +18,7 @@ import {
 
 export function UserNav() {
   const { user, signOut, isLoading } = useAuth()
+  const { user: currentUser } = useCurrentUser()
 
   if (isLoading) {
     return (
@@ -46,16 +48,18 @@ export function UserNav() {
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        {currentUser?.username ? (
+          <DropdownMenuItem asChild>
+            <Link href={`/u/${currentUser.username}`} className="flex items-center gap-2">
+              <User className="h-4 w-4" />
+              Profile
+            </Link>
+          </DropdownMenuItem>
+        ) : null}
         <DropdownMenuItem asChild>
           <Link href="/settings" className="flex items-center gap-2">
             <Settings className="h-4 w-4" />
             Settings
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/community" className="flex items-center gap-2">
-            <User className="h-4 w-4" />
-            Community
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

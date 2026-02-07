@@ -14,8 +14,9 @@ import (
 
 // CreateUserRequest represents the request body for creating a user
 type CreateUserRequest struct {
-	Username string `json:"username" binding:"required" example:"johndoe"`
-	Email    string `json:"email" binding:"required,email" example:"john@example.com"`
+	Username string  `json:"username" binding:"required" example:"johndoe"`
+	Email    string  `json:"email" binding:"required,email" example:"john@example.com"`
+	Image    *string `json:"image" example:"https://example.com/avatar.jpg"`
 }
 
 // UpdateUserRequest represents the request body for updating a user
@@ -176,6 +177,7 @@ func CreateUser(c *gin.Context) {
 		Id:       userId.(string),
 		Email:    req.Email,
 		Username: req.Username,
+		Image:    req.Image,
 		Role:     "user",
 		Skills:   []string{},
 	}

@@ -4,7 +4,7 @@ import type { Experience } from "@/types"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function ExperienceList({ experience }: { experience: Experience[] }) {
-  if (experience.length === 0) return null
+  if (!experience?.length) return null
 
   return (
     <Card className="shadow-sm">

@@ -46,6 +46,7 @@ export function OnboardingCard({ onCreated }: { onCreated: (user: FullUser) => v
       const created = await api.createUser({
         username: values.username,
         email: user.email,
+        image: user.user_metadata?.avatar_url || undefined,
       })
       toast.success("Profile created. Let's finish it up.")
       onCreated({ ...(created as FullUser), projects: [], education: [], experience: [] })

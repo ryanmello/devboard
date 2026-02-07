@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function SkillsSection({ skills }: { skills: string[] }) {
-  if (skills.length === 0) {
+  if (!skills?.length) {
     return null
   }
 

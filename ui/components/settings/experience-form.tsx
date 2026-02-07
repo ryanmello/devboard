@@ -39,7 +39,7 @@ export function ExperienceForm({
   user: FullUser
   onUpdated: (user: FullUser) => void
 }) {
-  const [items, setItems] = useState<Experience[]>(user.experience)
+  const [items, setItems] = useState<Experience[]>(user.experience ?? [])
   const [editingId, setEditingId] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
 
@@ -61,7 +61,7 @@ export function ExperienceForm({
   })
 
   useEffect(() => {
-    setItems(user.experience)
+    setItems(user.experience ?? [])
   }, [user.experience])
 
   const startEdit = (experience: Experience) => {

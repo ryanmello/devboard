@@ -1,14 +1,20 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
-import { MobileNav } from "@/components/shared/mobile-nav"
 import { UserNav } from "@/components/shared/user-nav"
 import { useAuth } from "@/hooks/use-auth"
+import { useCurrentUser } from "@/hooks/use-profile"
+
+const MobileNav = dynamic(() => import("@/components/shared/mobile-nav").then(mod => mod.MobileNav), {
+  ssr: false,
+})
 
 export function Navbar() {
   const { user, isLoading } = useAuth()
+  const { user: currentUser } = useCurrentUser()
 
   return (
     <header className="border-b border-border">

@@ -87,6 +87,7 @@ export const api = {
   async createUser(data: {
     username: string;
     email: string;
+    image?: string;
   }): Promise<User> {
     const headers = await getAuthHeaders();
     const res = await fetch(`${API_URL}/api/v1/users`, {

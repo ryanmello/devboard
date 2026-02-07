@@ -8,13 +8,12 @@ import (
 )
 
 type Config struct {
-	Port              string
-	GinMode           string
-	SupabaseURL       string
-	SupabaseJWTSecret string
-	SupabaseDBURL     string
-	GitHubToken       string
-	AllowedOrigins    string
+	Port           string
+	GinMode        string
+	SupabaseURL    string
+	SupabaseDBURL  string
+	GitHubToken    string
+	AllowedOrigins string
 }
 
 // Load reads configuration from environment variables
@@ -25,21 +24,20 @@ func Load() (*Config, error) {
 		Port:    getEnv("PORT", "8080"),
 		GinMode: getEnv("GIN_MODE", "debug"),
 
-		SupabaseURL:       os.Getenv("SUPABASE_URL"),
-		SupabaseJWTSecret: os.Getenv("SUPABASE_JWT_SECRET"),
-		SupabaseDBURL:     os.Getenv("SUPABASE_DB_URL"),
+		SupabaseURL:   os.Getenv("SUPABASE_URL"),
+		SupabaseDBURL: os.Getenv("SUPABASE_DB_URL"),
 
 		GitHubToken: os.Getenv("GITHUB_TOKEN"),
 
 		AllowedOrigins: getEnv("ALLOWED_ORIGINS", "*"),
 	}
 
-	if config.SupabaseDBURL == "" {
-		return nil, fmt.Errorf("SUPABASE_DB_URL is required")
+	if config.SupabaseURL == "" {
+		return nil, fmt.Errorf("SUPABASE_URL is required")
 	}
 
-	if config.SupabaseJWTSecret == "" {
-		return nil, fmt.Errorf("SUPABASE_JWT_SECRET is required")
+	if config.SupabaseDBURL == "" {
+		return nil, fmt.Errorf("SUPABASE_DB_URL is required")
 	}
 
 	return config, nil

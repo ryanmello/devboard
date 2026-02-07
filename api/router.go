@@ -1,12 +1,14 @@
 package api
 
 import (
+    "crypto/ecdsa"
+
     "github.com/gin-gonic/gin"
     "github.com/ryanmello/devboard/middleware"
     v1 "github.com/ryanmello/devboard/api/v1"
 )
 
-func SetupRouter(jwtSecret string) *gin.Engine {
+func SetupRouter(publicKey *ecdsa.PublicKey) *gin.Engine {
 	r := gin.Default()
 
 	r.Use(middleware.CORS())
@@ -26,7 +28,7 @@ func SetupRouter(jwtSecret string) *gin.Engine {
         }
 
 		protected := api.Group("")
-		protected.Use(middleware.AuthMiddleware(jwtSecret))
+		protected.Use(middleware.AuthMiddleware(publicKey))
 		{
             // User management
             protected.POST("/users", v1.CreateUser)

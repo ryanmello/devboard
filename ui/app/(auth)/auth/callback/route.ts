@@ -33,6 +33,36 @@ export async function GET(request: NextRequest) {
         access_token: data.session.access_token,
         refresh_token: data.session.refresh_token,
       });
+
+      // Sync OAuth avatar to backend profile (best-effort)
+      const avatarUrl = data.session.user.user_metadata?.avatar_url;
+      if (avatarUrl) {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const token = data.session.access_token;
+
+        try {
+          const userRes = await fetch(`${apiUrl}/api/v1/users/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (userRes.ok) {
+            const userData = await userRes.json();
+            if (!userData.image) {
+              await fetch(`${apiUrl}/api/v1/users/me`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ image: avatarUrl }),
+              });
+            }
+          }
+        } catch {
+          // Silently ignore — avatar sync is best-effort
+        }
+      }
+
       return response;
     }
   }

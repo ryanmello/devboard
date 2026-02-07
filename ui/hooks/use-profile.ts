@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 import { api } from "@/lib/api"
+import { useAuth } from "@/hooks/use-auth"
 import type { FullUser, User } from "@/types"
 
 export function useProfile(username?: string) {
@@ -40,11 +41,14 @@ export function useProfile(username?: string) {
 }
 
 export function useCurrentUser() {
+  const { isLoading: authLoading } = useAuth()
   const [user, setUser] = useState<FullUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
+    if (authLoading) return
+
     let isMounted = true
 
     api
@@ -66,7 +70,12 @@ export function useCurrentUser() {
     return () => {
       isMounted = false
     }
+  }, [authLoading])
+
+  const handleSetUser = useCallback((updated: FullUser | null) => {
+    setUser(updated)
+    if (updated) setError(null)
   }, [])
 
-  return { user, isLoading, error, setUser }
+  return { user, isLoading, error, setUser: handleSetUser }
 }

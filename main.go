@@ -7,6 +7,7 @@ import (
 	"github.com/ryanmello/devboard/api"
 	"github.com/ryanmello/devboard/config"
 	"github.com/ryanmello/devboard/db"
+	"github.com/ryanmello/devboard/middleware"
 
 	_ "github.com/ryanmello/devboard/docs" // Swagger docs
 
@@ -54,8 +55,15 @@ func main() {
 		log.Fatalf("Failed to run migrations: %v", err)
 	}
 
+	// Fetch Supabase JWKS public key for JWT verification
+	publicKey, err := middleware.FetchJWKS(cfg.SupabaseURL)
+	if err != nil {
+		log.Fatalf("Failed to fetch Supabase JWKS: %v", err)
+	}
+	log.Println("Supabase JWKS public key loaded")
+
 	// Setup router
-	r := api.SetupRouter(cfg.SupabaseJWTSecret)
+	r := api.SetupRouter(publicKey)
 
 	// Swagger documentation endpoint
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
