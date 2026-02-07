@@ -4,10 +4,12 @@ import { type NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
+  const next = searchParams.get("next");
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
 
   if (code) {
-    const response = NextResponse.redirect(`${siteUrl}/build`);
+    const destination = next ? `${siteUrl}${next}` : `${siteUrl}/settings`;
+    const response = NextResponse.redirect(destination);
 
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -35,5 +37,5 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  return NextResponse.redirect(`${siteUrl}/auth/auth-code-error`);
+  return NextResponse.redirect(`${siteUrl}/auth/error`);
 }

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -42,6 +43,57 @@ type ErrorResponse struct {
 // MessageResponse represents a success message response
 type MessageResponse struct {
 	Message string `json:"message" example:"Operation successful"`
+}
+
+// GetUsers godoc
+// @Summary List users
+// @Description Returns a paginated list of users with optional search and skill filters
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param page query int false "Page number" default(1)
+// @Param limit query int false "Items per page" default(20)
+// @Param search query string false "Search by name, username, or headline"
+// @Param skill query string false "Filter by skill"
+// @Success 200 {array} db.User
+// @Failure 500 {object} ErrorResponse
+// @Router /users [get]
+func GetUsers(c *gin.Context) {
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "20"))
+	search := c.Query("search")
+	skill := c.Query("skill")
+
+	if page < 1 {
+		page = 1
+	}
+	if limit < 1 || limit > 100 {
+		limit = 20
+	}
+
+	offset := (page - 1) * limit
+
+	query := db.GetDB().Model(&db.User{})
+
+	if search != "" {
+		pattern := "%" + strings.ToLower(search) + "%"
+		query = query.Where(
+			"LOWER(username) LIKE ? OR LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ? OR LOWER(headline) LIKE ?",
+			pattern, pattern, pattern, pattern,
+		)
+	}
+
+	if skill != "" {
+		query = query.Where("? = ANY(skills)", skill)
+	}
+
+	var users []db.User
+	if err := query.Order("created_at DESC").Offset(offset).Limit(limit).Find(&users).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch users"})
+		return
+	}
+
+	c.JSON(http.StatusOK, users)
 }
 
 // GetUserByUsername godoc

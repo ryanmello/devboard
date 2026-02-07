@@ -24,31 +24,26 @@ export async function proxy(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Public routes that don't require authentication
-  const publicRoutes = [
-    "/",
-    "/sign-in",
-    "/sign-up",
-    "/auth/callback",
-    "/auth/error",
-  ];
+  const publicRoutes = ["/", "/sign-in", "/sign-up", "/auth/callback", "/auth/error", "/community"];
   const isPublicRoute =
     request.nextUrl.pathname === "/" ||
-    publicRoutes
-      .slice(1)
-      .some((route) => request.nextUrl.pathname.startsWith(route));
+    publicRoutes.slice(1).some((route) => request.nextUrl.pathname.startsWith(route)) ||
+    request.nextUrl.pathname.startsWith("/u/");
 
   // Redirect unauthenticated users to sign-in for protected routes
   if (!user && !isPublicRoute) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
+    const redirectUrl = new URL("/sign-in", request.url);
+    redirectUrl.searchParams.set("redirect", request.nextUrl.pathname);
+    return NextResponse.redirect(redirectUrl);
   }
 
-  // Redirect authenticated users away from auth pages to the build page
+  // Redirect authenticated users away from auth pages to settings
   const authRoutes = ["/sign-in", "/sign-up"];
   const isAuthRoute = authRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route),
   );
   if (user && isAuthRoute) {
-    return NextResponse.redirect(new URL("/build", request.url));
+    return NextResponse.redirect(new URL("/settings", request.url));
   }
 
   return response;

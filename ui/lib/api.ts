@@ -14,16 +14,18 @@ import type {
   UpdateExperienceData,
   GitHubContributionData,
   LeetCodeStats,
+  UserQueryParams,
 } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-class ApiError extends Error {
+export class ApiError extends Error {
   constructor(
     public status: number,
     message: string,
   ) {
     super(message);
+    this.name = "ApiError";
   }
 }
 
@@ -49,6 +51,22 @@ export const api = {
   async getProfile(username: string): Promise<FullUser> {
     const res = await fetch(`${API_URL}/api/v1/users/${username}`);
     if (!res.ok) throw new ApiError(res.status, "Failed to fetch profile");
+    return res.json();
+  },
+
+  async getUsers(params?: UserQueryParams): Promise<User[]> {
+    const searchParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value) searchParams.set(key, value);
+      });
+    }
+    const query = searchParams.toString();
+    const url = query
+      ? `${API_URL}/api/v1/users?${query}`
+      : `${API_URL}/api/v1/users`;
+    const res = await fetch(url);
+    if (!res.ok) throw new ApiError(res.status, "Failed to fetch users");
     return res.json();
   },
 

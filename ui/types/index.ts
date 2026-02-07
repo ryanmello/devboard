@@ -26,6 +26,14 @@ export interface FullUser extends User {
   experience: Experience[];
 }
 
+export interface UserQueryParams {
+  page?: string;
+  limit?: string;
+  search?: string;
+  skill?: string;
+  location?: string;
+}
+
 // ============================================
 // Project types
 // ============================================

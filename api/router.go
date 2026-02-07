@@ -19,6 +19,7 @@ func SetupRouter(jwtSecret string) *gin.Engine {
 	{
 		public := api.Group("")
 		{
+            public.GET("/users", v1.GetUsers)
             public.GET("/users/:username", v1.GetUserByUsername)
             public.GET("/users/:username/github", v1.GetGitHubData)
             public.GET("/users/:username/leetcode", v1.GetLeetCodeData)
