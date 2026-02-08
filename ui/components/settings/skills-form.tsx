@@ -1,10 +1,11 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { GripVertical } from "lucide-react"
 
 import type { FullUser } from "@/types"
 import { api } from "@/lib/api"
@@ -20,7 +21,60 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>
 
-const quickSkills = ["TypeScript", "React", "Next.js", "Go", "PostgreSQL", "Docker"]
+const quickSkills = [
+  "TypeScript",
+  "JavaScript",
+  "React",
+  "Next.js",
+  "Vue",
+  "Angular",
+  "Svelte",
+  "Node.js",
+  "Express",
+  "Go",
+  "Python",
+  "Java",
+  "C#",
+  "C++",
+  "Rust",
+  "Ruby",
+  "Swift",
+  "Kotlin",
+  "PHP",
+  "HTML",
+  "CSS",
+  "Tailwind CSS",
+  "PostgreSQL",
+  "MySQL",
+  "MongoDB",
+  "Redis",
+  "SQLite",
+  "Prisma",
+  "Docker",
+  "Kubernetes",
+  "AWS",
+  "GCP",
+  "Azure",
+  "Terraform",
+  "CI/CD",
+  "Git",
+  "GraphQL",
+  "REST APIs",
+  "Linux",
+  "Firebase",
+  "Supabase",
+  "Django",
+  "Flask",
+  "Spring Boot",
+  "Rails",
+  ".NET",
+  "Electron",
+  "React Native",
+  "Flutter",
+  "TensorFlow",
+  "PyTorch",
+  "LangChain",
+]
 
 export function SkillsForm({
   user,
@@ -30,6 +84,7 @@ export function SkillsForm({
   onUpdated: (user: FullUser) => void
 }) {
   const [newSkill, setNewSkill] = useState("")
+  const [skillSearch, setSkillSearch] = useState("")
   const [isSaving, setIsSaving] = useState(false)
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -38,8 +93,13 @@ export function SkillsForm({
 
   const skills = form.watch("skills")
   const suggested = useMemo(
-    () => quickSkills.filter((skill) => !skills.includes(skill)),
-    [skills]
+    () =>
+      quickSkills.filter(
+        (skill) =>
+          !skills.includes(skill) &&
+          skill.toLowerCase().includes(skillSearch.toLowerCase())
+      ),
+    [skills, skillSearch]
   )
 
   const addSkill = (value: string) => {
@@ -56,6 +116,19 @@ export function SkillsForm({
       { shouldDirty: true }
     )
   }
+
+  const dragIndex = useRef<number | null>(null)
+
+  const moveSkill = useCallback(
+    (from: number, to: number) => {
+      if (from === to) return
+      const updated = [...skills]
+      const [moved] = updated.splice(from, 1)
+      updated.splice(to, 0, moved)
+      form.setValue("skills", updated, { shouldDirty: true })
+    },
+    [skills, form]
+  )
 
   const onSubmit = form.handleSubmit(async (values) => {
     setIsSaving(true)
@@ -77,7 +150,7 @@ export function SkillsForm({
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4">
-        <div className="space-y-2">
+        <div className="space-y-2 mb-8">
           <Label htmlFor="skill">Add a skill</Label>
           <div className="flex gap-2">
             <Input
@@ -91,35 +164,72 @@ export function SkillsForm({
             </Button>
           </div>
         </div>
-        {suggested.length > 0 ? (
-          <div className="flex flex-wrap gap-2">
-            {suggested.map((skill) => (
-              <Button
-                key={skill}
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => addSkill(skill)}
-              >
-                + {skill}
-              </Button>
-            ))}
-          </div>
-        ) : null}
-        <div className="flex flex-wrap gap-2">
-          {skills.map((skill) => (
-            <Badge key={skill} variant="secondary" className="gap-2">
-              {skill}
-              <button
-                type="button"
-                className="text-muted-foreground hover:text-foreground"
-                onClick={() => removeSkill(skill)}
-              >
-                ×
-              </button>
-            </Badge>
-          ))}
+        <div className="space-y-2 mb-8">
+          <Input
+            value={skillSearch}
+            onChange={(event) => setSkillSearch(event.target.value)}
+            placeholder="Search quick skills..."
+          />
+          {suggested.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {suggested.map((skill) => (
+                <Button
+                  key={skill}
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => addSkill(skill)}
+                >
+                  + {skill}
+                </Button>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              {skillSearch ? "No matching skills found." : "All quick skills added!"}
+            </p>
+          )}
         </div>
+        {skills.length > 0 && (
+          <div className="space-y-1.5">
+            <Label className="text-muted-foreground text-xs">
+              Drag to reorder
+            </Label>
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill, index) => (
+                <Badge
+                  key={skill}
+                  variant="secondary"
+                  className="gap-1 select-none cursor-grab active:cursor-grabbing"
+                  draggable
+                  onDragStart={() => {
+                    dragIndex.current = index
+                  }}
+                  onDragOver={(e) => {
+                    e.preventDefault()
+                    if (dragIndex.current !== null && dragIndex.current !== index) {
+                      moveSkill(dragIndex.current, index)
+                      dragIndex.current = index
+                    }
+                  }}
+                  onDragEnd={() => {
+                    dragIndex.current = null
+                  }}
+                >
+                  <GripVertical className="h-3 w-3 shrink-0 text-muted-foreground" />
+                  {skill}
+                  <button
+                    type="button"
+                    className="text-muted-foreground hover:text-foreground"
+                    onClick={() => removeSkill(skill)}
+                  >
+                    ×
+                  </button>
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="flex justify-end">
           <Button type="submit" disabled={isSaving}>
             {isSaving ? "Saving..." : "Save skills"}

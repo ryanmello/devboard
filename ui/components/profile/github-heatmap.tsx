@@ -62,30 +62,43 @@ function Cell({ count, date }: { count: number; date: string }) {
   )
 }
 
-export function GitHubHeatmap({ data }: { data: GitHubContributionData | null }) {
-  if (!data) return null
+const SKELETON_CELLS = Array.from({ length: 52 * 7 }, (_, i) => i)
 
-  const days = data.weeks.flatMap((week) => week.contributionDays)
+export function GitHubHeatmap({ data }: { data: GitHubContributionData | null }) {
+  const loading = !data
+  const days = data?.weeks.flatMap((week) => week.contributionDays) ?? []
 
   return (
     <Card className="shadow-sm">
-      <CardHeader className="pb-2">
+      <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">GitHub Activity</CardTitle>
-          <span className="text-sm font-medium text-muted-foreground">
-            {data.totalContributions.toLocaleString()} contributions
-          </span>
+          {loading ? (
+            <span className="h-4 w-32 animate-pulse rounded bg-muted" />
+          ) : (
+            <span className="text-sm font-medium text-muted-foreground">
+              {data.totalContributions.toLocaleString()} contributions
+            </span>
+          )}
         </div>
       </CardHeader>
       <CardContent>
         <div className="max-h-[110px] xl:max-h-[125px] flex flex-col flex-wrap gap-[2px] overflow-x-clip">
-          {days.map((day) => (
-            <Cell
-              key={day.date}
-              count={day.contributionCount}
-              date={day.date}
-            />
-          ))}
+          {loading
+            ? SKELETON_CELLS.map((i) => (
+                <div
+                  key={i}
+                  className="size-[13px] xl:size-[15px] rounded-sm bg-neutral-700 animate-pulse"
+                  style={{ animationDelay: `${(i % 7) * 75}ms` }}
+                />
+              ))
+            : days.map((day) => (
+                <Cell
+                  key={day.date}
+                  count={day.contributionCount}
+                  date={day.date}
+                />
+              ))}
         </div>
         <div className="flex items-center justify-end gap-1.5 mt-3 text-xs text-muted-foreground">
           <span>Less</span>

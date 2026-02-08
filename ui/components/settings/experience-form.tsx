@@ -1,20 +1,42 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import Image from "next/image"
 import { Pencil, Trash2 } from "lucide-react"
 
 import type { Experience, FullUser } from "@/types"
 import { api } from "@/lib/api"
+import { sortExperience } from "@/lib/utils"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+
+const months = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+] as const
+
+const currentYear = new Date().getFullYear()
+const years = Array.from({ length: 50 }, (_, i) => String(currentYear - i))
+
+const employmentTypes = [
+  "Full-time",
+  "Part-time",
+  "Self-employed",
+  "Freelance",
+  "Contract",
+  "Internship",
+  "Apprenticeship",
+  "Seasonal",
+] as const
 
 const schema = z.object({
   company: z.string().min(1, "Company is required."),
@@ -59,6 +81,9 @@ export function ExperienceForm({
       description: "",
     },
   })
+
+  const isCurrent = form.watch("isCurrent") ?? false
+  const sortedItems = useMemo(() => sortExperience(items), [items])
 
   useEffect(() => {
     setItems(user.experience ?? [])
@@ -145,63 +170,149 @@ export function ExperienceForm({
         <CardTitle>Experience</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <form onSubmit={onSubmit} className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="company">Company</Label>
-            <Input id="company" {...form.register("company")} />
-            {form.formState.errors.company ? (
-              <p className="text-xs text-destructive">{form.formState.errors.company.message}</p>
-            ) : null}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="title">Job title</Label>
-            <Input id="title" {...form.register("title")} />
-            {form.formState.errors.title ? (
-              <p className="text-xs text-destructive">{form.formState.errors.title.message}</p>
-            ) : null}
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="company">Company</Label>
+              <Input id="company" {...form.register("company")} />
+              {form.formState.errors.company ? (
+                <p className="text-xs text-destructive">{form.formState.errors.company.message}</p>
+              ) : null}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="title">Job title</Label>
+              <Input id="title" {...form.register("title")} />
+              {form.formState.errors.title ? (
+                <p className="text-xs text-destructive">{form.formState.errors.title.message}</p>
+              ) : null}
+            </div>
+            <div className="space-y-2">
+              <Label>Employment type</Label>
+              <Select
+                value={form.watch("employmentType") ?? ""}
+                onValueChange={(value) =>
+                  form.setValue("employmentType", value, { shouldDirty: true })
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent className="min-w-[200px]">
+                  {employmentTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="location">Location</Label>
+              <Input id="location" {...form.register("location")} placeholder="Remote" />
+            </div>
           </div>
           <div className="space-y-2">
             <Label htmlFor="companyImage">Company image URL</Label>
-            <Input id="companyImage" {...form.register("companyImage")} />
+            <Input id="companyImage" {...form.register("companyImage")} placeholder="https://..." />
             {form.formState.errors.companyImage ? (
               <p className="text-xs text-destructive">{form.formState.errors.companyImage.message}</p>
             ) : null}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="startMonth">Start month</Label>
-            <Input id="startMonth" {...form.register("startMonth")} placeholder="Jan" />
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div className="space-y-2">
+              <Label>Start month</Label>
+              <Select
+                value={form.watch("startMonth") ?? ""}
+                onValueChange={(value) =>
+                  form.setValue("startMonth", value, { shouldDirty: true })
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Month" />
+                </SelectTrigger>
+                <SelectContent className="min-w-[160px]">
+                  {months.map((m) => (
+                    <SelectItem key={m} value={m}>{m}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Start year</Label>
+              <Select
+                value={form.watch("startYear") ?? ""}
+                onValueChange={(value) =>
+                  form.setValue("startYear", value, { shouldDirty: true })
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Year" />
+                </SelectTrigger>
+                <SelectContent className="min-w-[120px]">
+                  {years.map((y) => (
+                    <SelectItem key={y} value={y}>{y}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>End month</Label>
+              <Select
+                value={form.watch("endMonth") ?? ""}
+                onValueChange={(value) =>
+                  form.setValue("endMonth", value, { shouldDirty: true })
+                }
+                disabled={isCurrent}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Month" />
+                </SelectTrigger>
+                <SelectContent className="min-w-[160px]">
+                  {months.map((m) => (
+                    <SelectItem key={m} value={m}>{m}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>End year</Label>
+              <Select
+                value={form.watch("endYear") ?? ""}
+                onValueChange={(value) =>
+                  form.setValue("endYear", value, { shouldDirty: true })
+                }
+                disabled={isCurrent}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Year" />
+                </SelectTrigger>
+                <SelectContent className="min-w-[120px]">
+                  {years.map((y) => (
+                    <SelectItem key={y} value={y}>{y}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              {...form.register("isCurrent", {
+                onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                  if (e.target.checked) {
+                    form.setValue("endMonth", "", { shouldDirty: true })
+                    form.setValue("endYear", "", { shouldDirty: true })
+                  }
+                },
+              })}
+            />
+            I currently work here
+          </label>
           <div className="space-y-2">
-            <Label htmlFor="startYear">Start year</Label>
-            <Input id="startYear" {...form.register("startYear")} placeholder="2022" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="endMonth">End month</Label>
-            <Input id="endMonth" {...form.register("endMonth")} placeholder="Dec" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="endYear">End year</Label>
-            <Input id="endYear" {...form.register("endYear")} placeholder="2024" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="employmentType">Employment type</Label>
-            <Input id="employmentType" {...form.register("employmentType")} placeholder="Full-time" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="location">Location</Label>
-            <Input id="location" {...form.register("location")} placeholder="Remote" />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="description">Description</Label>
             <Textarea id="description" rows={3} {...form.register("description")} />
           </div>
-          <div className="space-y-2 sm:col-span-2">
-            <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" {...form.register("isCurrent")} />
-              I currently work here
-            </label>
-          </div>
-          <div className="sm:col-span-2 flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <Button type="submit" disabled={isSaving}>
               {isSaving ? "Saving..." : editingId ? "Update experience" : "Add experience"}
             </Button>
@@ -212,43 +323,67 @@ export function ExperienceForm({
             ) : null}
           </div>
         </form>
-        <div className="space-y-3">
-          {items.map((experience) => (
-            <div key={experience.id} className="rounded-xl border border-border p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h3 className="font-semibold">{experience.title}</h3>
-                  <p className="text-muted-foreground text-sm">{experience.company}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {experience.startMonth} {experience.startYear} - {experience.isCurrent ? "Present" : `${experience.endMonth ?? ""} ${experience.endYear ?? ""}`.trim()}
+        <div className="space-y-4 rounded-xl border border-border p-4">
+          {sortedItems.map((item) => (
+            <div key={item.id} className="flex gap-4">
+              {item.companyImage ? (
+                <div className="bg-muted relative h-12 w-12 shrink-0 overflow-hidden rounded-md">
+                  <Image
+                    src={item.companyImage}
+                    alt={item.company}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="bg-muted flex h-12 w-12 shrink-0 items-center justify-center rounded-md">
+                  <span className="text-muted-foreground text-base font-semibold">
+                    {item.company.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
+              <div className="min-w-0 flex-1">
+                <h3 className="text-base font-semibold leading-tight">{item.title}</h3>
+                <p className="text-muted-foreground mt-0.5 text-sm">
+                  {item.company} · {item.employmentType ?? "Role"}
+                </p>
+                <p className="text-muted-foreground mt-0.5 text-xs">
+                  {item.startMonth} {item.startYear} – {item.isCurrent ? "Present" : `${item.endMonth ?? ""} ${item.endYear ?? ""}`.trim()}
+                </p>
+                {item.location && (
+                  <p className="text-muted-foreground mt-0.5 text-xs">{item.location}</p>
+                )}
+                {item.description && (
+                  <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                    {item.description}
                   </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button type="button" variant="ghost" size="icon" onClick={() => startEdit(experience)}>
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button type="button" variant="ghost" size="icon">
-                        <Trash2 className="h-4 w-4 text-destructive" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete this experience?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => deleteExperience(experience.id)}>
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
+                )}
+              </div>
+              <div className="flex shrink-0 items-start gap-1">
+                <Button type="button" variant="ghost" size="icon" onClick={() => startEdit(item)}>
+                  <Pencil className="h-4 w-4" />
+                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button type="button" variant="ghost" size="icon">
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete this experience?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => deleteExperience(item.id)}>
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           ))}

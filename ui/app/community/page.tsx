@@ -70,23 +70,7 @@ export default function CommunityPage() {
           onSkillChange={setSkill}
           skillOptions={skillOptions}
         />
-        {isLoading ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <Skeleton key={index} className="h-56 w-full" />
-            ))}
-          </div>
-        ) : error ? (
-          <div className="rounded-xl border border-border bg-card p-6 text-sm text-muted-foreground">
-            {error}. Check your API connection or try again later.
-          </div>
-        ) : users.length === 0 ? (
-          <div className="rounded-xl border border-border bg-card p-6 text-sm text-muted-foreground">
-            No users found. Try adjusting your search or filters.
-          </div>
-        ) : (
-          <UserGrid users={users} />
-        )}
+        <UserGrid users={users} />
       </main>
     </div>
   )

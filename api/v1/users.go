@@ -258,31 +258,31 @@ func UpdateCurrentUser(c *gin.Context) {
 		return
 	}
 
-	// Update fields if provided
+	// Update fields if provided; empty strings clear the value (set to null)
 	updates := make(map[string]interface{})
 	if req.FirstName != nil {
-		updates["first_name"] = *req.FirstName
+		updates["first_name"] = nilIfEmpty(req.FirstName)
 	}
 	if req.LastName != nil {
-		updates["last_name"] = *req.LastName
+		updates["last_name"] = nilIfEmpty(req.LastName)
 	}
 	if req.Headline != nil {
-		updates["headline"] = *req.Headline
+		updates["headline"] = nilIfEmpty(req.Headline)
 	}
 	if req.Image != nil {
-		updates["image"] = *req.Image
+		updates["image"] = nilIfEmpty(req.Image)
 	}
 	if req.Resume != nil {
-		updates["resume"] = *req.Resume
+		updates["resume"] = nilIfEmpty(req.Resume)
 	}
 	if req.GitHubUsername != nil {
-		updates["git_hub_username"] = *req.GitHubUsername
+		updates["git_hub_username"] = nilIfEmpty(req.GitHubUsername)
 	}
 	if req.LeetCodeUsername != nil {
-		updates["leet_code_username"] = *req.LeetCodeUsername
+		updates["leet_code_username"] = nilIfEmpty(req.LeetCodeUsername)
 	}
 	if req.LinkedInUsername != nil {
-		updates["linked_in_username"] = *req.LinkedInUsername
+		updates["linked_in_username"] = nilIfEmpty(req.LinkedInUsername)
 	}
 
 	if len(updates) > 0 {
@@ -370,6 +370,15 @@ func UpdateSkills(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, user)
+}
+
+// nilIfEmpty returns nil if the string pointer points to an empty string,
+// otherwise returns the dereferenced string value.
+func nilIfEmpty(s *string) interface{} {
+	if *s == "" {
+		return nil
+	}
+	return *s
 }
 
 // validateUsername checks if a username is valid

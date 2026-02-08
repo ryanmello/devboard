@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { UserNav } from "@/components/shared/user-nav"
@@ -13,11 +14,10 @@ export function Navbar() {
   return (
     <header className="border-b border-border">
       <div className="mx-auto flex w-full items-center justify-between px-6 py-4">
-        <div className="flex items-center gap-3">
-          <Link href="/" className="text-lg font-semibold tracking-tight">
-            Devboard
-          </Link>
-        </div>
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/white.png" alt="Devboard logo" width={32} height={32} />
+          <span className="text-3xl font-semibold tracking-tight">Devboard</span>
+        </Link>
         <nav className="hidden items-center gap-6 md:flex">
           <Link href="/community" className="text-sm font-medium text-muted-foreground hover:text-foreground">
             Community

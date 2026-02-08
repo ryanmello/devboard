@@ -30,22 +30,6 @@ export function SearchFilters({
           onChange={(event) => onSearchChange(event.target.value)}
         />
       </div>
-      <div className="flex w-full flex-col gap-2 md:max-w-xs">
-        <Label>Skill</Label>
-        <Select value={skill || "all"} onValueChange={(v) => onSkillChange(v === "all" ? "" : v)}>
-          <SelectTrigger>
-            <SelectValue placeholder="All skills" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All skills</SelectItem>
-            {skillOptions.map((option) => (
-              <SelectItem key={option} value={option}>
-                {option}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
     </div>
   )
 }

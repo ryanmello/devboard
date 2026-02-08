@@ -11,45 +11,24 @@ import { LeetCodeStats as LeetCodeStatsCard } from "@/components/profile/leetcod
 import { ProjectsGrid } from "@/components/profile/projects-grid"
 import { ExperienceList } from "@/components/profile/experience-list"
 import { EducationList } from "@/components/profile/education-list"
-import { Skeleton } from "@/components/ui/skeleton"
 
 export function ProfilePage({ user }: { user: FullUser }) {
   const [github, setGithub] = useState<GitHubContributionData | null>(null)
   const [leetcode, setLeetcode] = useState<LeetCodeStats | null>(null)
-  const [loadingGithub, setLoadingGithub] = useState(true)
-  const [loadingLeetCode, setLoadingLeetCode] = useState(true)
 
   useEffect(() => {
     let isMounted = true
 
-    if (!user.githubUsername) {
-      setLoadingGithub(false)
-    } else {
-      api
-        .getGitHubData(user.username)
-        .then((data) => {
-          if (!isMounted) return
-          setGithub(data)
-        })
-        .finally(() => {
-          if (!isMounted) return
-          setLoadingGithub(false)
-        })
+    if (user.githubUsername) {
+      api.getGitHubData(user.username).then((data) => {
+        if (isMounted) setGithub(data)
+      })
     }
 
-    if (!user.leetcodeUsername) {
-      setLoadingLeetCode(false)
-    } else {
-      api
-        .getLeetCodeData(user.username)
-        .then((data) => {
-          if (!isMounted) return
-          setLeetcode(data)
-        })
-        .finally(() => {
-          if (!isMounted) return
-          setLoadingLeetCode(false)
-        })
+    if (user.leetcodeUsername) {
+      api.getLeetCodeData(user.username).then((data) => {
+        if (isMounted) setLeetcode(data)
+      })
     }
 
     return () => {
@@ -64,19 +43,11 @@ export function ProfilePage({ user }: { user: FullUser }) {
         <SkillsSection skills={user.skills} />
       </div>
       <div className="space-y-6">
-        {loadingLeetCode ? (
-          <Skeleton className="h-48 w-full" />
-        ) : (
-          <LeetCodeStatsCard stats={leetcode} />
-        )}
-        {loadingGithub ? (
-          <Skeleton className="h-48 w-full" />
-        ) : (
-          <GitHubHeatmap data={github} />
-        )}
-        <ProjectsGrid projects={user.projects} />
+        {user.leetcodeUsername && <LeetCodeStatsCard stats={leetcode} />}
+        {user.githubUsername && <GitHubHeatmap data={github} />}
         <ExperienceList experience={user.experience} />
         <EducationList education={user.education} />
+        <ProjectsGrid projects={user.projects} />
       </div>
     </div>
   )

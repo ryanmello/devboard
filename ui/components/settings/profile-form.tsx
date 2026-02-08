@@ -66,14 +66,14 @@ export function ProfileForm({
     setIsSaving(true)
     try {
       const updated = await api.updateProfile({
-        firstName: values.firstName || undefined,
-        lastName: values.lastName || undefined,
-        headline: values.headline || undefined,
-        image: values.image || undefined,
-        resume: values.resume || undefined,
-        githubUsername: values.githubUsername || undefined,
-        leetcodeUsername: values.leetcodeUsername || undefined,
-        linkedinUsername: values.linkedinUsername || undefined,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        headline: values.headline,
+        image: values.image,
+        resume: values.resume,
+        githubUsername: values.githubUsername,
+        leetcodeUsername: values.leetcodeUsername,
+        linkedinUsername: values.linkedinUsername,
       })
       toast.success("Profile updated.")
       onUpdated({ ...user, ...updated })
