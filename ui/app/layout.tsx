@@ -31,7 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
         {children}
-        <Sonner />
+        <Sonner position="top-center" />
       </body>
     </html>
   );

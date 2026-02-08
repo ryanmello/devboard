@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 export function Hero() {
   return (
     <section className="py-20">
-      <div className="mx-auto flex max-w-6xl flex-col items-start gap-8 px-6 text-left">
+      <div className="mx-auto flex max-w-7xl flex-col items-start gap-8 px-6 text-left">
         <div className="space-y-4">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Developer portfolio, reimagined

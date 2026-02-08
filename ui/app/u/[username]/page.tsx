@@ -46,7 +46,7 @@ export default async function ProfilePageRoute({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl space-y-8 px-6 py-12">
+      <main className="mx-auto w-full max-w-[1400px] space-y-8 px-6 py-12">
         {profile ? (
           <ProfilePage user={profile} />
         ) : (

@@ -5,7 +5,7 @@ import Link from "next/link"
 export function Footer() {
   return (
     <footer className="border-t border-border py-10">
-      <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-6 text-sm text-muted-foreground sm:flex-row sm:items-center">
+      <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-6 text-sm text-muted-foreground sm:flex-row sm:items-center">
         <div>
           <p className="text-foreground font-semibold">Devboard</p>
           <p className="text-xs">© {new Date().getFullYear()} Devboard. All rights reserved.</p>

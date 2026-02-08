@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 export function CTA() {
   return (
     <section className="py-16">
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-7xl px-6">
         <div className="rounded-2xl border border-border bg-card p-10 text-center shadow-sm">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             Ready to showcase your work?
