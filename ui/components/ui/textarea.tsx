@@ -11,6 +11,12 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
         className
       )}
       {...props}
+      spellCheck={false}
+      autoCorrect="off"
+      autoCapitalize="off"
+      data-gramm="false"
+      data-gramm_editor="false"
+      data-enable-grammarly="false"
     />
   )
 }
