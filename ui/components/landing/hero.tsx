@@ -95,22 +95,87 @@ export function Hero() {
                 </div>
               </div>
 
-              {/* Contribution grid */}
-              <div className="mt-5">
-                <p className="mb-2 text-xs font-medium text-muted-foreground">
-                  Contributions
-                </p>
-                <div className="flex gap-[3px]">
-                  {contributionData.map((week, i) => (
-                    <div key={i} className="flex flex-col gap-[3px]">
-                      {week.map((level, j) => (
-                        <div
-                          key={j}
-                          className={`h-2.5 w-2.5 rounded-sm ${levelClasses[level]}`}
+              {/* Contributions & LeetCode side by side */}
+              <div className="mt-5 grid grid-cols-[1fr_1.5fr] gap-4">
+                {/* Contribution grid */}
+                <div>
+                  <p className="mb-2 text-xs font-medium text-muted-foreground">
+                    GitHub
+                  </p>
+                  <div className="flex gap-[3px]">
+                    {contributionData.map((week, i) => (
+                      <div key={i} className="flex flex-col gap-[3px]">
+                        {week.map((level, j) => (
+                          <div
+                            key={j}
+                            className={`h-2.5 w-2.5 rounded-sm ${levelClasses[level]}`}
+                          />
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* LeetCode mini stats */}
+                <div>
+                  <p className="mb-2 text-xs font-medium text-muted-foreground">
+                    LeetCode
+                  </p>
+                  <div className="flex items-center gap-4">
+                    {/* Progress ring */}
+                    <div className="relative flex shrink-0 items-center justify-center">
+                      <svg width={64} height={64} className="-rotate-90">
+                        <circle
+                          cx={32}
+                          cy={32}
+                          r={27}
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={5}
+                          className="text-muted"
                         />
+                        <circle
+                          cx={32}
+                          cy={32}
+                          r={27}
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={5}
+                          strokeLinecap="round"
+                          strokeDasharray={2 * Math.PI * 27}
+                          strokeDashoffset={2 * Math.PI * 27 * (1 - 96 / 150)}
+                          className="text-primary"
+                        />
+                      </svg>
+                      <div className="absolute flex flex-col items-center">
+                        <span className="text-sm font-bold leading-none">96</span>
+                        <span className="text-[8px] text-muted-foreground">solved</span>
+                      </div>
+                    </div>
+                    {/* Difficulty bars */}
+                    <div className="flex-1 space-y-1.5">
+                      {[
+                        { label: "Easy", color: "#22c55e", solved: 53, pct: 55 },
+                        { label: "Medium", color: "#f59e0b", solved: 34, pct: 35 },
+                        { label: "Hard", color: "#ef4444", solved: 9, pct: 10 },
+                      ].map(({ label, color, solved, pct }) => (
+                        <div key={label}>
+                          <div className="mb-0.5 flex items-center justify-between">
+                            <span className="text-[11px] font-medium" style={{ color }}>
+                              {label}
+                            </span>
+                            <span className="text-[10px] text-muted-foreground">{solved}</span>
+                          </div>
+                          <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted">
+                            <div
+                              className="h-full rounded-full"
+                              style={{ width: `${pct}%`, backgroundColor: color }}
+                            />
+                          </div>
+                        </div>
                       ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
               </div>
 
