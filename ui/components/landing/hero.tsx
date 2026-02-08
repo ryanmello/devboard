@@ -10,9 +10,6 @@ export function Hero() {
     <section className="py-20">
       <div className="mx-auto flex max-w-7xl flex-col items-start gap-8 px-6 text-left">
         <div className="space-y-4">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Developer portfolio, reimagined
-          </p>
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
             Your developer portfolio, simplified.
           </h1>

@@ -5,7 +5,9 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { Pencil, Trash2 } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { ArrowUpRight, Github, Pencil, Trash2 } from "lucide-react"
 
 import type { FullUser, Project } from "@/types"
 import { api } from "@/lib/api"
@@ -163,23 +165,81 @@ export function ProjectsForm({
             </Button>
             {editingId ? (
               <Button type="button" variant="outline" onClick={resetForm}>
-                Cancel edit
+                Cancel
               </Button>
             ) : null}
           </div>
         </form>
         <div className="space-y-3">
-          {items.map((project) => (
-            <div key={project.id} className="rounded-xl border border-border p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h3 className="font-semibold">{project.name}</h3>
+          {items.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No projects yet.</p>
+          ) : null}
+          {items.map((project, idx) => (
+            <div key={project.id} className="rounded-xl border border-border">
+              {idx > 0 ? <div className="border-border mx-6 border-t" /> : null}
+              <div className="flex flex-col gap-4 px-6 py-4 sm:flex-row sm:items-start">
+                {/* Thumbnail */}
+                {project.image ? (
+                  <div className="bg-muted relative h-12 w-12 shrink-0 overflow-hidden rounded-md">
+                    <Image src={project.image} alt={project.name} fill className="object-cover" />
+                  </div>
+                ) : (
+                  <div className="bg-muted flex h-12 w-12 shrink-0 items-center justify-center rounded-md">
+                    <span className="text-muted-foreground text-base font-semibold">
+                      {project.name.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+
+                {/* Details */}
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-base font-semibold leading-tight">{project.name}</h3>
+                  {project.primaryLanguage ? (
+                    <p className="text-muted-foreground mt-0.5 text-xs">
+                      {project.primaryLanguage}
+                    </p>
+                  ) : null}
                   {project.description ? (
-                    <p className="text-muted-foreground text-sm">{project.description}</p>
+                    <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                      {project.description}
+                    </p>
+                  ) : null}
+
+                  {(project.githubUrl || project.url) ? (
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      {project.githubUrl ? (
+                        <Link
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="border-border text-muted-foreground hover:text-foreground hover:border-foreground/25 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors"
+                        >
+                          <Github className="h-3.5 w-3.5" />
+                          GitHub
+                        </Link>
+                      ) : null}
+                      {project.url ? (
+                        <Link
+                          href={project.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="border-border text-muted-foreground hover:text-foreground hover:border-foreground/25 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors"
+                        >
+                          <ArrowUpRight className="h-3.5 w-3.5" />
+                          Live
+                        </Link>
+                      ) : null}
+                    </div>
                   ) : null}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button type="button" variant="ghost" size="icon" onClick={() => startEdit(project)}>
+
+                <div className="flex items-center gap-2 sm:ml-auto sm:self-start">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => startEdit(project)}
+                  >
                     <Pencil className="h-4 w-4" />
                   </Button>
                   <AlertDialog>
@@ -207,9 +267,6 @@ export function ProjectsForm({
               </div>
             </div>
           ))}
-          {items.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No projects yet.</p>
-          ) : null}
         </div>
       </CardContent>
     </Card>
