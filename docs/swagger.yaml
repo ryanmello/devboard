@@ -1,0 +1,1175 @@
+basePath: /api/v1
+definitions:
+  db.Education:
+    properties:
+      createdAt:
+        type: string
+      gpa:
+        type: string
+      graduationYear:
+        type: string
+      id:
+        type: string
+      major:
+        type: string
+      minor:
+        type: string
+      startYear:
+        type: string
+      universityImage:
+        type: string
+      universityName:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: string
+    type: object
+  db.Experience:
+    properties:
+      company:
+        type: string
+      companyImage:
+        type: string
+      createdAt:
+        type: string
+      description:
+        type: string
+      employmentType:
+        type: string
+      endMonth:
+        type: string
+      endYear:
+        type: string
+      id:
+        type: string
+      isCurrent:
+        type: boolean
+      location:
+        type: string
+      startMonth:
+        type: string
+      startYear:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: string
+    type: object
+  db.Project:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      githubUrl:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      primaryLanguage:
+        type: string
+      updatedAt:
+        type: string
+      url:
+        type: string
+      userId:
+        type: string
+    type: object
+  db.User:
+    properties:
+      createdAt:
+        type: string
+      education:
+        items:
+          $ref: '#/definitions/db.Education'
+        type: array
+      email:
+        type: string
+      experience:
+        items:
+          $ref: '#/definitions/db.Experience'
+        type: array
+      firstName:
+        type: string
+      githubUsername:
+        type: string
+      headline:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      lastName:
+        type: string
+      leetcodeUsername:
+        type: string
+      linkedinUsername:
+        type: string
+      projects:
+        items:
+          $ref: '#/definitions/db.Project'
+        type: array
+      resume:
+        type: string
+      role:
+        type: string
+      skills:
+        items:
+          type: string
+        type: array
+      updatedAt:
+        type: string
+      username:
+        type: string
+    type: object
+  services.ContributionDay:
+    properties:
+      contributionCount:
+        type: integer
+      date:
+        type: string
+    type: object
+  services.ContributionWeek:
+    properties:
+      contributionDays:
+        items:
+          $ref: '#/definitions/services.ContributionDay'
+        type: array
+    type: object
+  services.GitHubContributionData:
+    properties:
+      totalContributions:
+        type: integer
+      weeks:
+        items:
+          $ref: '#/definitions/services.ContributionWeek'
+        type: array
+    type: object
+  services.LeetCodeStats:
+    properties:
+      acceptanceRate:
+        type: number
+      contributionPoints:
+        type: integer
+      easySolved:
+        type: integer
+      hardSolved:
+        type: integer
+      mediumSolved:
+        type: integer
+      message:
+        type: string
+      ranking:
+        type: integer
+      reputation:
+        type: integer
+      status:
+        type: string
+      submissionCalendar:
+        additionalProperties:
+          type: integer
+        type: object
+      totalEasy:
+        type: integer
+      totalHard:
+        type: integer
+      totalMedium:
+        type: integer
+      totalQuestions:
+        type: integer
+      totalSolved:
+        type: integer
+    type: object
+  v1.CreateEducationRequest:
+    properties:
+      gpa:
+        example: "3.8"
+        type: string
+      graduationYear:
+        example: "2022"
+        type: string
+      major:
+        example: Computer Science
+        type: string
+      minor:
+        example: Mathematics
+        type: string
+      startYear:
+        example: "2018"
+        type: string
+      universityImage:
+        example: https://example.com/stanford.jpg
+        type: string
+      universityName:
+        example: Stanford University
+        type: string
+    required:
+    - graduationYear
+    - major
+    - startYear
+    - universityName
+    type: object
+  v1.CreateExperienceRequest:
+    properties:
+      company:
+        example: Google
+        type: string
+      companyImage:
+        example: https://example.com/google.jpg
+        type: string
+      description:
+        example: Developed scalable microservices...
+        type: string
+      employmentType:
+        example: Full-time
+        type: string
+      endMonth:
+        example: December
+        type: string
+      endYear:
+        example: "2023"
+        type: string
+      isCurrent:
+        example: false
+        type: boolean
+      location:
+        example: Mountain View, CA
+        type: string
+      startMonth:
+        example: January
+        type: string
+      startYear:
+        example: "2022"
+        type: string
+      title:
+        example: Software Engineer
+        type: string
+    required:
+    - company
+    - startMonth
+    - startYear
+    - title
+    type: object
+  v1.CreateProjectRequest:
+    properties:
+      description:
+        example: A full-stack web application
+        type: string
+      githubUrl:
+        example: https://github.com/johndoe/project
+        type: string
+      image:
+        example: https://example.com/project.jpg
+        type: string
+      name:
+        example: My Awesome Project
+        type: string
+      primaryLanguage:
+        example: TypeScript
+        type: string
+      url:
+        example: https://myproject.com
+        type: string
+    required:
+    - name
+    type: object
+  v1.CreateUserRequest:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      username:
+        example: johndoe
+        type: string
+    required:
+    - email
+    - username
+    type: object
+  v1.ErrorResponse:
+    properties:
+      error:
+        example: Something went wrong
+        type: string
+    type: object
+  v1.MessageResponse:
+    properties:
+      message:
+        example: Operation successful
+        type: string
+    type: object
+  v1.UpdateEducationRequest:
+    properties:
+      gpa:
+        example: "3.8"
+        type: string
+      graduationYear:
+        example: "2022"
+        type: string
+      major:
+        example: Computer Science
+        type: string
+      minor:
+        example: Mathematics
+        type: string
+      startYear:
+        example: "2018"
+        type: string
+      universityImage:
+        example: https://example.com/stanford.jpg
+        type: string
+      universityName:
+        example: Stanford University
+        type: string
+    type: object
+  v1.UpdateExperienceRequest:
+    properties:
+      company:
+        example: Google
+        type: string
+      companyImage:
+        example: https://example.com/google.jpg
+        type: string
+      description:
+        example: Developed scalable microservices...
+        type: string
+      employmentType:
+        example: Full-time
+        type: string
+      endMonth:
+        example: December
+        type: string
+      endYear:
+        example: "2023"
+        type: string
+      isCurrent:
+        example: false
+        type: boolean
+      location:
+        example: Mountain View, CA
+        type: string
+      startMonth:
+        example: January
+        type: string
+      startYear:
+        example: "2022"
+        type: string
+      title:
+        example: Software Engineer
+        type: string
+    type: object
+  v1.UpdateProjectRequest:
+    properties:
+      description:
+        example: A full-stack web application
+        type: string
+      githubUrl:
+        example: https://github.com/johndoe/project
+        type: string
+      image:
+        example: https://example.com/project.jpg
+        type: string
+      name:
+        example: My Awesome Project
+        type: string
+      primaryLanguage:
+        example: TypeScript
+        type: string
+      url:
+        example: https://myproject.com
+        type: string
+    type: object
+  v1.UpdateSkillsRequest:
+    properties:
+      skills:
+        example:
+        - Go
+        - TypeScript
+        - React
+        items:
+          type: string
+        type: array
+    required:
+    - skills
+    type: object
+  v1.UpdateUserRequest:
+    properties:
+      firstName:
+        example: John
+        type: string
+      githubUsername:
+        example: johndoe
+        type: string
+      headline:
+        example: Full Stack Developer
+        type: string
+      image:
+        example: https://example.com/image.jpg
+        type: string
+      lastName:
+        example: Doe
+        type: string
+      leetcodeUsername:
+        example: johndoe
+        type: string
+      linkedinUsername:
+        example: johndoe
+        type: string
+      resume:
+        example: https://example.com/resume.pdf
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@devboard.io
+    name: API Support
+    url: http://www.devboard.io/support
+  description: The Better Portfolio API for Software Engineers
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Devboard API
+  version: "1.0"
+paths:
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Returns a paginated list of users with optional search and skill
+        filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Search by name, username, or headline
+        in: query
+        name: search
+        type: string
+      - description: Filter by skill
+        in: query
+        name: skill
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/db.User'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: List users
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user profile for the authenticated user
+      parameters:
+      - description: Create user request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create user profile
+      tags:
+      - Users
+  /users/{username}:
+    get:
+      consumes:
+      - application/json
+      description: Returns a user's public profile by username with projects, education,
+        and experience
+      parameters:
+      - description: Username
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.User'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Get user by username
+      tags:
+      - Users
+  /users/{username}/github:
+    get:
+      consumes:
+      - application/json
+      description: Returns GitHub contribution calendar data for a user
+      parameters:
+      - description: Username
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.GitHubContributionData'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Get GitHub contribution data
+      tags:
+      - External
+  /users/{username}/leetcode:
+    get:
+      consumes:
+      - application/json
+      description: Returns LeetCode problem-solving statistics for a user
+      parameters:
+      - description: Username
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.LeetCodeStats'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Get LeetCode statistics
+      tags:
+      - External
+  /users/me:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes the authenticated user's account and all associated data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.MessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete current user
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      description: Returns the authenticated user's profile with projects, education,
+        and experience
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.User'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get current user
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Updates the authenticated user's profile
+      parameters:
+      - description: Update user request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update current user
+      tags:
+      - Users
+  /users/me/education:
+    get:
+      consumes:
+      - application/json
+      description: Returns all education entries for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/db.Education'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get my education
+      tags:
+      - Education
+    post:
+      consumes:
+      - application/json
+      description: Creates a new education entry for the authenticated user
+      parameters:
+      - description: Create education request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CreateEducationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.Education'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create education
+      tags:
+      - Education
+  /users/me/education/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes an education entry
+      parameters:
+      - description: Education ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.MessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete education
+      tags:
+      - Education
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing education entry
+      parameters:
+      - description: Education ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update education request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.UpdateEducationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.Education'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update education
+      tags:
+      - Education
+  /users/me/experience:
+    get:
+      consumes:
+      - application/json
+      description: Returns all experience entries for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/db.Experience'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get my experience
+      tags:
+      - Experience
+    post:
+      consumes:
+      - application/json
+      description: Creates a new experience entry for the authenticated user
+      parameters:
+      - description: Create experience request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CreateExperienceRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.Experience'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create experience
+      tags:
+      - Experience
+  /users/me/experience/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes an experience entry
+      parameters:
+      - description: Experience ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.MessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete experience
+      tags:
+      - Experience
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing experience entry
+      parameters:
+      - description: Experience ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update experience request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.UpdateExperienceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.Experience'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update experience
+      tags:
+      - Experience
+  /users/me/projects:
+    get:
+      consumes:
+      - application/json
+      description: Returns all projects for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/db.Project'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get my projects
+      tags:
+      - Projects
+    post:
+      consumes:
+      - application/json
+      description: Creates a new project for the authenticated user
+      parameters:
+      - description: Create project request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CreateProjectRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.Project'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create project
+      tags:
+      - Projects
+  /users/me/projects/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a project
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.MessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete project
+      tags:
+      - Projects
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing project
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update project request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.UpdateProjectRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.Project'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update project
+      tags:
+      - Projects
+  /users/me/skills:
+    put:
+      consumes:
+      - application/json
+      description: Updates the authenticated user's skills array
+      parameters:
+      - description: Update skills request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.UpdateSkillsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update user skills
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    description: 'Enter your bearer token in the format: Bearer {token}'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
