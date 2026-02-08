@@ -18,7 +18,7 @@ export function ProjectsGrid({ projects }: { projects: Project[] }) {
       <CardContent className="space-y-0 p-0">
         {projects.map((project, idx) => (
           <div key={project.id}>
-            {idx > 0 && <div className="border-border mx-6 border-t" />}
+            {idx > 0 && <div className="mb-6" />}
             <div className="flex gap-4 px-6">
               {/* Thumbnail */}
               {project.image ? (

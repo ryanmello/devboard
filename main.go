@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/ryanmello/devboard/api"
@@ -9,7 +11,7 @@ import (
 	"github.com/ryanmello/devboard/db"
 	"github.com/ryanmello/devboard/middleware"
 
-	_ "github.com/ryanmello/devboard/docs" // Swagger docs
+	"github.com/ryanmello/devboard/docs" // Swagger docs
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -61,6 +63,14 @@ func main() {
 		log.Fatalf("Failed to fetch Supabase JWKS: %v", err)
 	}
 	log.Println("Supabase JWKS public key loaded")
+
+	// Set Swagger host dynamically — use Railway's public domain in prod, localhost in dev
+	if domain := os.Getenv("API_URL"); domain != "" {
+		docs.SwaggerInfo.Host = domain
+		docs.SwaggerInfo.Schemes = []string{"https"}
+	} else {
+		docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%s", cfg.Port)
+	}
 
 	// Setup router
 	r := api.SetupRouter(publicKey)
