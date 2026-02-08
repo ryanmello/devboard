@@ -13,10 +13,10 @@ export function Navbar() {
 
   return (
     <header className="border-b border-border">
-      <div className="mx-auto flex w-full items-center justify-between px-6 py-4">
+      <div className="mx-auto flex h-16 w-full items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/white.png" alt="Devboard logo" width={32} height={32} />
-          <span className="text-3xl font-semibold tracking-tight">Devboard</span>
+          <Image src="/white.png" alt="Devboard logo" width={24} height={24} />
+          <span className="text-2xl font-semibold tracking-tight">Devboard</span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           <Link href="/community" className="text-sm font-medium text-muted-foreground hover:text-foreground">
