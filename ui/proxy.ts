@@ -37,7 +37,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  // Redirect authenticated users away from auth pages to settings
+  // Redirect authenticated users away from auth pages
   const authRoutes = ["/sign-in", "/sign-up"];
   const isAuthRoute = authRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route),

@@ -72,7 +72,7 @@ export function GitHubHeatmap({ data }: { data: GitHubContributionData | null })
     <Card className="shadow-sm">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">GitHub Activity</CardTitle>
+          <CardTitle className="text-lg">GitHub</CardTitle>
           {loading ? (
             <span className="h-4 w-32 animate-pulse rounded bg-muted" />
           ) : (

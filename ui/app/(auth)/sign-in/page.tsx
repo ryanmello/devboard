@@ -53,7 +53,7 @@ function SignInContent() {
   return (
     <div
       className="flex flex-col gap-8 min-h-screen items-center justify-center p-4 bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/background.png')" }}
+      // style={{ backgroundImage: "url('/background.png')" }}
     >
       <div className="flex items-center justify-center gap-2">
         <Image
