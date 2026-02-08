@@ -16,16 +16,16 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 
 function SignUpContent() {
-  const [isLoading, setIsLoading] = useState<"google" | "github" | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const supabase = createClient();
 
   // Get redirect URL from query params (used for OAuth consent flow)
   const redirectUrl = searchParams.get("redirect");
 
-  const handleOAuthSignUp = async (provider: "google" | "github") => {
+  const handleGitHubSignUp = async () => {
     try {
-      setIsLoading(provider);
+      setIsLoading(true);
 
       // Build callback URL with optional redirect parameter
       const callbackUrl = new URL("/auth/callback", window.location.origin);
@@ -34,7 +34,7 @@ function SignUpContent() {
       }
 
       const { error } = await supabase.auth.signInWithOAuth({
-        provider,
+        provider: "github",
         options: {
           redirectTo: callbackUrl.toString(),
         },
@@ -42,11 +42,11 @@ function SignUpContent() {
 
       if (error) {
         console.error("OAuth error:", error.message);
-        setIsLoading(null);
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Unexpected error:", error);
-      setIsLoading(null);
+      setIsLoading(false);
     }
   };
 
@@ -74,18 +74,11 @@ function SignUpContent() {
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           <SocialAuthButton
-            provider="google"
-            onClick={() => handleOAuthSignUp("google")}
-            isLoading={isLoading === "google"}
-          >
-            Sign up with Google
-          </SocialAuthButton>
-          <SocialAuthButton
             provider="github"
-            onClick={() => handleOAuthSignUp("github")}
-            isLoading={isLoading === "github"}
+            onClick={handleGitHubSignUp}
+            isLoading={isLoading}
           >
-            Sign up with GitHub
+            Continue with GitHub
           </SocialAuthButton>
           <p className="text-center text-sm text-muted-foreground mt-3">
             Already have an account?{" "}

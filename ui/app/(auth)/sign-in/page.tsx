@@ -16,16 +16,16 @@ import Image from "next/image";
 import Logo from "@/public/white.png";
 
 function SignInContent() {
-  const [isLoading, setIsLoading] = useState<"google" | "github" | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const supabase = createClient();
 
   // Get redirect URL from query params (used for OAuth consent flow)
   const redirectUrl = searchParams.get("redirect");
 
-  const handleOAuthSignIn = async (provider: "google" | "github") => {
+  const handleGitHubSignIn = async () => {
     try {
-      setIsLoading(provider);
+      setIsLoading(true);
 
       // Build callback URL with optional redirect parameter
       const callbackUrl = new URL("/auth/callback", window.location.origin);
@@ -34,7 +34,7 @@ function SignInContent() {
       }
 
       const { error } = await supabase.auth.signInWithOAuth({
-        provider,
+        provider: "github",
         options: {
           redirectTo: callbackUrl.toString(),
         },
@@ -42,11 +42,11 @@ function SignInContent() {
 
       if (error) {
         console.error("OAuth error:", error.message);
-        setIsLoading(null);
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Unexpected error:", error);
-      setIsLoading(null);
+      setIsLoading(false);
     }
   };
 
@@ -72,16 +72,9 @@ function SignInContent() {
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           <SocialAuthButton
-            provider="google"
-            onClick={() => handleOAuthSignIn("google")}
-            isLoading={isLoading === "google"}
-          >
-            Continue with Google
-          </SocialAuthButton>
-          <SocialAuthButton
             provider="github"
-            onClick={() => handleOAuthSignIn("github")}
-            isLoading={isLoading === "github"}
+            onClick={handleGitHubSignIn}
+            isLoading={isLoading}
           >
             Continue with GitHub
           </SocialAuthButton>
