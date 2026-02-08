@@ -318,7 +318,7 @@ export function ExperienceForm({
             </Button>
             {editingId ? (
               <Button type="button" variant="outline" onClick={resetForm}>
-                Cancel edit
+                Cancel
               </Button>
             ) : null}
           </div>

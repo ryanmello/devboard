@@ -5,6 +5,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import Image from "next/image"
 import { Pencil, Trash2 } from "lucide-react"
 
 import type { Education, FullUser } from "@/types"
@@ -167,24 +168,61 @@ export function EducationForm({
             </Button>
             {editingId ? (
               <Button type="button" variant="outline" onClick={resetForm}>
-                Cancel edit
+                Cancel
               </Button>
             ) : null}
           </div>
         </form>
         <div className="space-y-3">
-          {items.map((education) => (
-            <div key={education.id} className="rounded-xl border border-border p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h3 className="font-semibold">{education.universityName}</h3>
-                  <p className="text-muted-foreground text-sm">{education.major}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {education.startYear} - {education.graduationYear}
+          {items.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No education added yet.</p>
+          ) : null}
+          {items.map((education, idx) => (
+            <div key={education.id} className="rounded-xl border border-border">
+              {idx > 0 ? <div className="border-border mx-6 border-t" /> : null}
+              <div className="flex flex-col gap-4 px-6 py-4 sm:flex-row sm:items-start">
+                {/* Thumbnail */}
+                {education.universityImage ? (
+                  <div className="bg-muted relative h-12 w-12 shrink-0 overflow-hidden rounded-md">
+                    <Image
+                      src={education.universityImage}
+                      alt={education.universityName}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="bg-muted flex h-12 w-12 shrink-0 items-center justify-center rounded-md">
+                    <span className="text-muted-foreground text-base font-semibold">
+                      {education.universityName.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+
+                {/* Details */}
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-base font-semibold leading-tight">
+                    {education.universityName}
+                  </h3>
+                  <p className="text-muted-foreground mt-0.5 text-sm">
+                    {education.major}
+                    {education.minor ? ` · Minor in ${education.minor}` : ""}
                   </p>
+                  <p className="text-muted-foreground mt-0.5 text-xs">
+                    {education.startYear} – {education.graduationYear}
+                  </p>
+                  {education.gpa ? (
+                    <p className="text-muted-foreground mt-0.5 text-xs">GPA: {education.gpa}</p>
+                  ) : null}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button type="button" variant="ghost" size="icon" onClick={() => startEdit(education)}>
+
+                <div className="flex items-center gap-2 sm:ml-auto sm:self-start">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => startEdit(education)}
+                  >
                     <Pencil className="h-4 w-4" />
                   </Button>
                   <AlertDialog>
@@ -212,9 +250,6 @@ export function EducationForm({
               </div>
             </div>
           ))}
-          {items.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No education added yet.</p>
-          ) : null}
         </div>
       </CardContent>
     </Card>

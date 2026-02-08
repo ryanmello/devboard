@@ -28,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={figtree.variable}>
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
         {children}
