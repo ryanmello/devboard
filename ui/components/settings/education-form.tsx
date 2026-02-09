@@ -162,8 +162,8 @@ export function EducationForm({
               <p className="text-xs text-destructive">{form.formState.errors.universityImage.message}</p>
             ) : null}
           </div>
-          <div className="sm:col-span-2 flex flex-wrap items-center gap-3">
-            <Button type="submit" disabled={isSaving}>
+          <div className="sm:col-span-2 flex flex-wrap items-center justify-end gap-3">
+            <Button type="submit" disabled={isSaving || !form.formState.isDirty}>
               {isSaving ? "Saving..." : editingId ? "Update education" : "Add education"}
             </Button>
             {editingId ? (

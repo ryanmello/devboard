@@ -164,7 +164,6 @@ export function Hero() {
                             <span className="text-[11px] font-medium" style={{ color }}>
                               {label}
                             </span>
-                            <span className="text-[10px] text-muted-foreground">{solved}</span>
                           </div>
                           <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted">
                             <div

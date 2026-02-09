@@ -312,8 +312,8 @@ export function ExperienceForm({
             <Label htmlFor="description">Description</Label>
             <Textarea id="description" rows={3} {...form.register("description")} />
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <Button type="submit" disabled={isSaving}>
+          <div className="flex flex-wrap items-center justify-end gap-3">
+            <Button type="submit" disabled={isSaving || !form.formState.isDirty}>
               {isSaving ? "Saving..." : editingId ? "Update experience" : "Add experience"}
             </Button>
             {editingId ? (

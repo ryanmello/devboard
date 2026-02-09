@@ -74,7 +74,7 @@ export function OnboardingCard({ onCreated }: { onCreated: (user: FullUser) => v
               <p className="text-xs text-destructive">{form.formState.errors.username.message}</p>
             ) : null}
           </div>
-          <Button type="submit" disabled={isSaving}>
+          <Button type="submit" disabled={isSaving || !form.formState.isDirty}>
             {isSaving ? "Creating..." : "Create Profile"}
           </Button>
         </form>

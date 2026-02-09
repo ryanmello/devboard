@@ -231,7 +231,7 @@ export function SkillsForm({
           </div>
         )}
         <div className="flex justify-end">
-          <Button type="submit" disabled={isSaving}>
+          <Button type="submit" disabled={isSaving || !form.formState.isDirty}>
             {isSaving ? "Saving..." : "Save skills"}
           </Button>
         </div>
