@@ -16,7 +16,7 @@ export function ProfileHeader({ user }: { user: User }) {
     <Card className="shadow-sm">
       <CardContent className="flex flex-col items-start gap-4">
         <div className="flex w-full items-start gap-4">
-          <Avatar className="h-16 w-16">
+          <Avatar className="h-24 w-24">
             <AvatarImage src={user.image ?? undefined} alt={user.username} />
             <AvatarFallback>{initials.toUpperCase()}</AvatarFallback>
           </Avatar>

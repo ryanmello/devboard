@@ -10,11 +10,13 @@ import { Pencil, Trash2 } from "lucide-react"
 
 import type { Education, FullUser } from "@/types"
 import { api } from "@/lib/api"
+import { deleteImage } from "@/lib/storage"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { ImageUpload } from "@/components/shared/image-upload"
 
 const schema = z.object({
   universityName: z.string().min(1, "University name is required."),
@@ -86,6 +88,10 @@ export function EducationForm({
     setIsSaving(true)
     try {
       if (editingId) {
+        const existing = items.find((item) => item.id === editingId)
+        if (existing?.universityImage && existing.universityImage !== values.universityImage) {
+          await deleteImage(existing.universityImage)
+        }
         const updated = await api.updateEducation(editingId, values)
         const next = items.map((item) => (item.id === updated.id ? updated : item))
         setItems(next)
@@ -108,6 +114,8 @@ export function EducationForm({
 
   const deleteEducation = async (educationId: string) => {
     try {
+      const education = items.find((item) => item.id === educationId)
+      if (education?.universityImage) await deleteImage(education.universityImage)
       await api.deleteEducation(educationId)
       const next = items.filter((item) => item.id !== educationId)
       setItems(next)
@@ -143,24 +151,29 @@ export function EducationForm({
             <Label htmlFor="minor">Minor</Label>
             <Input id="minor" {...form.register("minor")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="startYear">Start year</Label>
-            <Input id="startYear" {...form.register("startYear")} />
+          <div className="sm:col-span-2 grid gap-4 sm:grid-cols-3">
+            <div className="space-y-2">
+              <Label htmlFor="startYear">Start year</Label>
+              <Input id="startYear" {...form.register("startYear")} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="graduationYear">Graduation year</Label>
+              <Input id="graduationYear" {...form.register("graduationYear")} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="gpa">GPA</Label>
+              <Input id="gpa" {...form.register("gpa")} />
+            </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="graduationYear">Graduation year</Label>
-            <Input id="graduationYear" {...form.register("graduationYear")} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="gpa">GPA</Label>
-            <Input id="gpa" {...form.register("gpa")} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="universityImage">University image URL</Label>
-            <Input id="universityImage" {...form.register("universityImage")} />
-            {form.formState.errors.universityImage ? (
-              <p className="text-xs text-destructive">{form.formState.errors.universityImage.message}</p>
-            ) : null}
+          <div className="space-y-2 sm:col-span-2">
+            <Label>University logo</Label>
+            <ImageUpload
+              value={form.watch("universityImage") ?? ""}
+              onChange={(url) => form.setValue("universityImage", url, { shouldDirty: true })}
+              userId={user.id}
+              category="education"
+              label="university logo"
+            />
           </div>
           <div className="sm:col-span-2 flex flex-wrap items-center justify-end gap-3">
             <Button type="submit" disabled={isSaving || !form.formState.isDirty}>

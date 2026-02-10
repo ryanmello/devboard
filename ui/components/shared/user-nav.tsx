@@ -40,7 +40,7 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="rounded-full p-0">
           <Avatar>
-            <AvatarImage src={user.user_metadata?.avatar_url} alt="User avatar" />
+            <AvatarImage src={currentUser?.image ?? user.user_metadata?.avatar_url} alt="User avatar" />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </Button>

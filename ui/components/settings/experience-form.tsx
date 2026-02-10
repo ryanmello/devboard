@@ -10,6 +10,7 @@ import { Pencil, Trash2 } from "lucide-react"
 
 import type { Experience, FullUser } from "@/types"
 import { api } from "@/lib/api"
+import { deleteImage } from "@/lib/storage"
 import { sortExperience } from "@/lib/utils"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
@@ -18,6 +19,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { ImageUpload } from "@/components/shared/image-upload"
 
 const months = [
   "January", "February", "March", "April", "May", "June",
@@ -132,6 +134,10 @@ export function ExperienceForm({
         endYear: values.isCurrent ? undefined : values.endYear,
       }
       if (editingId) {
+        const existing = items.find((item) => item.id === editingId)
+        if (existing?.companyImage && existing.companyImage !== values.companyImage) {
+          await deleteImage(existing.companyImage)
+        }
         const updated = await api.updateExperience(editingId, payload)
         const next = items.map((item) => (item.id === updated.id ? updated : item))
         setItems(next)
@@ -154,6 +160,8 @@ export function ExperienceForm({
 
   const deleteExperience = async (experienceId: string) => {
     try {
+      const experience = items.find((item) => item.id === experienceId)
+      if (experience?.companyImage) await deleteImage(experience.companyImage)
       await api.deleteExperience(experienceId)
       const next = items.filter((item) => item.id !== experienceId)
       setItems(next)
@@ -210,13 +218,6 @@ export function ExperienceForm({
               <Label htmlFor="location">Location</Label>
               <Input id="location" {...form.register("location")} placeholder="Remote" />
             </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="companyImage">Company image URL</Label>
-            <Input id="companyImage" {...form.register("companyImage")} placeholder="https://..." />
-            {form.formState.errors.companyImage ? (
-              <p className="text-xs text-destructive">{form.formState.errors.companyImage.message}</p>
-            ) : null}
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <div className="space-y-2">
@@ -311,6 +312,16 @@ export function ExperienceForm({
           <div className="space-y-2">
             <Label htmlFor="description">Description</Label>
             <Textarea id="description" rows={3} {...form.register("description")} />
+          </div>
+          <div className="space-y-2">
+            <Label>Company logo</Label>
+            <ImageUpload
+              value={form.watch("companyImage") ?? ""}
+              onChange={(url) => form.setValue("companyImage", url, { shouldDirty: true })}
+              userId={user.id}
+              category="experience"
+              label="company logo"
+            />
           </div>
           <div className="flex flex-wrap items-center justify-end gap-3">
             <Button type="submit" disabled={isSaving || !form.formState.isDirty}>

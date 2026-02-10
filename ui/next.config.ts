@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "media.licdn.com",
       },
+      {
+        protocol: "https",
+        hostname: "bemriqszoahchbwwopvb.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
     ],
   },
 };

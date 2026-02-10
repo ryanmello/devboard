@@ -5,11 +5,18 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
-import { FileText, Upload, RefreshCw, Trash2 } from "lucide-react"
+import { Camera, FileText, Upload, RefreshCw, Trash2 } from "lucide-react"
 
 import type { FullUser } from "@/types"
 import { api } from "@/lib/api"
-import { uploadResume, deleteResume, validateResumeFile } from "@/lib/storage"
+import {
+  uploadResume,
+  deleteResume,
+  validateResumeFile,
+  uploadImage,
+  validateImageFile,
+  deleteImage,
+} from "@/lib/storage"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -38,7 +45,9 @@ export function ProfileForm({
 }) {
   const [isSaving, setIsSaving] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
+  const [isUploadingImage, setIsUploadingImage] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const imageInputRef = useRef<HTMLInputElement>(null)
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -55,6 +64,7 @@ export function ProfileForm({
   })
 
   const resumeUrl = form.watch("resume")
+  const profileImageUrl = form.watch("image")
 
   useEffect(() => {
     form.reset({
@@ -97,12 +107,39 @@ export function ProfileForm({
     form.setValue("resume", "", { shouldDirty: true })
   }
 
+  async function handleProfileImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    try {
+      validateImageFile(file)
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Invalid file.")
+      return
+    }
+
+    setIsUploadingImage(true)
+    try {
+      const publicUrl = await uploadImage(user.id, "profile", file)
+      form.setValue("image", publicUrl, { shouldDirty: true })
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed.")
+    } finally {
+      setIsUploadingImage(false)
+      if (imageInputRef.current) imageInputRef.current.value = ""
+    }
+  }
+
   const onSubmit = form.handleSubmit(async (values) => {
     setIsSaving(true)
     try {
       // If the user had a resume and it's now cleared, delete from storage
       if (user.resume && !values.resume) {
         await deleteResume(user.id, user.username)
+      }
+      // If the profile image was removed, delete from storage
+      if (user.image && !values.image) {
+        await deleteImage(user.image)
       }
 
       const updated = await api.updateProfile({
@@ -130,32 +167,72 @@ export function ProfileForm({
         <CardTitle>Profile</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={onSubmit} className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="firstName">First name</Label>
-            <Input id="firstName" {...form.register("firstName")} />
+        <form onSubmit={onSubmit} className="space-y-4">
+          {/* Avatar + name/username row */}
+          <div className="flex gap-6">
+            {/* Profile photo */}
+            <div className="flex flex-col items-center gap-2">
+              <input
+                ref={imageInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                className="hidden"
+                onChange={handleProfileImageSelect}
+                disabled={isUploadingImage}
+              />
+              <button
+                type="button"
+                disabled={isUploadingImage}
+                onClick={() => imageInputRef.current?.click()}
+                className="group relative h-36 w-36 shrink-0 cursor-pointer overflow-hidden rounded-full border-2 border-border transition-colors hover:border-primary/50 disabled:pointer-events-none disabled:opacity-50"
+              >
+                {profileImageUrl ? (
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={profileImageUrl}
+                      alt="Profile"
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+                      <Camera className="h-5 w-5 text-white" />
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-muted">
+                    <Camera className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground" />
+                  </div>
+                )}
+              </button>
+            </div>
+
+            {/* Name + username fields */}
+            <div className="flex-1 space-y-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First name</Label>
+                  <Input id="firstName" {...form.register("firstName")} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last name</Label>
+                  <Input id="lastName" {...form.register("lastName")} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="username">Username</Label>
+                <Input id="username" value={user.username} disabled />
+                <p className="text-xs text-muted-foreground">
+                  Username changes are currently disabled.
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="lastName">Last name</Label>
-            <Input id="lastName" {...form.register("lastName")} />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="username">Username</Label>
-            <Input id="username" value={user.username} disabled />
-            <p className="text-xs text-muted-foreground">
-              Username changes are currently disabled.
-            </p>
-          </div>
+
+          {/* Remaining fields in 2-col grid */}
+          <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="headline">Headline</Label>
             <Textarea id="headline" rows={3} {...form.register("headline")} />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="image">Profile image URL</Label>
-            <Input id="image" {...form.register("image")} />
-            {form.formState.errors.image ? (
-              <p className="text-xs text-destructive">{form.formState.errors.image.message}</p>
-            ) : null}
           </div>
           <div className="space-y-2">
             <Label htmlFor="githubUsername">GitHub username</Label>
@@ -234,6 +311,7 @@ export function ProfileForm({
             <Button type="submit" disabled={isSaving || !form.formState.isDirty}>
               {isSaving ? "Saving..." : "Save changes"}
             </Button>
+          </div>
           </div>
         </form>
       </CardContent>

@@ -11,12 +11,14 @@ import { ArrowUpRight, Github, Pencil, Trash2 } from "lucide-react"
 
 import type { FullUser, Project } from "@/types"
 import { api } from "@/lib/api"
+import { deleteImage } from "@/lib/storage"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { ImageUpload } from "@/components/shared/image-upload"
 
 const schema = z.object({
   name: z.string().min(1, "Project name is required."),
@@ -84,6 +86,10 @@ export function ProjectsForm({
     setIsSaving(true)
     try {
       if (editingId) {
+        const existing = items.find((item) => item.id === editingId)
+        if (existing?.image && existing.image !== values.image) {
+          await deleteImage(existing.image)
+        }
         const updated = await api.updateProject(editingId, values)
         const next = items.map((item) => (item.id === updated.id ? updated : item))
         setItems(next)
@@ -106,6 +112,8 @@ export function ProjectsForm({
 
   const deleteProject = async (projectId: string) => {
     try {
+      const project = items.find((item) => item.id === projectId)
+      if (project?.image) await deleteImage(project.image)
       await api.deleteProject(projectId)
       const next = items.filter((item) => item.id !== projectId)
       setItems(next)
@@ -134,30 +142,35 @@ export function ProjectsForm({
             <Label htmlFor="description">Description</Label>
             <Textarea id="description" rows={3} {...form.register("description")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="githubUrl">GitHub URL</Label>
-            <Input id="githubUrl" {...form.register("githubUrl")} />
-            {form.formState.errors.githubUrl ? (
-              <p className="text-xs text-destructive">{form.formState.errors.githubUrl.message}</p>
-            ) : null}
+          <div className="sm:col-span-2 grid gap-4 sm:grid-cols-3">
+            <div className="space-y-2">
+              <Label htmlFor="githubUrl">GitHub URL</Label>
+              <Input id="githubUrl" {...form.register("githubUrl")} />
+              {form.formState.errors.githubUrl ? (
+                <p className="text-xs text-destructive">{form.formState.errors.githubUrl.message}</p>
+              ) : null}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="url">Live URL</Label>
+              <Input id="url" {...form.register("url")} />
+              {form.formState.errors.url ? (
+                <p className="text-xs text-destructive">{form.formState.errors.url.message}</p>
+              ) : null}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="primaryLanguage">Primary language</Label>
+              <Input id="primaryLanguage" {...form.register("primaryLanguage")} />
+            </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="url">Live URL</Label>
-            <Input id="url" {...form.register("url")} />
-            {form.formState.errors.url ? (
-              <p className="text-xs text-destructive">{form.formState.errors.url.message}</p>
-            ) : null}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="primaryLanguage">Primary language</Label>
-            <Input id="primaryLanguage" {...form.register("primaryLanguage")} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="image">Image URL</Label>
-            <Input id="image" {...form.register("image")} />
-            {form.formState.errors.image ? (
-              <p className="text-xs text-destructive">{form.formState.errors.image.message}</p>
-            ) : null}
+          <div className="space-y-2 sm:col-span-2">
+            <Label>Cover image</Label>
+            <ImageUpload
+              value={form.watch("image") ?? ""}
+              onChange={(url) => form.setValue("image", url, { shouldDirty: true })}
+              userId={user.id}
+              category="projects"
+              label="cover image"
+            />
           </div>
           <div className="sm:col-span-2 flex flex-wrap items-center justify-end gap-3">
             <Button type="submit" disabled={isSaving || !form.formState.isDirty}>
