@@ -58,6 +58,21 @@ definitions:
       userId:
         type: string
     type: object
+  db.Follow:
+    properties:
+      createdAt:
+        type: string
+      follower:
+        $ref: '#/definitions/db.User'
+      followerId:
+        type: string
+      following:
+        $ref: '#/definitions/db.User'
+      followingId:
+        type: string
+      id:
+        type: string
+    type: object
   db.Project:
     properties:
       createdAt:
@@ -284,6 +299,9 @@ definitions:
       email:
         example: john@example.com
         type: string
+      image:
+        example: https://example.com/avatar.jpg
+        type: string
       username:
         example: johndoe
         type: string
@@ -296,6 +314,24 @@ definitions:
       error:
         example: Something went wrong
         type: string
+    type: object
+  v1.FollowResponse:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+      users:
+        items:
+          $ref: '#/definitions/db.User'
+        type: array
+    type: object
+  v1.FollowStatusResponse:
+    properties:
+      isFollowing:
+        type: boolean
     type: object
   v1.MessageResponse:
     properties:
@@ -548,6 +584,161 @@ paths:
       summary: Get user by username
       tags:
       - Users
+  /users/{username}/follow:
+    delete:
+      consumes:
+      - application/json
+      description: Unfollow a user by their username
+      parameters:
+      - description: Username of the user to unfollow
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.MessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Unfollow a user
+      tags:
+      - Follow
+    post:
+      consumes:
+      - application/json
+      description: Follow a user by their username
+      parameters:
+      - description: Username of the user to follow
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.Follow'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Follow a user
+      tags:
+      - Follow
+  /users/{username}/followers:
+    get:
+      consumes:
+      - application/json
+      description: Returns a paginated list of users who follow the specified user
+      parameters:
+      - description: Username of the user
+        in: path
+        name: username
+        required: true
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.FollowResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Get followers
+      tags:
+      - Follow
+  /users/{username}/following:
+    get:
+      consumes:
+      - application/json
+      description: Returns a paginated list of users that the specified user follows
+      parameters:
+      - description: Username of the user
+        in: path
+        name: username
+        required: true
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.FollowResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Get following
+      tags:
+      - Follow
   /users/{username}/github:
     get:
       consumes:
@@ -985,6 +1176,41 @@ paths:
       summary: Update experience
       tags:
       - Experience
+  /users/me/following/{username}:
+    get:
+      consumes:
+      - application/json
+      description: Check if the authenticated user follows a given user
+      parameters:
+      - description: Username of the user to check
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.FollowStatusResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Check follow status
+      tags:
+      - Follow
   /users/me/projects:
     get:
       consumes:
