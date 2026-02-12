@@ -25,6 +25,8 @@ func SetupRouter(publicKey *ecdsa.PublicKey) *gin.Engine {
             public.GET("/users/:username", v1.GetUserByUsername)
             public.GET("/users/:username/github", v1.GetGitHubData)
             public.GET("/users/:username/leetcode", v1.GetLeetCodeData)
+            public.GET("/users/:username/followers", v1.GetFollowers)
+            public.GET("/users/:username/following", v1.GetFollowing)
         }
 
 		protected := api.Group("")
@@ -56,6 +58,11 @@ func SetupRouter(publicKey *ecdsa.PublicKey) *gin.Engine {
             protected.POST("/users/me/experience", v1.CreateExperience)
             protected.PUT("/users/me/experience/:id", v1.UpdateExperience)
             protected.DELETE("/users/me/experience/:id", v1.DeleteExperience)
+
+            // Follow
+            protected.POST("/users/:username/follow", v1.FollowUser)
+            protected.DELETE("/users/:username/follow", v1.UnfollowUser)
+            protected.GET("/users/me/following/:username", v1.CheckFollowStatus)
         }
 	}
 

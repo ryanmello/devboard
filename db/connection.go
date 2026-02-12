@@ -33,6 +33,7 @@ func AutoMigrate() error {
 		&Project{},
 		&Education{},
 		&Experience{},
+		&Follow{},
 	)
 
 	if err != nil {
