@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function SkillsSection({ skills }: { skills: string[] }) {
   if (!skills?.length) {
-    return null
+    return null;
   }
 
   return (
@@ -21,5 +21,5 @@ export function SkillsSection({ skills }: { skills: string[] }) {
         ))}
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import Image from "next/image"
+import Image from "next/image";
 
-import type { Experience } from "@/types"
-import { sortExperience } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import type { Experience } from "@/types";
+import { sortExperience } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function ExperienceList({ experience }: { experience: Experience[] }) {
-  if (!experience?.length) return null
+  if (!experience?.length) return null;
 
-  const sorted = sortExperience(experience)
+  const sorted = sortExperience(experience);
 
   return (
     <Card className="shadow-sm">
@@ -41,15 +41,22 @@ export function ExperienceList({ experience }: { experience: Experience[] }) {
 
               {/* Details */}
               <div className="min-w-0 flex-1">
-                <h3 className="text-base font-semibold leading-tight">{item.title}</h3>
+                <h3 className="text-base font-semibold leading-tight">
+                  {item.title}
+                </h3>
                 <p className="text-muted-foreground mt-0.5 text-sm">
                   {item.company} · {item.employmentType ?? "Role"}
                 </p>
                 <p className="text-muted-foreground mt-0.5 text-xs">
-                  {item.startMonth} {item.startYear} – {item.isCurrent ? "Present" : `${item.endMonth ?? ""} ${item.endYear ?? ""}`.trim()}
+                  {item.startMonth} {item.startYear} –{" "}
+                  {item.isCurrent
+                    ? "Present"
+                    : `${item.endMonth ?? ""} ${item.endYear ?? ""}`.trim()}
                 </p>
                 {item.location && (
-                  <p className="text-muted-foreground mt-0.5 text-xs">{item.location}</p>
+                  <p className="text-muted-foreground mt-0.5 text-xs">
+                    {item.location}
+                  </p>
                 )}
                 {item.description && (
                   <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
@@ -62,5 +69,5 @@ export function ExperienceList({ experience }: { experience: Experience[] }) {
         ))}
       </CardContent>
     </Card>
-  )
+  );
 }

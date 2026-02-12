@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import Image from "next/image"
+import Image from "next/image";
 
-import type { Education } from "@/types"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import type { Education } from "@/types";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function EducationList({ education }: { education: Education[] }) {
-  if (!education?.length) return null
+  if (!education?.length) return null;
 
   return (
     <Card className="shadow-sm">
@@ -42,13 +42,16 @@ export function EducationList({ education }: { education: Education[] }) {
                   {item.universityName}
                 </h3>
                 <p className="text-muted-foreground mt-0.5 text-sm">
-                  {item.major}{item.minor ? ` · Minor in ${item.minor}` : ""}
+                  {item.major}
+                  {item.minor ? ` · Minor in ${item.minor}` : ""}
                 </p>
                 <p className="text-muted-foreground mt-0.5 text-xs">
                   {item.startYear} – {item.graduationYear}
                 </p>
                 {item.gpa && (
-                  <p className="text-muted-foreground mt-0.5 text-xs">GPA: {item.gpa}</p>
+                  <p className="text-muted-foreground mt-0.5 text-xs">
+                    GPA: {item.gpa}
+                  </p>
                 )}
               </div>
             </div>
@@ -56,5 +59,5 @@ export function EducationList({ education }: { education: Education[] }) {
         ))}
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -131,6 +131,30 @@ export interface CreateExperienceData {
 export type UpdateExperienceData = Partial<CreateExperienceData>;
 
 // ============================================
+// Follow types
+// ============================================
+
+export interface Follow {
+  id: string;
+  followerId: string;
+  followingId: string;
+  createdAt: string;
+  follower?: User;
+  following?: User;
+}
+
+export interface FollowResponse {
+  users: User[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export interface FollowStatusResponse {
+  isFollowing: boolean;
+}
+
+// ============================================
 // Profile update types
 // ============================================
 

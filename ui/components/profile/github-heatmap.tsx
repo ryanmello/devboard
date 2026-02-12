@@ -1,24 +1,29 @@
-"use client"
+"use client";
 
-import type { GitHubContributionData } from "@/types"
-import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
+import type { GitHubContributionData } from "@/types";
+import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 function getOuterColor(count: number) {
-  if (count >= 7) return "bg-green-300 hover:bg-green-200"
-  if (count >= 5) return "bg-green-400 hover:bg-green-300"
-  if (count >= 3) return "bg-green-500 hover:bg-green-400"
-  if (count >= 1) return "bg-green-600 hover:bg-green-500"
-  return "bg-neutral-700 hover:bg-neutral-600"
+  if (count >= 7) return "bg-green-300 hover:bg-green-200";
+  if (count >= 5) return "bg-green-400 hover:bg-green-300";
+  if (count >= 3) return "bg-green-500 hover:bg-green-400";
+  if (count >= 1) return "bg-green-600 hover:bg-green-500";
+  return "bg-neutral-700 hover:bg-neutral-600";
 }
 
 function getInnerColor(count: number) {
-  if (count >= 7) return "bg-green-400"
-  if (count >= 5) return "bg-green-500"
-  if (count >= 3) return "bg-green-600"
-  if (count >= 1) return "bg-green-700"
-  return "bg-neutral-600"
+  if (count >= 7) return "bg-green-400";
+  if (count >= 5) return "bg-green-500";
+  if (count >= 3) return "bg-green-600";
+  if (count >= 1) return "bg-green-700";
+  return "bg-neutral-600";
 }
 
 function formatDate(dateStr: string) {
@@ -26,7 +31,7 @@ function formatDate(dateStr: string) {
     month: "short",
     day: "numeric",
     year: "numeric",
-  })
+  });
 }
 
 function Cell({ count, date }: { count: number; date: string }) {
@@ -38,14 +43,14 @@ function Cell({ count, date }: { count: number; date: string }) {
             className={cn(
               "size-[13px] xl:size-[15px] rounded-sm flex items-center justify-center",
               "transition-transform duration-200 ease-in-out hover:scale-110",
-              getOuterColor(count)
+              getOuterColor(count),
             )}
           >
             <div
               className={cn(
                 "size-[11px] xl:size-[13px] rounded-sm",
                 "transition-colors duration-200 ease-in-out",
-                getInnerColor(count)
+                getInnerColor(count),
               )}
             />
           </div>
@@ -59,14 +64,18 @@ function Cell({ count, date }: { count: number; date: string }) {
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  )
+  );
 }
 
-const SKELETON_CELLS = Array.from({ length: 52 * 7 }, (_, i) => i)
+const SKELETON_CELLS = Array.from({ length: 52 * 7 }, (_, i) => i);
 
-export function GitHubHeatmap({ data }: { data: GitHubContributionData | null }) {
-  const loading = !data
-  const days = data?.weeks.flatMap((week) => week.contributionDays) ?? []
+export function GitHubHeatmap({
+  data,
+}: {
+  data: GitHubContributionData | null;
+}) {
+  const loading = !data;
+  const days = data?.weeks.flatMap((week) => week.contributionDays) ?? [];
 
   return (
     <Card className="shadow-sm">
@@ -111,5 +120,5 @@ export function GitHubHeatmap({ data }: { data: GitHubContributionData | null })
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

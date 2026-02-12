@@ -5,6 +5,9 @@ import type {
   Project,
   Education,
   Experience,
+  Follow,
+  FollowResponse,
+  FollowStatusResponse,
   UpdateProfileData,
   CreateProjectData,
   UpdateProjectData,
@@ -260,5 +263,63 @@ export const api = {
       headers,
     });
     if (!res.ok) throw new ApiError(res.status, "Failed to delete experience");
+  },
+
+  // follow endpoints (public)
+  async getFollowers(
+    username: string,
+    page = 1,
+    limit = 20,
+  ): Promise<FollowResponse> {
+    const res = await fetch(
+      `${API_URL}/api/v1/users/${username}/followers?page=${page}&limit=${limit}`,
+    );
+    if (!res.ok) throw new ApiError(res.status, "Failed to fetch followers");
+    return res.json();
+  },
+
+  async getFollowing(
+    username: string,
+    page = 1,
+    limit = 20,
+  ): Promise<FollowResponse> {
+    const res = await fetch(
+      `${API_URL}/api/v1/users/${username}/following?page=${page}&limit=${limit}`,
+    );
+    if (!res.ok) throw new ApiError(res.status, "Failed to fetch following");
+    return res.json();
+  },
+
+  // follow endpoints (protected)
+  async followUser(username: string): Promise<Follow> {
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${API_URL}/api/v1/users/${username}/follow`, {
+      method: "POST",
+      headers,
+    });
+    if (!res.ok) throw new ApiError(res.status, "Failed to follow user");
+    return res.json();
+  },
+
+  async unfollowUser(username: string): Promise<void> {
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${API_URL}/api/v1/users/${username}/follow`, {
+      method: "DELETE",
+      headers,
+    });
+    if (!res.ok) throw new ApiError(res.status, "Failed to unfollow user");
+  },
+
+  async checkFollowStatus(
+    username: string,
+  ): Promise<FollowStatusResponse> {
+    const headers = await getAuthHeaders();
+    const res = await fetch(
+      `${API_URL}/api/v1/users/me/following/${username}`,
+      { headers },
+    );
+    if (!res.ok)
+      throw new ApiError(res.status, "Failed to check follow status");
+    return res.json();
   },
 };

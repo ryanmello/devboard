@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowUpRight, Github } from "lucide-react"
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight, Github } from "lucide-react";
 
-import type { Project } from "@/types"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import type { Project } from "@/types";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function ProjectsGrid({ projects }: { projects: Project[] }) {
-  if (!projects?.length) return null
+  if (!projects?.length) return null;
 
   return (
     <Card className="shadow-sm">
@@ -88,5 +88,5 @@ export function ProjectsGrid({ projects }: { projects: Project[] }) {
         ))}
       </CardContent>
     </Card>
-  )
+  );
 }
