@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const fullName = `${profile.firstName ?? ""} ${profile.lastName ?? ""}`.trim()
 
   return {
-    title: fullName ? `${fullName} · Devboard` : `@${profile.username} · Devboard`,
+    title: fullName ? `${fullName} | Devboard` : `@${profile.username} | Devboard`,
     description: profile.headline ?? "Developer profile on Devboard.",
   }
 }
